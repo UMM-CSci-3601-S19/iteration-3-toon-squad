@@ -16,15 +16,58 @@ export class RideListService {
   constructor(private http: HttpClient) {
   }
 
- // rlc: RideListComponent;
+  private parameterPresent(searchParam: string) {
+    return this.rideUrl.indexOf(searchParam) !== -1;
+  }
 
+  private removeParameter(searchParam: string) {
+    let start = this.rideUrl.indexOf(searchParam);
+    let end = 0;
+    if (this.rideUrl.indexOf('&') !== -1) {
+      end = this.rideUrl.indexOf('&', start) + 1;
+    } else {
+      end = this.rideUrl.indexOf('&', start);
+    }
+    this.rideUrl = this.rideUrl.substring(0, start) + this.rideUrl.substring(end);
+  }
 
- // addListener(rlc){
- //   this.rlc = rlc;
- // }
-
-  getRides(): Observable<Ride[]> {
+  getRides(rideDriving?: string): Observable<Ride[]> {
+    this.filterByDriving(rideDriving);
     return this.http.get<Ride[]>(this.rideUrl);
+  }
+
+  filterByDriving(rideDriving?: string): void {
+    console.log("filter driving called")
+
+    if (!(rideDriving == null || rideDriving === '')) {
+      if (this.parameterPresent('isDriving=')) {
+        // there was a previous search by driving that we need to clear
+        this.removeParameter('isDriving=');
+      }
+
+      if (this.rideUrl.indexOf('?') !== -1) {
+        // console.log("there was already some information passed in this url");
+        this.rideUrl += 'isDriving=' + rideDriving + '&';
+
+      } else {
+        // console.log("this was the first bit of information to pass in the url");
+        this.rideUrl += '?isDriving=' + rideDriving + '&';
+      }
+
+
+    } else {
+      // console.log("there was nothing in the box to put onto the URL... reset");
+      if (this.parameterPresent('isDriving=')) {
+        let start = this.rideUrl.indexOf('isDriving=');
+        const end = this.rideUrl.indexOf('&', start);
+        if (this.rideUrl.substring(start - 1, start) === '?') {
+          start = start - 1;
+        }
+        this.rideUrl = this.rideUrl.substring(0, start) + this.rideUrl.substring(end + 1);
+      }
+    }
+
+    console.log(this.rideUrl)
   }
 
   addNewRide(newRide: Ride): Observable<string> {
