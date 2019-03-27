@@ -121,6 +121,10 @@ describe('Ride list', () => {
     expect(rideList.dateParse("2019-03-26T05:00:00.000Z")).toBe("March 26th");
   });
 
+  it('the client parses ISO date 2019-03-01T06:00:00.000Z to March 1st', () => {
+    expect(rideList.dateParse("2019-03-01T06:00:00.000Z")).toBe("March 1st");
+  });
+
 
 
   //Affirmative containings: has the following items
