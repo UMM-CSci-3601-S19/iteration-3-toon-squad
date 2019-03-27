@@ -87,6 +87,8 @@ export class RideListComponent implements OnInit {
     let min = time[3] + time[4];
     if(hours == 0) {
       return '12:' + min + ' AM';
+    } else if (hours == 12) {
+      return '12:' + min + ' PM';
     } else if (hours < 12) {
       return hours + ':' + min + ' AM';
     } else {

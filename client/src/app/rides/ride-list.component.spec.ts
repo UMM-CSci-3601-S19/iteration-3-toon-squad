@@ -72,15 +72,19 @@ describe('Ride list', () => {
 
   //TIME AND DATE PARSING
   //Time parsing from 24 hour format to 12 hour AM/PM
-  it('turns 13:01 time to 1:01 PM', () => {
+  it('the client turns 13:01 time to 1:01 PM', () => {
     expect(rideList.hourParse("13:01")).toBe("1:01 PM");
   });
 
-  it('turns 23:59 time to 11:59 PM', () => {
+  it('the client turns 23:59 time to 11:59 PM', () => {
     expect(rideList.hourParse("23:59")).toBe("11:59 PM");
   });
 
-  it('turns 00:00 time to 12:00 AM', () => {
+  it('the client turns 00:00 time to 12:00 AM', () => {
+    expect(rideList.hourParse("00:00")).toBe("12:00 AM");
+  });
+
+  it('the client turns 12:00 time to 12:00 PM', () => {
     expect(rideList.hourParse("00:00")).toBe("12:00 AM");
   });
 
