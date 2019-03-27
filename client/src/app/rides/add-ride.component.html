@@ -7,6 +7,23 @@
         <mat-card-title id="ride-add-title" class="rideAddTitle">Add a Ride</mat-card-title>
         <mat-card-content class="addARideContent">
 
+          <mat-radio-group flex [(ngModel)]="isDriving" formControlName="driving" required>
+            <br>
+            I am...
+            <br>
+            <br>
+            <mat-radio-button id="isDrivingFORM" [value] = "true"> driving</mat-radio-button>
+            <mat-radio-button id="isNotDrivingFORM" [value] = "false"> looking for a ride</mat-radio-button>
+            <mat-error *ngFor="let validation of add_ride_validation_messages.driving">
+              <mat-error class="error-message" id="driving-error"
+                         *ngIf="addRideForm.get('driving').hasError(validation.type) && (addRideForm.get('driving').dirty || addRideForm.get('driving').touched)">
+                {{validation.message}}
+              </mat-error>
+            </mat-error>
+          </mat-radio-group>
+
+          <br>
+
           <mat-form-field>
             <input name="driverField" matInput #input id="driverID" placeholder="Driver"
                    required [(ngModel)]="rideDriver" formControlName="driver">
@@ -19,7 +36,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field *ngIf="isDriving" >
             <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField" placeholder="Seats Available"
                    required [(ngModel)]="rideSeats" formControlName="seatsAvailable">
             <mat-error *ngFor="let validation of add_ride_validation_messages.seatsAvailable">
