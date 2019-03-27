@@ -96,6 +96,26 @@ describe('Ride list', () => {
     expect(rideList.hourParse("12:30")).toBe("12:30 PM");
   });
 
+  it('the client turns 15:30 time to 3:30 PM', () => {
+    expect(rideList.hourParse("15:30")).toBe("3:30 PM");
+  });
+
+  it('the client turns 09:44 time to 9:44 AM', () => {
+    expect(rideList.hourParse("09:44")).toBe("9:44 AM");
+  });
+
+  it('the client turns 11:03 time to 11:03 AM', () => {
+    expect(rideList.hourParse("11:03")).toBe("11:03 AM");
+  });
+
+  it('the client turns 10:00 time to 10:00 AM', () => {
+    expect(rideList.hourParse("10:00")).toBe("10:00 AM");
+  });
+
+  it('the client turns 09:59 time to 9:59 AM', () => {
+    expect(rideList.hourParse("09:59")).toBe("9:59 AM");
+  });
+
 
 
   //Affirmative containings: has the following items

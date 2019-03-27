@@ -90,7 +90,8 @@ export class RideListComponent implements OnInit {
     } else if (hours == 12) {
       return '12:' + min + ' PM';
     } else if (hours < 12) {
-      return hours + ':' + min + ' AM';
+      if(hours<10){return hours[1] + ':' + min + ' AM';} //strip off leading 0
+      else{return hours + ':' + min + ' AM';}
     } else {
       hours=hours - 12;
       hours=(hours.length < 10) ? '0'+hours:hours;
