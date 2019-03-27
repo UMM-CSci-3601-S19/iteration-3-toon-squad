@@ -75,10 +75,10 @@ describe('Ride list', () => {
   it('turns 13:01 time to 1:01 PM', () => {
     expect(rideList.hourParse("13:01")).toBe("1:01 PM");
   });
-  
-  // it('turns 13:01 time to 1:01 PM', () => {
-  //   expect(rideList.hourParse("13:01")).toBe("1:01 PM");
-  // });
+
+  it('turns 23:59 time to 11:59 PM', () => {
+    expect(rideList.hourParse("23:59")).toBe("11:59 PM");
+  });
 
 
 
