@@ -12,8 +12,8 @@
             I am...
             <br>
             <br>
-            <mat-radio-button id="isDrivingFORM" [value] = "true"> driving</mat-radio-button>
-            <mat-radio-button id="isNotDrivingFORM" [value] = "false"> looking for a ride</mat-radio-button>
+            <mat-radio-button id="isDrivingFORM" [value] = "true" > driving</mat-radio-button>
+            <mat-radio-button id="isNotDrivingFORM" [value] = "false" (click)="setRideSeats()"> looking for a ride</mat-radio-button>
             <mat-error *ngFor="let validation of add_ride_validation_messages.driving">
               <mat-error class="error-message" id="driving-error"
                          *ngIf="addRideForm.get('driving').hasError(validation.type) && (addRideForm.get('driving').dirty || addRideForm.get('driving').touched)">
@@ -36,16 +36,32 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field *ngIf="isDriving" >
-            <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField" placeholder="Seats Available"
-                   required [(ngModel)]="rideSeats" formControlName="seatsAvailable">
-            <mat-error *ngFor="let validation of add_ride_validation_messages.seatsAvailable">
-              <mat-error class="error-message"
-                         *ngIf="addRideForm.get('seatsAvailable').hasError(validation.type) &&
-                       (addRideForm.get('seatsAvailable').dirty || addRideForm.get('seatsAvailable').touched)">
-                {{validation.message}}
+          <!--<mat-form-field *ngIf="isDriving" >-->
+            <!--<input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField" placeholder="Seats Available"-->
+                   <!--required [(ngModel)]="rideSeats" formControlName="seatsAvailable">-->
+            <!--<mat-error *ngFor="let validation of add_ride_validation_messages.seatsAvailable">-->
+              <!--<mat-error class="error-message"-->
+                         <!--*ngIf="addRideForm.get('seatsAvailable').hasError(validation.type) &&-->
+                       <!--(addRideForm.get('seatsAvailable').dirty || addRideForm.get('seatsAvailable').touched)">-->
+                <!--{{validation.message}}-->
+              <!--</mat-error>-->
+            <!--</mat-error>-->
+          <!--</mat-form-field>-->
+
+          <mat-form-field *ngIf="isDriving">
+              <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
+                     placeholder="Seats Available"
+                     [(ngModel)]="rideSeats" formControlName="seatsAvailable">
+              <mat-error *ngIf="isDriving">
+                <mat-error *ngFor="let validation of add_ride_validation_messages.seatsAvailable">
+                  <mat-error class="error-message"
+                             *ngIf="addRideForm.get('seatsAvailable').hasError(validation.type) &&
+                           (addRideForm.get('seatsAvailable').dirty || addRideForm.get('seatsAvailable').touched)">
+                    {{validation.message}}
+                  </mat-error>
+                </mat-error>
               </mat-error>
-            </mat-error>
+
           </mat-form-field>
 
           <br/>

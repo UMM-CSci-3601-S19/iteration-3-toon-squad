@@ -81,6 +81,10 @@ public class RideController {
   public String addNewRide(String driver, String notes, int seatsAvailable, String origin, String destination,
                            String departureTime, String departureDate, Boolean isDriving) {
 
+    if (!isDriving) {
+      seatsAvailable = -1;
+    }
+
     Document newRide = new Document();
     newRide.append("driver", driver);
     newRide.append("notes", notes);
