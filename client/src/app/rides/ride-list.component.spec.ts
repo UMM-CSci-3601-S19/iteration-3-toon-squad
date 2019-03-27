@@ -70,6 +70,18 @@ describe('Ride list', () => {
     });
   }));
 
+  //TIME AND DATE PARSING
+  //Time parsing from 24 hour format to 12 hour AM/PM
+  it('turns 13:01 time to 1:01 PM', () => {
+    expect(rideList.hourParse("13:01")).toBe("1:01 PM");
+  });
+  
+  // it('turns 13:01 time to 1:01 PM', () => {
+  //   expect(rideList.hourParse("13:01")).toBe("1:01 PM");
+  // });
+
+
+
   //Affirmative containings: has the following items
   it('contains all the rides', () => {
     expect(rideList.rides.length).toBe(3);
