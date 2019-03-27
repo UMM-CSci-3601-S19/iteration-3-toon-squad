@@ -117,12 +117,20 @@ describe('Ride list', () => {
   });
 
   //Date parsing from ISO format to human readable times
-  it('the client parses ISO date 2019-03-26T05:00:00.000Z to March 26th', () => {
-    expect(rideList.dateParse("2019-03-26T05:00:00.000Z")).toBe("March 26th");
-  });
-
   it('the client parses ISO date 2019-03-01T06:00:00.000Z to March 1st', () => {
     expect(rideList.dateParse("2019-03-01T06:00:00.000Z")).toBe("March 1st");
+  });
+
+  it('the client parses ISO date 2019-03-02T06:00:00.000Z to March 2nd', () => {
+    expect(rideList.dateParse("2019-03-02T06:00:00.000Z")).toBe("March 2nd");
+  });
+
+  it('the client parses ISO date 2019-03-03T06:00:00.000Z to March 3rd', () => {
+    expect(rideList.dateParse("2019-03-03T06:00:00.000Z")).toBe("March 3rd");
+  });
+
+  it('the client parses ISO date 2019-03-04T06:00:00.000Z to March 4th', () => {
+    expect(rideList.dateParse("2019-03-04T06:00:00.000Z")).toBe("March 4th");
   });
 
 
