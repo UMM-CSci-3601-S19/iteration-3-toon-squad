@@ -55,6 +55,27 @@ export class AddRideComponent implements OnInit {
     ]
   };
 
+  dateParse() {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August",
+      "September", "October", "November", "December"];
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const date = new Date(this.rideDepartureDate);
+    const dateFullMonth = months[date.getMonth()];
+    const dateDay = days[date.getDay()];
+    console.log('It is ' + dateDay + ' my dude');
+    let dateDate = date.getDate().toString();
+    if (dateDate === '1' || dateDate === '21' || dateDate === '31') {
+      dateDate += 'st';
+    } else if (dateDate === '2' || dateDate === '22') {
+      dateDate += 'nd';
+    } else if (dateDate === '3' || dateDate === '23') {
+      dateDate += 'rd';
+    } else {
+      dateDate += 'th';
+    }
+    console.log(dateDate);
+  }
+
   addRide(): void {
     const newRide: Ride = {_id: '',
       driver: this.rideDriver,
@@ -66,6 +87,7 @@ export class AddRideComponent implements OnInit {
       departureTime: this.rideDepartureTime};
 
     console.log(newRide);
+
 
     if (newRide != null) {
       this.rideListService.addNewRide(newRide).subscribe(
@@ -87,7 +109,7 @@ export class AddRideComponent implements OnInit {
       this.refreshRides();
       this.refreshRides();
       this.refreshRides();
-    //This is the only solution to a refresh-on-addride
+    // This is the only solution to a refresh-on-addride
       // we were having that worked consistently, it's hacky but seems to work well.
     }
   };
