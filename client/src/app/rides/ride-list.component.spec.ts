@@ -117,9 +117,9 @@ describe('Ride list', () => {
   });
 
   //Date parsing from ISO format to human readable times
-  // it('the client parses 09:59 time to 9:59 AM', () => {
-  //   expect(rideList.hourParse("09:59")).toBe("9:59 AM");
-  // });
+  it('the client parses ISO date 2019-03-26T05:00:00.000Z to March 26th', () => {
+    expect(rideList.dateParse("2019-03-26T05:00:00.000Z")).toBe("March 26th");
+  });
 
 
 
