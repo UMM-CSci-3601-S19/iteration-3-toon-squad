@@ -1,6 +1,9 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select'
+
 import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
@@ -32,7 +35,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     Routing,
     CustomModule,
     MatCardModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatRadioModule,
+    MatSelectModule
   ],
   declarations: [
     AppComponent,
