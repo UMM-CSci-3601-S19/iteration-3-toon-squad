@@ -80,6 +80,10 @@ describe('Ride list', () => {
     expect(rideList.hourParse("23:59")).toBe("11:59 PM");
   });
 
+  it('turns 00:00 time to 12:00 AM', () => {
+    expect(rideList.hourParse("00:00")).toBe("12:00 AM");
+  });
+
 
 
   //Affirmative containings: has the following items
