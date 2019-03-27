@@ -27,6 +27,7 @@ export class AddRideComponent implements OnInit {
   public rideDestination: string;
   public rideDepartureDate: string;
   public rideDepartureTime: string;
+  public isDriving: boolean;
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService, private fb: FormBuilder) {
@@ -34,6 +35,7 @@ export class AddRideComponent implements OnInit {
   }
 
   add_ride_validation_messages = {
+
     'driver': [
       {type: 'required', message: 'Please enter your name'},
       {type: 'minlength', message: 'Please enter your full name'},
@@ -52,18 +54,25 @@ export class AddRideComponent implements OnInit {
 
     'destination': [
       {type: 'required', message: 'Destination is required'}
+    ],
+
+    'driving' : [
+      {type: 'required', message: 'You must indicate whether you are the driver or not'},
     ]
   };
 
   addRide(): void {
-    const newRide: Ride = {_id: '',
+    const newRide: Ride = {
+      _id: '',
       driver: this.rideDriver,
       notes: this.rideNotes,
       seatsAvailable: Number(this.rideSeats),
       origin: this.rideOrigin,
       destination: this.rideDestination,
       departureDate: this.rideDepartureDate,
-      departureTime: this.rideDepartureTime};
+      departureTime: this.rideDepartureTime,
+      isDriving: this.isDriving
+    };
 
     console.log(newRide);
 
@@ -79,6 +88,7 @@ export class AddRideComponent implements OnInit {
           console.log('The newRide or dialogResult was ' + newRide);
           console.log('The error was ' + JSON.stringify(err));
         });
+
       this.refreshRides();
       this.refreshRides();
       this.refreshRides();
@@ -111,6 +121,10 @@ export class AddRideComponent implements OnInit {
       ])),
 
       destination: new FormControl('destination', Validators.compose([
+        Validators.required
+      ])),
+
+      driving: new FormControl('driving', Validators.compose([
         Validators.required
       ])),
 

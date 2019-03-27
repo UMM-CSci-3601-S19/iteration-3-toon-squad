@@ -96,12 +96,13 @@ public class RideRequestHandler {
     String destination = newRide.getString("destination");
     String departureDate = parseDate(newRide.getString("departureDate"));
     String departureTime = parseTime(newRide.getString("departureTime"));
+    Boolean isDriving = newRide.getBoolean("isDriving");
 
-    System.err.println("Adding new ride [driver=" + driver + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable
+    System.err.println("Adding new ride [driver=" + driver + ", driving=" + isDriving + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable
       + ", origin=" + origin + ", destination=" + destination + ", departureTime=" + departureTime + ", departureDate="
-      + departureDate + ']');
+      + departureDate + ", isDriving=" + isDriving + ']');
 
-    return rideController.addNewRide(driver, notes, seatsAvailable, origin, destination, departureTime, departureDate);
+    return rideController.addNewRide(driver, notes, seatsAvailable, origin, destination, departureTime, departureDate, isDriving);
   }
 
   private String parseDate(String rawDate) {

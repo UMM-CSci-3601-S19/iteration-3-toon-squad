@@ -68,7 +68,7 @@ public class RideController {
   }
 
   public String addNewRide(String driver, String notes, int seatsAvailable, String origin, String destination,
-                           String departureTime, String departureDate) {
+                           String departureTime, String departureDate, Boolean isDriving) {
 
     Document newRide = new Document();
     newRide.append("driver", driver);
@@ -78,13 +78,16 @@ public class RideController {
     newRide.append("destination", destination);
     newRide.append("departureTime", departureTime);
     newRide.append("departureDate", departureDate);
+    newRide.append("isDriving", isDriving);
+
+    System.out.println(newRide);
 
     try {
       rideCollection.insertOne(newRide);
       ObjectId id = newRide.getObjectId("_id");
       System.err.println("Successfully added new ride [_id=" + id + ", driver=" + driver + ", notes=" + notes +
         ", seatsAvailable=" + seatsAvailable + ", origin=" + origin + ", destination=" + destination +
-        ", departureTime=" + departureTime + ", departureDate=" + departureDate + ']');
+        ", departureTime=" + departureTime + ", departureDate=" + departureDate + ", isDriving=" + isDriving + ']');
       return id.toHexString();
     } catch (MongoException me) {
       me.printStackTrace();
