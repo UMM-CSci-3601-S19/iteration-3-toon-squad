@@ -72,49 +72,54 @@ describe('Ride list', () => {
 
   //TIME AND DATE PARSING
   //Time parsing from 24 hour format to 12 hour AM/PM
-  it('the client turns 13:01 time to 1:01 PM', () => {
+  it('the client parses 13:01 time to 1:01 PM', () => {
     expect(rideList.hourParse("13:01")).toBe("1:01 PM");
   });
 
-  it('the client turns 23:59 time to 11:59 PM', () => {
+  it('the client parses 23:59 time to 11:59 PM', () => {
     expect(rideList.hourParse("23:59")).toBe("11:59 PM");
   });
 
-  it('the client turns 00:00 time to 12:00 AM', () => {
+  it('the client parses 00:00 time to 12:00 AM', () => {
     expect(rideList.hourParse("00:00")).toBe("12:00 AM");
   });
 
-  it('the client turns 00:59 time to 12:59 AM', () => {
+  it('the client parses 00:59 time to 12:59 AM', () => {
     expect(rideList.hourParse("00:59")).toBe("12:59 AM");
   });
 
-  it('the client turns 12:00 time to 12:00 PM', () => {
+  it('the client parses 12:00 time to 12:00 PM', () => {
     expect(rideList.hourParse("12:00")).toBe("12:00 PM");
   });
 
-  it('the client turns 12:30 time to 12:30 PM', () => {
+  it('the client parses 12:30 time to 12:30 PM', () => {
     expect(rideList.hourParse("12:30")).toBe("12:30 PM");
   });
 
-  it('the client turns 15:30 time to 3:30 PM', () => {
+  it('the client parses 15:30 time to 3:30 PM', () => {
     expect(rideList.hourParse("15:30")).toBe("3:30 PM");
   });
 
-  it('the client turns 09:44 time to 9:44 AM', () => {
+  it('the client parses 09:44 time to 9:44 AM', () => {
     expect(rideList.hourParse("09:44")).toBe("9:44 AM");
   });
 
-  it('the client turns 11:03 time to 11:03 AM', () => {
+  it('the client parses 11:03 time to 11:03 AM', () => {
     expect(rideList.hourParse("11:03")).toBe("11:03 AM");
   });
 
-  it('the client turns 10:00 time to 10:00 AM', () => {
+  it('the client parses 10:00 time to 10:00 AM', () => {
     expect(rideList.hourParse("10:00")).toBe("10:00 AM");
   });
 
-  it('the client turns 09:59 time to 9:59 AM', () => {
+  it('the client parses 09:59 time to 9:59 AM', () => {
     expect(rideList.hourParse("09:59")).toBe("9:59 AM");
   });
+
+  //Date parsing from ISO format to human readable times
+  // it('the client parses 09:59 time to 9:59 AM', () => {
+  //   expect(rideList.hourParse("09:59")).toBe("9:59 AM");
+  // });
 
 
 
