@@ -62,6 +62,17 @@ public class RideController {
     // Right now, this method simply returns all existing rides.
     Document filterDoc = new Document();
 
+    if (queryParams.containsKey("isDriving")) {
+      String targetDriving = (queryParams.get("isDriving")[0]);
+      boolean targetDrivingBool;
+      if (targetDriving.equals("true")) {
+        targetDrivingBool = true;
+      } else {
+        targetDrivingBool = false;
+      }
+      filterDoc = filterDoc.append("isDriving", targetDrivingBool);
+    }
+
     FindIterable<Document> matchingRides = rideCollection.find(filterDoc);
 
     return DatabaseHelper.serializeIterable(matchingRides);
