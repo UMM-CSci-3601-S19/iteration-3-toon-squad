@@ -62,11 +62,11 @@ export class RideListComponent implements OnInit {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August",
       "September", "October", "November", "December"];
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const date = new Date(selectedDate);
-    const dateFullMonth = months[date.getMonth()];
-    const dateDay = days[date.getDay()];
+    const dateDateFormat = new Date(selectedDate);
+    const dateFullMonth = months[dateDateFormat.getMonth()];
+    const dateDay = days[dateDateFormat.getDay()];
     console.log('It is ' + dateDay + ' my dude');
-    let date = date.getDate().toString();
+    let date = dateDateFormat.getDate().toString();
     if (date === '1' || date === '21' || date === '31') {
       date += 'st';
     } else if (date === '2' || date === '22') {
@@ -80,7 +80,20 @@ export class RideListComponent implements OnInit {
     return dateFullMonth + " " + date;
   }
 
-  public timeParse(selectedTime: string) {
-
+  //Tushar Gupta @ https://jsfiddle.net/cse_tushar/xEuUR/
+  //Converts 24 hour time to AM/PM
+  public hourParse(time) {
+    let hours = time[0] + time[1];
+    let min = time[3] + time[4];
+    if(hours == 0) {
+      return '12:' + min + ' AM';
+    } else if (hours < 12) {
+      return hours + ':' + min + ' AM';
+    } else {
+      hours=hours - 12;
+      hours=(hours.length < 10) ? '0'+hours:hours;
+      return hours+ ':' + min + ' PM';
+    }
   }
+
 }

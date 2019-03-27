@@ -20,7 +20,7 @@
             <div class="departure-time">
               <span *ngIf="ride.departureDate">{{this.dateParse(ride.departureDate)}}</span>
               <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
-              <span *ngIf="ride.departureTime">{{ride.departureTime}}</span>
+              <span *ngIf="ride.departureTime">{{this.hourParse(ride.departureTime)}}</span>
             </div>
             <div class="seats-left">
               <small>{{ride.seatsAvailable}} SEATS LEFT</small>
