@@ -55,27 +55,6 @@ export class AddRideComponent implements OnInit {
     ]
   };
 
-  dateParse() {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August",
-      "September", "October", "November", "December"];
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const date = new Date(this.rideDepartureDate);
-    const dateFullMonth = months[date.getMonth()];
-    const dateDay = days[date.getDay()];
-    console.log('It is ' + dateDay + ' my dude');
-    let dateDate = date.getDate().toString();
-    if (dateDate === '1' || dateDate === '21' || dateDate === '31') {
-      dateDate += 'st';
-    } else if (dateDate === '2' || dateDate === '22') {
-      dateDate += 'nd';
-    } else if (dateDate === '3' || dateDate === '23') {
-      dateDate += 'rd';
-    } else {
-      dateDate += 'th';
-    }
-    console.log(dateDate);
-  }
-
   addRide(): void {
     const newRide: Ride = {_id: '',
       driver: this.rideDriver,
@@ -83,17 +62,16 @@ export class AddRideComponent implements OnInit {
       seatsAvailable: Number(this.rideSeats),
       origin: this.rideOrigin,
       destination: this.rideDestination,
+      // departureDate: dateParse(this.rideDepartureDate),
       departureDate: this.rideDepartureDate,
       departureTime: this.rideDepartureTime};
 
     console.log(newRide);
 
-
     if (newRide != null) {
       this.rideListService.addNewRide(newRide).subscribe(
         result => {
           this.highlightedID = result;
-
         },
         err => {
           // This should probably be turned into some sort of meaningful response.
@@ -166,5 +144,8 @@ export class AddRideComponent implements OnInit {
     this.createForm();
   }
 
-  }
+
+}
+
+
 

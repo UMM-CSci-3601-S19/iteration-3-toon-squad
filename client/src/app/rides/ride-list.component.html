@@ -18,7 +18,7 @@
         <mat-card-header class="ride-title">
           <mat-card-title>
             <div class="departure-time">
-              <span *ngIf="ride.departureDate">{{ride.departureDate}}</span>
+              <span *ngIf="ride.departureDate">{{this.dateParse(ride.departureDate)}}</span>
               <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
               <span *ngIf="ride.departureTime">{{ride.departureTime}}</span>
             </div>

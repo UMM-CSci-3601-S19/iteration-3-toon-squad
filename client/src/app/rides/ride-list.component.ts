@@ -55,4 +55,28 @@ export class RideListComponent implements OnInit {
     this.refreshRides();
     this.loadService();
   }
+
+  // Lifted from the server side code. Parses ISO dates for human readable month/day. For example:
+// 2019-03-26T05:00:00.000Z becomes March 26th
+  public dateParse(selectedDate: string) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August",
+      "September", "October", "November", "December"];
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const date = new Date(selectedDate);
+    const dateFullMonth = months[date.getMonth()];
+    const dateDay = days[date.getDay()];
+    console.log('It is ' + dateDay + ' my dude');
+    let dateDate = date.getDate().toString();
+    if (dateDate === '1' || dateDate === '21' || dateDate === '31') {
+      dateDate += 'st';
+    } else if (dateDate === '2' || dateDate === '22') {
+      dateDate += 'nd';
+    } else if (dateDate === '3' || dateDate === '23') {
+      dateDate += 'rd';
+    } else {
+      dateDate += 'th';
+    }
+
+    return dateFullMonth + " " + dateDate;
+  }
 }

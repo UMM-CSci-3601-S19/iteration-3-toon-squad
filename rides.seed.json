@@ -8,7 +8,7 @@
     "seatsAvailable": 4,
     "origin": "2046 Neptune Court, Wright, IA 64892",
     "destination": "9782 Henry Street, Hannasville, IA 20609",
-    "departureDate": "March 12th",
+    "departureDate": "2019-03-26T05:00:00.000Z",
     "departureTime": "7:59 AM"
   },
   {
@@ -20,7 +20,7 @@
     "seatsAvailable": 4,
     "origin": "8631 Hudson Avenue, Crayne, IA 98438",
     "destination": "1660 Judge Street, Winston, SD 44478",
-    "departureDate": "March 10th",
+    "departureDate": "2019-03-10T05:00:00.000Z",
     "departureTime": "10:43 AM"
   },
   {
@@ -32,7 +32,7 @@
     "seatsAvailable": 3,
     "origin": "7073 Rose Street, Watrous, IA 94185",
     "destination": "9930 Hubbard Street, Haena, ND 21036",
-    "departureDate": "March 11th",
+    "departureDate": "2019-03-05T05:00:00.000Z",
     "departureTime": "7:55 PM"
   },
   {
@@ -44,7 +44,7 @@
     "seatsAvailable": 1,
     "origin": "7726 Franklin Street, Stewartville, SD 44780",
     "destination": "7989 Sheffield Avenue, Frystown, IA 51752",
-    "departureDate": "March 21st",
+    "departureDate": "2019-03-21T05:00:00.000Z",
     "departureTime": "4:20 PM"
   },
   {
@@ -56,7 +56,7 @@
     "seatsAvailable": 4,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
-    "departureDate": "March 14th",
+    "departureDate": "2019-03-14T05:00:00.000Z",
     "departureTime": "9:25 AM"
   }
 ]
