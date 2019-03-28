@@ -63,6 +63,7 @@ export class RideListComponent implements OnInit {
     rides.subscribe(
       rides => {
         this.rides = rides;
+        this.filterRides(this.rideDestination, this.rideOrigin);
       },
       err => {
         console.log(err);
