@@ -20,12 +20,12 @@
     <mat-card-content class="filterBox">
       <mat-form-field>
 
-        <input matInput id="rideDestination" #input type="text" placeholder="Filter by destination"
+        <input matInput id="rideDestination" #input placeholder="Filter by destination"
                (input)="rideDestination = $event.target.value">
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput id="rideOrigin" #input type="text" placeholder="Filter by origin"
+        <input matInput id="rideOrigin" #input placeholder="Filter by origin"
                (input)="rideOrigin = $event.target.value">
       </mat-form-field>
 
@@ -69,9 +69,9 @@
           <mat-card-title>
             <div class="departure-time">
               <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
-              <span *ngIf="ride.departureDate">{{ride.departureDate}}</span>
+              <span *ngIf="ride.departureDate">{{this.dateParse(ride.departureDate)}}</span>
               <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
-              <span *ngIf="ride.departureTime">{{ride.departureTime}}</span>
+              <span *ngIf="ride.departureTime">{{this.hourParse(ride.departureTime)}}</span>
             </div>
           </mat-card-title>
         </mat-card-header>

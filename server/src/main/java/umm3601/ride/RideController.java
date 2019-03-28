@@ -5,6 +5,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import umm3601.DatabaseHelper;
 
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.ascending;
+import static com.mongodb.client.model.Sorts.descending;
 
 public class RideController {
 
@@ -73,7 +76,9 @@ public class RideController {
       filterDoc = filterDoc.append("isDriving", targetDrivingBool);
     }
 
-    FindIterable<Document> matchingRides = rideCollection.find(filterDoc);
+    //
+    Bson sort = ascending("departureDate");
+    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(sort);
 
     return DatabaseHelper.serializeIterable(matchingRides);
   }

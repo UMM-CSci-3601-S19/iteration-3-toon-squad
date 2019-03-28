@@ -37,7 +37,6 @@ export class RideListService {
   }
 
   filterByDriving(rideDriving?: string): void {
-    console.log("filter driving called")
 
     if (!(rideDriving == null || rideDriving === '')) {
       if (this.parameterPresent('isDriving=')) {

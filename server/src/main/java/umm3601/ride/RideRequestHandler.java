@@ -94,8 +94,8 @@ public class RideRequestHandler {
     int seatsAvailable = newRide.getInteger("seatsAvailable");
     String origin = newRide.getString("origin");
     String destination = newRide.getString("destination");
-    String departureDate = parseDate(newRide.getString("departureDate"));
-    String departureTime = parseTime(newRide.getString("departureTime"));
+    String departureDate = newRide.getString("departureDate");
+    String departureTime = newRide.getString("departureTime");
     boolean isDriving = newRide.getBoolean("isDriving");
 
     System.err.println("Adding new ride [driver=" + driver + ", driving=" + isDriving + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable
