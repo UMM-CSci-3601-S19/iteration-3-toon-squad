@@ -82,7 +82,7 @@ public class RideController {
                            String departureTime, String departureDate, Boolean isDriving) {
 
     if (!isDriving) {
-      seatsAvailable = -1;
+      seatsAvailable = 0;
     }
 
     Document newRide = new Document();
