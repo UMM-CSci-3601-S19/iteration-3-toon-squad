@@ -28,12 +28,17 @@ export class AddRideComponent implements OnInit {
   public rideDepartureDate: string;
   public rideDepartureTime: string;
 
+  // Please keep this as the default value, or you will have problems with form validation / seats available as a rider.
+  public isDriving: boolean = true;
+
+
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService, private fb: FormBuilder) {
 
   }
 
   add_ride_validation_messages = {
+
     'driver': [
       {type: 'required', message: 'Please enter your name'},
       {type: 'minlength', message: 'Please enter your full name'},
@@ -52,19 +57,26 @@ export class AddRideComponent implements OnInit {
 
     'destination': [
       {type: 'required', message: 'Destination is required'}
+    ],
+
+    'driving' : [
+      {type: 'required', message: 'You must indicate whether you are the driver or not'},
     ]
   };
 
   addRide(): void {
-    const newRide: Ride = {_id: '',
+    const newRide: Ride = {
+      _id: '',
       driver: this.rideDriver,
       notes: this.rideNotes,
-      seatsAvailable: Number(this.rideSeats),
+      seatsAvailable: this.rideSeats,
       origin: this.rideOrigin,
       destination: this.rideDestination,
       // departureDate: dateParse(this.rideDepartureDate),
       departureDate: this.rideDepartureDate,
-      departureTime: this.rideDepartureTime};
+      departureTime: this.rideDepartureTime,
+      isDriving: this.isDriving
+    };
 
     console.log(newRide);
 
@@ -79,6 +91,7 @@ export class AddRideComponent implements OnInit {
           console.log('The newRide or dialogResult was ' + newRide);
           console.log('The error was ' + JSON.stringify(err));
         });
+
       this.refreshRides();
       this.refreshRides();
       this.refreshRides();
@@ -93,34 +106,40 @@ export class AddRideComponent implements OnInit {
   };
 
   createForm() {
-    this.addRideForm = this.fb.group({
-      driver: new FormControl('driver', Validators.compose([
-        Validators.required,
-        Validators.minLength(2),
-        Validators.pattern('^[A-Za-z0-9\\s]+[A-Za-z0-9\\s]+$(\\.0-9+)?')
-      ])),
 
-      seatsAvailable: new FormControl('seatsAvailable', Validators.compose([
-        Validators.required,
-        Validators.min(1),
-        Validators.max(12)
-      ])),
+      this.addRideForm = this.fb.group({
+        driver: new FormControl('driver', Validators.compose([
+          Validators.required,
+          Validators.minLength(2),
+          Validators.pattern('^[A-Za-z0-9\\s]+[A-Za-z0-9\\s]+$(\\.0-9+)?')
+        ])),
 
-      origin: new FormControl('origin', Validators.compose([
-        Validators.required
-      ])),
+        origin: new FormControl('origin', Validators.compose([
+          Validators.required
+        ])),
 
-      destination: new FormControl('destination', Validators.compose([
-        Validators.required
-      ])),
+        destination: new FormControl('destination', Validators.compose([
+          Validators.required
+        ])),
 
-      departureDate: new FormControl('departureDate'),
+        seatsAvailable: new FormControl('seatsAvailable', Validators.compose([
+          Validators.required,
+          Validators.min(1),
+          Validators.max(12)
+        ])),
 
-      departureTime: new FormControl('departureTime'),
+        driving: new FormControl('driving', Validators.compose([
+          Validators.required
+        ])),
 
-      notes: new FormControl('notes')
-    })
+        departureDate: new FormControl('departureDate'),
+
+        departureTime: new FormControl('departureTime'),
+
+        notes: new FormControl('notes')
+      })
   }
+
 
   refreshRides(): Observable<Ride[]> {
     // Get Rides returns an Observable, basically a "promise" that
@@ -137,6 +156,15 @@ export class AddRideComponent implements OnInit {
         console.log(err);
       });
     return rides;
+  }
+
+
+  // IMPORTANT! This function gets called whenever the user selects 'looking for a ride'.
+  //   This is so that form validator doesn't get mad for having an invalid 'rideSeats' value.
+  //   Before adding the ride to the DB, the value gets set to -1 (by the ride controller).
+  //   Also, ride-list component HTML won't display this number unless it is indeed a Driver.
+  setRideSeats() {
+    this.rideSeats = 1;
   }
 
 

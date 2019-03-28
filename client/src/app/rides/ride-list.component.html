@@ -12,18 +12,66 @@
       <mat-icon>add_circle_outline</mat-icon>
       Create a Ride
     </button>
+
     <mat-divider></mat-divider>
+
+    <br>
+
+    <mat-card-content class="filterBox">
+      <mat-form-field>
+
+        <input matInput id="rideDestination" #input type="text" placeholder="Filter by destination"
+               (input)="rideDestination = $event.target.value">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput id="rideOrigin" #input type="text" placeholder="Filter by origin"
+               (input)="rideOrigin = $event.target.value">
+      </mat-form-field>
+
+      <br>
+
+      <mat-radio-group class="radioGroup" [(ngModel)] = "rideDriving">
+        I am looking for...
+        <mat-radio-button id="isDriving" [value] = "true"> <mat-icon style="color:green"> drive_eta</mat-icon> drivers</mat-radio-button>
+        <mat-radio-button id="isNotDriving" [value] = "false"> <mat-icon style="color: blue"> transfer_within_a_station </mat-icon> riders</mat-radio-button>
+      </mat-radio-group>
+
+      <button class="filterButton" mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">
+        Filter by driving / riding
+      </button>
+
+      <br>
+
+    </mat-card-content>
+
+
+
     <div *ngIf="rides; else ridesError">
-      <mat-card #elem class="rides" [id]="ride.driver" *ngFor="let ride of this.rides">
-        <mat-card-header class="ride-title">
+      <mat-card #elem class="rides"
+                *ngFor="let ride of this.filterRides(rideDestination, rideOrigin)">
+
+        <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving">
           <mat-card-title>
             <div class="departure-time">
+              <mat-icon style="color:green"> drive_eta</mat-icon>
               <span *ngIf="ride.departureDate">{{this.dateParse(ride.departureDate)}}</span>
               <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
               <span *ngIf="ride.departureTime">{{this.hourParse(ride.departureTime)}}</span>
             </div>
             <div class="seats-left">
               <small>{{ride.seatsAvailable}} SEATS LEFT</small>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-header *ngIf="!ride.isDriving" class="ride-title">
+          <mat-card-title>
+            <div class="departure-time">
+              <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
+              <span *ngIf="ride.departureDate">{{ride.departureDate}}</span>
+              <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
+              <span *ngIf="ride.departureTime">{{ride.departureTime}}</span>
             </div>
           </mat-card-title>
         </mat-card-header>
@@ -35,8 +83,12 @@
             <div class="ride-info destination">{{ride.destination}}</div>
           </div>
 
-          <div id="ride-info-driver-id" class="ride-info driver">
+          <div id="ride-info-driver-id-isDriving" class="ride-info driver" *ngIf="ride.isDriving">
             {{ride.driver}} is offering this ride
+          </div>
+
+          <div id="ride-info-driver-id" class="ride-info driver" *ngIf="!ride.isDriving">
+            {{ride.driver}} is requesting this ride
           </div>
 
           <mat-divider [inset]="true" *ngIf="ride.notes"></mat-divider>

@@ -9,7 +9,9 @@
     "origin": "2046 Neptune Court, Wright, IA 64892",
     "destination": "9782 Henry Street, Hannasville, IA 20609",
     "departureDate": "2019-03-26T05:00:00.000Z",
-    "departureTime": "00:00"
+    "departureTime": "00:00",
+    "isDriving": true
+
   },
   {
     "_id": {
@@ -17,11 +19,13 @@
     },
     "driver": "Hollie Garza",
     "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
-    "seatsAvailable": 4,
+    "seatsAvailable": -1,
     "origin": "8631 Hudson Avenue, Crayne, IA 98438",
     "destination": "1660 Judge Street, Winston, SD 44478",
     "departureDate": "2019-03-10T05:00:00.000Z",
-    "departureTime": "13:01"
+    "departureTime": "13:01",
+    "isDriving": false
+
   },
   {
     "_id": {
@@ -33,7 +37,9 @@
     "origin": "7073 Rose Street, Watrous, IA 94185",
     "destination": "9930 Hubbard Street, Haena, ND 21036",
     "departureDate": "2019-03-05T05:00:00.000Z",
-    "departureTime": "15:55"
+    "departureTime": "15:55",
+    "isDriving": true
+
   },
   {
     "_id": {
@@ -45,7 +51,9 @@
     "origin": "7726 Franklin Street, Stewartville, SD 44780",
     "destination": "7989 Sheffield Avenue, Frystown, IA 51752",
     "departureDate": "2019-03-21T05:00:00.000Z",
-    "departureTime": "16:20"
+    "departureTime": "16:20",
+    "isDriving": true
+
   },
   {
     "_id": {
@@ -53,10 +61,12 @@
     },
     "driver": "Stanley Stuart",
     "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
-    "seatsAvailable": 4,
+    "seatsAvailable": -1,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
     "departureDate": "2019-03-14T05:00:00.000Z",
-    "departureTime": "03:55"
+    "departureTime": "03:55",
+    "isDriving": false
+
   }
 ]

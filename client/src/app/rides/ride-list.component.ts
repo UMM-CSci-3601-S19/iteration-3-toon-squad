@@ -13,10 +13,40 @@ import {Observable} from 'rxjs/Observable';
 export class RideListComponent implements OnInit {
   // public so that tests can reference them (.spec.ts)
   public rides: Ride[];
+  public filteredRides: Ride[];
+
+  // target values used in filtering
+  public rideDestination: string;
+  public rideOrigin: string;
+  public rideDriving: string;
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService) {
  //   rideListService.addListener(this);
+  }
+
+  public filterRides(searchDestination: string, searchOrigin: string): Ride[] {
+
+    this.filteredRides = this.rides;
+
+    // Filter by destination
+    if (searchDestination != null) {
+      searchDestination = searchDestination.toLocaleLowerCase();
+
+      this.filteredRides = this.filteredRides.filter(ride => {
+        return !searchDestination || ride.destination.toLowerCase().indexOf(searchDestination) !== -1;
+      });
+    }
+
+    // Filter by origin
+    if (searchOrigin != null) {
+      searchOrigin = searchOrigin.toLocaleLowerCase();
+
+      this.filteredRides = this.filteredRides.filter(ride => {
+        return !searchOrigin || ride.origin.toLowerCase().indexOf(searchOrigin) !== -1;
+      });
+    }
+    return this.filteredRides;
   }
 
   /**
@@ -33,6 +63,7 @@ export class RideListComponent implements OnInit {
     rides.subscribe(
       rides => {
         this.rides = rides;
+        this.filterRides(this.rideDestination, this.rideOrigin);
       },
       err => {
         console.log(err);
@@ -41,7 +72,7 @@ export class RideListComponent implements OnInit {
   }
 
   loadService(): void {
-    this.rideListService.getRides().subscribe(
+    this.rideListService.getRides(this.rideDriving).subscribe(
       rides => {
         this.rides = rides;
       },

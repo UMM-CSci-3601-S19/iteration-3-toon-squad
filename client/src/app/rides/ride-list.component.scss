@@ -3,10 +3,27 @@
   padding-left: 8px;
 }
 
+/* Mat card for filtering rides */
+.filterBox {
+  background: white;
+  padding-left: 12px;
+}
+
+.radioGroup {
+  margin-right: 20px;
+}
+
 /* Ride card */
 .rides {  margin-bottom: 15px;  }
 
 /* Ride card title */
+.ride-title-isDriving {
+  background: #09a809 linear-gradient(to right bottom, #38eb38, #a8ffa0);
+  color: #fff;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
 .ride-title {
   background: #29b6f6 linear-gradient(to right bottom, #29b6f6,#73e8ff);
   color: #fff;
@@ -22,6 +39,10 @@
   background-color: #fff;
   color: #000;
   font-weight: bold;
+}
+
+.departure-time {
+  font-weight: bolder;
 }
 
 /* Ride card contents */

@@ -62,13 +62,28 @@ public class RideController {
     // Right now, this method simply returns all existing rides.
     Document filterDoc = new Document();
 
+    if (queryParams.containsKey("isDriving")) {
+      String targetDriving = (queryParams.get("isDriving")[0]);
+      boolean targetDrivingBool;
+      if (targetDriving.equals("true")) {
+        targetDrivingBool = true;
+      } else {
+        targetDrivingBool = false;
+      }
+      filterDoc = filterDoc.append("isDriving", targetDrivingBool);
+    }
+
     FindIterable<Document> matchingRides = rideCollection.find(filterDoc);
 
     return DatabaseHelper.serializeIterable(matchingRides);
   }
 
   public String addNewRide(String driver, String notes, int seatsAvailable, String origin, String destination,
-                           String departureTime, String departureDate) {
+                           String departureTime, String departureDate, Boolean isDriving) {
+
+    if (!isDriving) {
+      seatsAvailable = 0;
+    }
 
     Document newRide = new Document();
     newRide.append("driver", driver);
@@ -78,13 +93,16 @@ public class RideController {
     newRide.append("destination", destination);
     newRide.append("departureTime", departureTime);
     newRide.append("departureDate", departureDate);
+    newRide.append("isDriving", isDriving);
+
+    System.out.println(newRide);
 
     try {
       rideCollection.insertOne(newRide);
       ObjectId id = newRide.getObjectId("_id");
       System.err.println("Successfully added new ride [_id=" + id + ", driver=" + driver + ", notes=" + notes +
         ", seatsAvailable=" + seatsAvailable + ", origin=" + origin + ", destination=" + destination +
-        ", departureTime=" + departureTime + ", departureDate=" + departureDate + ']');
+        ", departureTime=" + departureTime + ", departureDate=" + departureDate + ", isDriving=" + isDriving + ']');
       return id.toHexString();
     } catch (MongoException me) {
       me.printStackTrace();

@@ -30,27 +30,30 @@ describe('Ride list', () => {
           origin: 'UMM',
           destination: 'Willie\'s',
           departureDate: '3/6/2019',
-          departureTime: '10:00:00'
+          departureTime: '10:00:00',
+          isDriving: true
         },
         {
           _id: 'dennis_id',
           driver: 'Dennis',
           notes: 'These are Dennis\'s ride notes',
-          seatsAvailable: 3,
+          seatsAvailable: -1,
           origin: 'Caribou Coffee',
           destination: 'Minneapolis, MN',
           departureDate: '8/15/2018',
-          departureTime: '11:30:00'
+          departureTime: '11:30:00',
+          isDriving: false
         },
         {
           _id: 'agatha_id',
           driver: 'Agatha',
           notes: 'These are Agatha\'s ride notes',
-          seatsAvailable: 6,
+          seatsAvailable: 3,
           origin: 'UMM',
           destination: 'Fergus Falls, MN',
           departureDate: '3/30/2019',
-          departureTime: '16:30:00'
+          departureTime: '16:30:00',
+          isDriving: true
         }
       ])
     };
@@ -164,6 +167,14 @@ describe('Ride list', () => {
     expect(rideList.rides.filter((ride: Ride) => ride.seatsAvailable === 3).length).toBe(2);
   });
 
+  it('has two rides that where a ride is being offered', () => {
+    expect(rideList.rides.filter((ride: Ride) => ride.isDriving).length).toBe(2);
+  });
+
+  it('has one ride that where a ride is being requested', () => {
+    expect(rideList.rides.filter((ride: Ride) => !ride.isDriving).length).toBe(1);
+  });
+
   it('has two rides with origin \'UMM\'', () => {
     expect(rideList.rides.filter((ride: Ride) => ride.origin === 'UMM').length).toBe(2);
   });
@@ -188,7 +199,12 @@ describe('Ride list', () => {
     expect(rideList.rides.filter((ride: Ride) => ride.notes.includes('These are')).length).toBe(3);
   });
 
-//  Does not cotain certain fields
+
+  ///////////////////////////////////////////
+  ////  Does not contain certain fields   ///
+  //////////////////////////////////////////
+
+
   it('doesn\'t contain a ride with driver \'Dilbert\'', () => {
     expect(rideList.rides.some((ride: Ride) => ride.driver === 'Dilbert')).toBe(false);
   });
@@ -216,6 +232,42 @@ describe('Ride list', () => {
   it('doesn\'t have a ride with notes \'Smoker\'', () => {
     expect(rideList.rides.some((ride: Ride) => ride.notes === 'Smoker')).toBe(false);
   });
+
+  it('doesn\'t have a requested ride with zero or more seats available', () => {
+    expect(rideList.rides.some((ride: Ride) => !ride.isDriving && ride.seatsAvailable > 0)).toBe(false);
+  });
+
+
+  /////////////////////////////////////
+  //////   Filtering Tests   //////////
+  /////////////////////////////////////
+
+
+  it('filters by origin', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideOrigin = 'UM';
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(2);
+    });
+  });
+
+  it('filters by destination', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideDestination = 'Fergus';
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(1);
+    });
+  });
+
+  it('filters by origin and destination', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideOrigin = 'UMM';
+    rideList.rideDestination = 'w';
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(1);
+    });
+  });
+
 });
 
 describe('Misbehaving Ride List', () => {
@@ -255,62 +307,3 @@ describe('Misbehaving Ride List', () => {
   });
 });
 
-// describe('Adding a ride', () => {
-//   let rideList: AddRideComponent;
-//   let fixture: ComponentFixture<AddRideComponent>;
-//   const newRide: Ride = {
-//     _id: 'agatha_id',
-//     driver: 'Agatha',
-//     notes: 'These are Agatha\'s ride notes',
-//     seatsAvailable: 6,
-//     origin: 'UMM',
-//     destination: 'Fergus Falls, MN',
-//     departureDate: '3/30/2019',
-//     departureTime: '16:30:00'
-//   };
-//   const newId = 'sam_id';
-//
-//   let calledRide: Ride;
-//
-//   let rideListServiceStub: {
-//     getRides: () => Observable<Ride[]>,
-//     addNewRide: (newRide: Ride) => Observable<{ '$oid': string }>
-//   };
-//
-//   beforeEach(() => {
-//     calledRide = null;
-//     // stub RideService for test purposes
-//     rideListServiceStub = {
-//       getRides: () => Observable.of([]),
-//       addNewRide: (newRide: Ride) => {
-//         calledRide = newRide;
-//         return Observable.of({
-//           '$oid': newId
-//         });
-//       }
-//     };
-//
-//     TestBed.configureTestingModule({
-//       imports: [FormsModule, CustomModule],
-//       declarations: [AddRideComponent],
-//       providers: [
-//         {provide: RideListService, useValue: rideListServiceStub},
-//         // {provide: MatDialog, useValue: mockMatDialog},
-//       ]
-//     });
-//   });
-//
-//   beforeEach(async(() => {
-//     TestBed.compileComponents().then(() => {
-//       fixture = TestBed.createComponent(AddRideComponent);
-//       rideList = fixture.componentInstance;
-//       fixture.detectChanges();
-//     });
-//   }));
-//
-//   it('calls RideListService.addRide', () => {
-//     expect(calledRide).toBeNull();
-//     rideList.addRide();
-//     expect(calledRide).toEqual(newRide);
-//   });
-// });
