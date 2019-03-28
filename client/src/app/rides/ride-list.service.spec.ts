@@ -16,7 +16,8 @@ describe('Ride list service: ', () => {
       origin: 'UMM',
       destination: 'Willie\'s',
       departureDate: '3/6/2019',
-      departureTime: '10:00:00'
+      departureTime: '10:00:00',
+      isDriving: true,
     },
     {
       _id: 'dennis_id',
@@ -26,7 +27,8 @@ describe('Ride list service: ', () => {
       origin: 'Caribou Coffee',
       destination: 'Minneapolis, MN',
       departureDate: '8/15/2018',
-      departureTime: '11:30:00'
+      departureTime: '11:30:00',
+      isDriving: true,
     },
     {
       _id: 'agatha_id',
@@ -36,11 +38,13 @@ describe('Ride list service: ', () => {
       origin: 'UMM',
       destination: 'Fergus Falls, MN',
       departureDate: '3/30/2019',
-      departureTime: '16:30:00'
+      departureTime: '16:30:00',
+      isDriving: true,
     }
   ];
 
   let rideListService: RideListService;
+  let impossibleRideUrl: string;
 
   // These are used to mock the HTTP requests so that we (a) don't have to
   // have the server running and (b) we can check exactly which HTTP
@@ -91,12 +95,13 @@ describe('Ride list service: ', () => {
     const newRide: Ride = {
       _id: 'ride_id',
       driver: 'Jesse',
-      seatsAvailable: 72,
+      seatsAvailable: 10,
       origin: 'UMM',
-      destination: 'Alexandria',
+      destination: 'North Pole',
       departureDate: '',
       departureTime: '',
-      notes: ''
+      notes: 'I hope you brought warm clothes',
+      isDriving: true
     };
 
     rideListService.addNewRide(newRide).subscribe(
@@ -116,5 +121,36 @@ describe('Ride list service: ', () => {
     // triggers the subscribe above, which leads to that check
     // actually being performed.
     req.flush(newRide._id);
+  });
+
+  it('getRides(isDriving) adds appropriate param string to called URL', () => {
+    rideListService.getRides("true").subscribe(
+      rides => expect(rides).toEqual(testRides)
+    );
+
+    const req = httpTestingController.expectOne(rideListService.baseUrl + '?isDriving=true&');
+    expect(req.request.method).toEqual('GET');
+    req.flush(testRides);
+  });
+
+  it('filterByDriving(rideDriving) deals appropriately with a URL that already had a parameter', () => {
+    impossibleRideUrl = rideListService.baseUrl + '?isDriving=true&something=killerrobots&';
+    rideListService['rideUrl'] = impossibleRideUrl;
+    rideListService.filterByDriving("true");
+    expect(rideListService['rideUrl']).toEqual(rideListService.baseUrl + '?something=killerrobots&isDriving=true&');
+  });
+
+  it('filterByDriving deals appropriately with a URL that already had some filtering, but not isDriving specifically', () => {
+    impossibleRideUrl = rideListService.baseUrl + '?something=killerrobots&';
+    rideListService['rideUrl'] = impossibleRideUrl;
+    rideListService.filterByDriving("true");
+    expect(rideListService['rideUrl']).toEqual(rideListService.baseUrl + '?something=killerrobots&isDriving=true&');
+  });
+
+  it('filterByDriving deals appropriately with a URL has the keyword isDriving, but nothing after the =', () => {
+    impossibleRideUrl = rideListService.baseUrl + '?isDriving=&';
+    rideListService['rideUrl'] = impossibleRideUrl;
+    rideListService.filterByDriving('');
+    expect(rideListService['rideUrl']).toEqual(rideListService.baseUrl + '');
   });
 });
