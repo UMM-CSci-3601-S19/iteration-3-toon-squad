@@ -53,8 +53,6 @@ export class RideListService {
         // console.log("this was the first bit of information to pass in the url");
         this.rideUrl += '?isDriving=' + rideDriving + '&';
       }
-
-
     } else {
       // console.log("there was nothing in the box to put onto the URL... reset");
       if (this.parameterPresent('isDriving=')) {
@@ -66,7 +64,6 @@ export class RideListService {
         this.rideUrl = this.rideUrl.substring(0, start) + this.rideUrl.substring(end + 1);
       }
     }
-
     console.log(this.rideUrl)
   }
 
