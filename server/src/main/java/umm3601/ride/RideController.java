@@ -76,7 +76,8 @@ public class RideController {
       filterDoc = filterDoc.append("isDriving", targetDrivingBool);
     }
 
-    //
+    //siddhartha jain, Feb 24, 17
+    // @ https://stackoverflow.com/questions/42438887/how-to-sort-the-documents-we-got-from-find-command-in-mongodb
     Bson sort = ascending("departureDate");
     FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(sort);
 
