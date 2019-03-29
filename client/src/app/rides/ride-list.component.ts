@@ -18,14 +18,14 @@ export class RideListComponent implements OnInit {
   // target values used in filtering
   public rideDestination: string;
   public rideOrigin: string;
-  public rideDriving: string;
+  public rideDriving: boolean;
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService) {
  //   rideListService.addListener(this);
   }
 
-  public filterRides(searchDestination: string, searchOrigin: string): Ride[] {
+  public filterRides(searchDestination: string, searchOrigin: string, searchIsDriving: boolean): Ride[] {
 
     this.filteredRides = this.rides;
 
@@ -46,6 +46,14 @@ export class RideListComponent implements OnInit {
         return !searchOrigin || ride.origin.toLowerCase().indexOf(searchOrigin) !== -1;
       });
     }
+
+    if (searchIsDriving != null) {
+
+      this.filteredRides = this.filteredRides.filter(ride => {
+        return ride.isDriving === searchIsDriving;
+      });
+    }
+
     return this.filteredRides;
   }
 
@@ -59,11 +67,14 @@ export class RideListComponent implements OnInit {
     //
     // Subscribe waits until the data is fully downloaded, then
     // performs an action on it (the first lambda)
+
+    console.log("It got called")
+
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
         this.rides = rides;
-        this.filterRides(this.rideDestination, this.rideOrigin);
+        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving);
       },
       err => {
         console.log(err);
@@ -72,7 +83,7 @@ export class RideListComponent implements OnInit {
   }
 
   loadService(): void {
-    this.rideListService.getRides(this.rideDriving).subscribe(
+    this.rideListService.getRides().subscribe(
       rides => {
         this.rides = rides;
       },
