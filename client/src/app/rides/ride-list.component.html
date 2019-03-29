@@ -33,8 +33,14 @@
 
       <mat-radio-group class="radioGroup" [(ngModel)] = "rideDriving">
         I am looking for...
-        <mat-radio-button id="isDriving" [value] = "true"> <mat-icon style="color:green"> drive_eta</mat-icon> drivers</mat-radio-button>
-        <mat-radio-button id="isNotDriving" [value] = "false"> <mat-icon style="color: blue"> transfer_within_a_station </mat-icon> riders</mat-radio-button>
+        <mat-radio-button id="isDriving" [value] = true (click)="rideDriving = $event.target.value">
+          <mat-icon style="color:green"> drive_eta</mat-icon> drivers
+        </mat-radio-button>
+
+        <mat-radio-button id="isNotDriving" [value] = false (click)="rideDriving = $event.target.value">
+          <mat-icon style="color: blue"> transfer_within_a_station </mat-icon> riders
+        </mat-radio-button>
+
       </mat-radio-group>
 
       <button class="filterButton" mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">
@@ -49,7 +55,7 @@
 
     <div *ngIf="rides; else ridesError">
       <mat-card #elem class="rides"
-                *ngFor="let ride of this.filterRides(rideDestination, rideOrigin)">
+                *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving)">
 
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving">
           <mat-card-title>

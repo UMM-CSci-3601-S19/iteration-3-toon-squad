@@ -7,5 +7,5 @@ export interface Ride {
   destination: string;
   departureDate: string;
   departureTime: string;
-  isDriving: boolean;
+  isDriving: boolean
 }
