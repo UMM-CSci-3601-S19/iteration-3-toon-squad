@@ -9,6 +9,9 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import umm3601.DatabaseHelper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,6 +20,7 @@ import java.util.stream.StreamSupport;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
+import static com.mongodb.client.model.Sorts.orderBy;
 
 public class RideController {
 
@@ -78,8 +82,11 @@ public class RideController {
 
     //siddhartha jain, Feb 24, 17
     // @ https://stackoverflow.com/questions/42438887/how-to-sort-the-documents-we-got-from-find-command-in-mongodb
-    Bson sort = ascending("departureDate");
-    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(sort);
+    Bson sortDate = ascending("departureDate");
+    Bson sortTime = ascending("departureTime");
+
+    Bson order = orderBy(sortDate, sortTime);
+    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order);
 
     return DatabaseHelper.serializeIterable(matchingRides);
   }
