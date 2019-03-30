@@ -96,13 +96,19 @@ public class RideController {
     Bson sortTime = ascending("departureTime");
 
     //filters out dates that aren't greater than or equal to today's date
-    Bson oldRidesDate = gte("departureDate", nowAsISO.substring(0,10)+"5:00:00.000Z");
-    Bson oldRidesTime = gte("departureTime", nowAsISO.substring(11,16));
-    System.out.println(nowAsISO.substring(11,16));
+    Bson pastDate = gte("departureDate", nowAsISO.substring(0,10)+"T05:00:00.000Z");
+    //filters out times that aren't greater than or equal to the current time
+    Bson pastTime = gte("departureTime", nowAsISO.substring(11,16));
+    //filters out anything past the current date and time
+    Bson sameDayPastTime = and(pastDate, pastTime);
+    //filters out anything today or later
+    Bson tomorrowOrLater = gt("departureDate",nowAsISO.substring(0,10)+"T05:00:00.000Z");
+    //Only shows dates that are either (today ^ (today ^ laterThanNow)) or dates after today
+    Bson oldRides= or(sameDayPastTime, tomorrowOrLater);
 
-    Bson order = orderBy(sortTime, sortDate);
-    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRidesDate)
-      .filter(oldRidesTime);
+    Bson order = orderBy(sortDate, sortTime);
+
+    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRides);
 
     return DatabaseHelper.serializeIterable(matchingRides);
   }
