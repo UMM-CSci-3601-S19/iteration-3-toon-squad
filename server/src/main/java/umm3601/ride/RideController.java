@@ -96,7 +96,7 @@ public class RideController {
     //filters out dates that aren't greater than or equal to today's date
     Bson oldRides = gte("departureDate", nowAsISO.substring(0,10)+"5:00:00.000Z");
 
-    Bson order = orderBy(sortDate, sortTime);
+    Bson order = orderBy(sortTime, sortDate);
     FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRides);
 
     return DatabaseHelper.serializeIterable(matchingRides);
