@@ -14,10 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
 import static com.mongodb.client.model.Sorts.orderBy;
@@ -69,6 +70,13 @@ public class RideController {
     // Right now, this method simply returns all existing rides.
     Document filterDoc = new Document();
 
+    //https://stackoverflow.com/a/3914498 @ Joachim Sauer (Oct 12 2010) & L S (Jun 29 2016)
+    //Creates a date in ISO format
+    TimeZone tz = TimeZone.getTimeZone("America/Chicago");
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+    df.setTimeZone(tz);
+    String nowAsISO = df.format(new Date());
+
     if (queryParams.containsKey("isDriving")) {
       String targetDriving = (queryParams.get("isDriving")[0]);
       boolean targetDrivingBool;
@@ -85,8 +93,11 @@ public class RideController {
     Bson sortDate = ascending("departureDate");
     Bson sortTime = ascending("departureTime");
 
+    //filters out dates that aren't greater than or equal to today's date
+    Bson oldRides = gte("departureDate", nowAsISO.substring(0,10)+"5:00:00.000Z");
+
     Bson order = orderBy(sortDate, sortTime);
-    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order);
+    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRides);
 
     return DatabaseHelper.serializeIterable(matchingRides);
   }
