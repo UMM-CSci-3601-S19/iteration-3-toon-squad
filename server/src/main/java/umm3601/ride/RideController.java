@@ -110,6 +110,7 @@ public class RideController {
 
     FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRides);
 
+    System.out.println(DatabaseHelper.serializeIterable(matchingRides));
     return DatabaseHelper.serializeIterable(matchingRides);
   }
 

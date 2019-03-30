@@ -182,4 +182,24 @@ public class RideControllerSpec {
     assertNull("No driver name should match", noJsonResult);
   }
 
+  @Test
+  public void onlyShowsFutureRides() {
+    String newIdOne = rideController.addNewRide("Nate Past", "Good morning! How are you? ...Good.", 1,
+      "Morris", "232 Alton Drive Miami, FL", "5PM", "2019-02-14T05:00:00.000Z", false);
+    String newIdTwo = rideController.addNewRide("Nate Past", "Good morning! How are you? ...Good.", 1,
+      "Morris", "232 Alton Drive Miami, FL", "5PM", "2019-02-14T05:00:00.000Z", false);
+
+    String newIdThree = rideController.addNewRide("Nate Future", "Good morning! How are you? ...Good.", 1,
+      "Morris", "232 Alton Drive Miami, FL", "5PM", "2999-08-14T05:00:00.000Z", false);
+    String newIdFour = rideController.addNewRide("Nate Future", "Good morning! How are you? ...Good.", 1,
+      "Morris", "232 Alton Drive Miami, FL", "5PM", "2999-08-14T05:00:00.000Z", false);
+
+    Map<String, String[]> argMap = new HashMap<>();
+    argMap.put("isDriving", new String[]{"false"});
+    String jsonResult = rideController.getRides(argMap);
+    BsonArray docs = parseJsonArray(jsonResult);
+
+    assertEquals("Should be 2 requested ride", 2, docs.size());
+  }
+
 }
