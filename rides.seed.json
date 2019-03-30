@@ -68,5 +68,20 @@
     "departureTime": "03:55",
     "isDriving": false
 
+  },
+
+  {
+    "_id": {
+      "$oid": "5c832bec4f173391643a16f2"
+    },
+    "driver": "Michael Small",
+    "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
+    "seatsAvailable": -1,
+    "origin": "881 Boardwalk , Waumandee, SD 97192",
+    "destination": "8974 Cyrus Avenue, Joes, SD 96915",
+    "departureDate": "2019-08-14T05:00:00.000Z",
+    "departureTime": "03:55",
+    "isDriving": false
+
   }
 ]
