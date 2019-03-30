@@ -11,6 +11,7 @@ import umm3601.DatabaseHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -76,6 +77,7 @@ public class RideController {
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
     df.setTimeZone(tz);
     String nowAsISO = df.format(new Date());
+    System.out.println(nowAsISO);
 
     if (queryParams.containsKey("isDriving")) {
       String targetDriving = (queryParams.get("isDriving")[0]);
@@ -94,10 +96,13 @@ public class RideController {
     Bson sortTime = ascending("departureTime");
 
     //filters out dates that aren't greater than or equal to today's date
-    Bson oldRides = gte("departureDate", nowAsISO.substring(0,10)+"5:00:00.000Z");
+    Bson oldRidesDate = gte("departureDate", nowAsISO.substring(0,10)+"5:00:00.000Z");
+    Bson oldRidesTime = gte("departureTime", nowAsISO.substring(11,16));
+    System.out.println(nowAsISO.substring(11,16));
 
     Bson order = orderBy(sortTime, sortDate);
-    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRides);
+    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRidesDate)
+      .filter(oldRidesTime);
 
     return DatabaseHelper.serializeIterable(matchingRides);
   }
