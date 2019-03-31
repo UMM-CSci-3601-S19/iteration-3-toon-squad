@@ -7,7 +7,7 @@ import {
   MatListModule, MatButtonModule, MatCardModule, MatIconModule,
   MatInputModule, MatMenuModule, MatSidenavModule, MatToolbarModule,
   MatExpansionModule, MatTooltipModule, MatDialogModule, MAT_DATE_LOCALE,
-  MatRadioModule
+  MatRadioModule, MatCheckboxModule
 } from '@angular/material';
 
 //michael test 3/11/19 from angular-material's datepicker doc
@@ -46,6 +46,7 @@ const MATERIAL_MODULES: any[] = [
   MatNativeDateModule,
   MatDatepickerModule,
   MatRadioModule,
+  MatCheckboxModule
 ];
 
 const COVALENT_MODULES: any[] = [
