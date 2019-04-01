@@ -168,14 +168,14 @@ public class RideControllerSpec {
   public void onlyShowsFutureRides() {
     //these first two are filtered out because they are in the past
     String newIdOne = rideController.addNewRide("Nate Past", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "11:03", "2019-02-14T05:00:00.000Z", false);
+      "Morris", "232 Alton Drive Miami, FL", "11:03", "2019-02-14T05:00:00.000Z", false, true);
     String newIdTwo = rideController.addNewRide("Nate Past", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "13:05", "2019-02-14T05:00:00.000Z", false);
+      "Morris", "232 Alton Drive Miami, FL", "13:05", "2019-02-14T05:00:00.000Z", false, false);
 
     String newIdThree = rideController.addNewRide("Nate Future", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "02:04", "2999-08-14T05:00:00.000Z", false);
+      "Morris", "232 Alton Drive Miami, FL", "02:04", "2999-08-14T05:00:00.000Z", false, false);
     String newIdFour = rideController.addNewRide("Nate Future", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "09:00", "2999-08-14T05:00:00.000Z", false);
+      "Morris", "232 Alton Drive Miami, FL", "09:00", "2999-08-14T05:00:00.000Z", false, true);
 
     Map<String, String[]> argMap = new HashMap<>();
     argMap.put("isDriving", new String[]{"false"});
