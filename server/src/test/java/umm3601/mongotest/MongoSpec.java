@@ -37,6 +37,7 @@ public class MongoSpec {
       "                    departureDate: \"\"\n" +
       "                    departureTime: \"\"\n" +
       "                    isDriving: false\n" +
+      "                    nonSmoking: true\n" +
       "                }"));
     testRides.add(Document.parse("{\n" +
       "                    driver: \"Myles Bennett Dyson\",\n" +
@@ -47,6 +48,7 @@ public class MongoSpec {
       "                    departureDate: \"\"\n" +
       "                    departureTime: \"\"\n" +
       "                    isDriving: true\n" +
+      "                    nonSmoking: true\n" +
       "                }"));
     testRides.add(Document.parse("{\n" +
       "                    driver: \"Sarah Connor\",\n" +
@@ -57,6 +59,7 @@ public class MongoSpec {
       "                    departureDate: \"\"\n" +
       "                    departureTime: \"\"\n" +
       "                    isDriving: false\n" +
+      "                    nonSmoking: false\n" +
       "                }"));
     rideDocuments.insertMany(testRides);
   }
@@ -92,6 +95,14 @@ public class MongoSpec {
     System.out.println(documents);
     int numberOfRides = countRides(documents);
     assertEquals("Should be 1 from Earth", 1, numberOfRides);
+  }
+
+  @Test
+  public void shouldBeTwoNonSmoking() {
+    FindIterable<Document> documents = rideDocuments.find(eq("nonSmoking", true));
+    System.out.println(documents);
+    int numberOfRides = countRides(documents);
+    assertEquals("Should be 2 non-smoking", 2, numberOfRides);
   }
 
   @Test
