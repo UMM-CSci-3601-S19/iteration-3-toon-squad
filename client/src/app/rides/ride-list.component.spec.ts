@@ -193,11 +193,19 @@ describe('Ride list', () => {
     });
   });
 
-  it('filters by isDriving', () => {
+  it('filters by isDriving TRUE', () => {
     expect(rideList.filteredRides.length).toBe(3);
     rideList.rideDriving = true;
     rideList.refreshRides().subscribe(() => {
       expect(rideList.filteredRides.length).toBe(2);
+    });
+  });
+
+  it('filters by isDriving FALSE', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideDriving = false;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(1);
     });
   });
 
