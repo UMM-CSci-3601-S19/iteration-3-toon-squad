@@ -10,8 +10,8 @@
     "destination": "9782 Henry Street, Hannasville, IA 20609",
     "departureDate": "2019-03-26T05:00:00.000Z",
     "departureTime": "00:00",
-    "isDriving": true
-
+    "isDriving": true,
+    "nonSmoking": true
   },
   {
     "_id": {
@@ -19,12 +19,13 @@
     },
     "driver": "Hollie Garza",
     "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
-    "seatsAvailable": -1,
+    "seatsAvailable": 0,
     "origin": "8631 Hudson Avenue, Crayne, IA 98438",
     "destination": "1660 Judge Street, Winston, SD 44478",
     "departureDate": "2019-03-10T05:00:00.000Z",
     "departureTime": "13:01",
-    "isDriving": false
+    "isDriving": false,
+    "nonSmoking": true
 
   },
   {
@@ -38,7 +39,8 @@
     "destination": "9930 Hubbard Street, Haena, ND 21036",
     "departureDate": "2019-03-05T05:00:00.000Z",
     "departureTime": "15:55",
-    "isDriving": true
+    "isDriving": true,
+    "nonSmoking": true
 
   },
   {
@@ -52,7 +54,8 @@
     "destination": "7989 Sheffield Avenue, Frystown, IA 51752",
     "departureDate": "2019-03-21T05:00:00.000Z",
     "departureTime": "16:20",
-    "isDriving": true
+    "isDriving": true,
+    "nonSmoking": true
 
   },
   {
@@ -61,12 +64,13 @@
     },
     "driver": "Stanley Stuart",
     "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
-    "seatsAvailable": -1,
+    "seatsAvailable": 0,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
     "departureDate": "2019-03-14T05:00:00.000Z",
     "departureTime": "03:55",
-    "isDriving": false
+    "isDriving": false,
+    "nonSmoking": true
 
   },
 
@@ -81,7 +85,8 @@
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
     "departureDate": "2019-08-14T05:00:00.000Z",
     "departureTime": "03:55",
-    "isDriving": false
+    "isDriving": false,
+    "nonSmoking": true
 
   }
 ]
