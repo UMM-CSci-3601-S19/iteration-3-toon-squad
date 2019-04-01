@@ -77,7 +77,6 @@ public class RideController {
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
     df.setTimeZone(tz);
     String nowAsISO = df.format(new Date());
-    System.out.println(nowAsISO);
 
     if (queryParams.containsKey("isDriving")) {
       String targetDriving = (queryParams.get("isDriving")[0]);
@@ -110,7 +109,7 @@ public class RideController {
 
     FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRides);
 
-    System.out.println(DatabaseHelper.serializeIterable(matchingRides));
+    System.out.println("\nTHE METHOD PASSES OUT: " + DatabaseHelper.serializeIterable(matchingRides) + "\n");
     return DatabaseHelper.serializeIterable(matchingRides);
   }
 
