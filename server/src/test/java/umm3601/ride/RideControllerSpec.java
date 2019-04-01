@@ -33,8 +33,8 @@ public class RideControllerSpec {
       "                    seatsAvailable: 0,\n" +
       "                    origin: \"Morris Campus, Gay Hall\",\n" +
       "                    destination: \"Twin Cities\"\n" +
-      "                    departure_date: \"Wednesday the 15th of March\",\n" +
-      "                    departure_time: \"5:00PM\",\n" +
+      "                    departureDate: \"2030-02-14T05:00:00.000Z\",\n" +
+      "                    departureTime: \"14:00\",\n" +
       "                    isDriving: false,\n" +
       "                }"));
     testRides.add(Document.parse("{\n" +
@@ -42,8 +42,8 @@ public class RideControllerSpec {
       "                    seatsAvailable: 10,\n" +
       "                    origin: \"534 e 5th St, Morris MN 56261\",\n" +
       "                    destination: \"Culver's, Alexandria\"\n" +
-      "                    departure_date: \"5/15/19\",\n" +
-      "                    departure_time: \"3:30pm\",\n" +
+      "                    departureDate: \"2025-05-15T05:00:00.000Z\",\n" +
+      "                    departureTime: \"01:00\",\n" +
       "                    isDriving: true,\n" +
       "                }"));
     testRides.add(Document.parse("{\n" +
@@ -51,8 +51,8 @@ public class RideControllerSpec {
       "                    seatsAvailable: 0,\n" +
       "                    origin: \"On campus\",\n" +
       "                    destination: \"Willies\"\n" +
-      "                    departure_date: \"\",\n" +
-      "                    departure_time: \"5pm\",\n" +
+      "                    departureDate: \"2040-011-27T05:00:00.000Z\",\n" +
+      "                    departureTime: \"17:00\",\n" +
       "                    isDriving: false,\n" +
       "                }"));
 
@@ -62,8 +62,8 @@ public class RideControllerSpec {
       .append("seatsAvailable", 0)
       .append("origin", "Casey's General Store")
       .append("destination", "Perkin's")
-      .append("departure_date", "March 17th")
-      .append("departure_time", "")
+      .append("departureDate", "2024-011-27T05:00:00.000Z")
+      .append("departureTime", "")
       .append("isDriving", false);
 
     rideDocuments.insertMany(testRides);
@@ -104,6 +104,8 @@ public class RideControllerSpec {
     argMap.put("isDriving", new String[]{"true"});
     String jsonResult = rideController.getRides(argMap);
     BsonArray docs = parseJsonArray(jsonResult);
+
+    System.out.println("\nOFFERED RIDES" + docs + "\n");
 
     assertEquals("Should be 1 ride", 1, docs.size());
     List<String> drivers = docs
@@ -150,27 +152,28 @@ public class RideControllerSpec {
       .map(RideControllerSpec::getDriver)
       .sorted()
       .collect(Collectors.toList());
+    System.out.println("DRIVER NAME: " + driverName);
     assertEquals("Should return name of new driver", "Dave Roberts", driverName.get(2));
   }
 
   @Test
   public void addRideRequestedHasZeroSeats(){
-    String newId = rideController.addNewRide("Nate Foss", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "5PM", "5/13/19", false);
+    String newIdTwo = rideController.addNewRide("Nate Foss", "Good morning! How are you? ...Good.", 1,
+      "Morris", "232 Alton Drive Miami, FL", "13:00", "2030-08-14T05:00:00.000Z", false);
 
     Map<String, String[]> argMap = new HashMap<>();
     argMap.put("isDriving", new String[]{"false"});
     String jsonResult = rideController.getRides(argMap);
     BsonArray docs = parseJsonArray(jsonResult);
 
-    assertEquals("Should be 4 requested rides", 4, docs.size());
+    assertEquals("Should be 1 requested rides", 1, docs.size());
     List<Integer> rideSeatsAvailable = docs
       .stream()
       .map(RideControllerSpec::getSeatsAvailable)
       .sorted()
       .collect(Collectors.toList());
-    List<Integer> expectedSeatsAvailable = Arrays.asList(0, 0, 0, 0);
-    assertEquals("Should have 0 seats available", expectedSeatsAvailable, rideSeatsAvailable);
+    List<Integer> expectedSeatsAvailable = Arrays.asList(0);
+    assertEquals("Should have 1 seats available", expectedSeatsAvailable, rideSeatsAvailable);
   }
 
   @Test
@@ -184,22 +187,23 @@ public class RideControllerSpec {
 
   @Test
   public void onlyShowsFutureRides() {
+    //these first two are filtered out because they are in the past
     String newIdOne = rideController.addNewRide("Nate Past", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "5PM", "2019-02-14T05:00:00.000Z", false);
+      "Morris", "232 Alton Drive Miami, FL", "11:03", "2019-02-14T05:00:00.000Z", false);
     String newIdTwo = rideController.addNewRide("Nate Past", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "5PM", "2019-02-14T05:00:00.000Z", false);
+      "Morris", "232 Alton Drive Miami, FL", "13:05", "2019-02-14T05:00:00.000Z", false);
 
     String newIdThree = rideController.addNewRide("Nate Future", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "5PM", "2999-08-14T05:00:00.000Z", false);
+      "Morris", "232 Alton Drive Miami, FL", "02:04", "2999-08-14T05:00:00.000Z", false);
     String newIdFour = rideController.addNewRide("Nate Future", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "5PM", "2999-08-14T05:00:00.000Z", false);
+      "Morris", "232 Alton Drive Miami, FL", "09:00", "2999-08-14T05:00:00.000Z", false);
 
     Map<String, String[]> argMap = new HashMap<>();
     argMap.put("isDriving", new String[]{"false"});
     String jsonResult = rideController.getRides(argMap);
     BsonArray docs = parseJsonArray(jsonResult);
 
-    assertEquals("Should be 2 requested ride", 2, docs.size());
+    assertEquals("Should be 2 requested rides", 2, docs.size());
   }
 
 }
