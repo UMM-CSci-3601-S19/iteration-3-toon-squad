@@ -19,13 +19,22 @@ export class RideListComponent implements OnInit {
   public rideDestination: string;
   public rideOrigin: string;
   public rideDriving: boolean;
+  public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService) {
  //   rideListService.addListener(this);
   }
 
-  public filterRides(searchDestination: string, searchOrigin: string, searchIsDriving: boolean): Ride[] {
+  // This method is used in the HTML instead of ngModel, since it solves a problem where
+  // clicking on the checkbox didn't always 'uncheck' the box. Implementing this method with
+  // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
+  private toggleNonSmoking() {
+    this.rideNonSmoking = !this.rideNonSmoking
+  }
+
+  public filterRides(searchDestination: string, searchOrigin: string,
+                     searchIsDriving: boolean, searchNonSmoking): Ride[] {
 
     this.filteredRides = this.rides;
 
@@ -54,6 +63,14 @@ export class RideListComponent implements OnInit {
       });
     }
 
+    // We only check for true, so that an unchecked box allows all rides to come through.
+    if (searchNonSmoking === true) {
+
+      this.filteredRides = this.filteredRides.filter(ride => {
+        return ride.nonSmoking === searchNonSmoking;
+      });
+    }
+
     return this.filteredRides;
   }
 
@@ -68,13 +85,11 @@ export class RideListComponent implements OnInit {
     // Subscribe waits until the data is fully downloaded, then
     // performs an action on it (the first lambda)
 
-    console.log("It got called")
-
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
         this.rides = rides;
-        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving);
+        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving, this.rideNonSmoking);
       },
       err => {
         console.log(err);
