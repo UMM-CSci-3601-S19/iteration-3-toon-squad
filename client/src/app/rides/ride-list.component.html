@@ -57,7 +57,7 @@
       <mat-card #elem class="rides"
                 *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving)">
 
-        <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving">
+        <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
           <mat-card-title>
             <div class="departure-time">
               <mat-icon style="color:green"> drive_eta</mat-icon>
@@ -71,7 +71,7 @@
           </mat-card-title>
         </mat-card-header>
 
-        <mat-card-header *ngIf="!ride.isDriving" class="ride-title">
+        <mat-card-header *ngIf="!ride.isDriving" class="ride-title" [id]="ride._id.$oid">
           <mat-card-title>
             <div class="departure-time">
               <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
