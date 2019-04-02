@@ -78,17 +78,6 @@ public class RideController {
     df.setTimeZone(tz);
     String nowAsISO = df.format(new Date());
 
-    if (queryParams.containsKey("isDriving")) {
-      String targetDriving = (queryParams.get("isDriving")[0]);
-      boolean targetDrivingBool;
-      if (targetDriving.equals("true")) {
-        targetDrivingBool = true;
-      } else {
-        targetDrivingBool = false;
-      }
-      filterDoc = filterDoc.append("isDriving", targetDrivingBool);
-    }
-
     //siddhartha jain, Feb 24, 17
     // @ https://stackoverflow.com/questions/42438887/how-to-sort-the-documents-we-got-from-find-command-in-mongodb
     Bson sortDate = ascending("departureDate");
@@ -104,10 +93,11 @@ public class RideController {
     Bson tomorrowOrLater = gt("departureDate",nowAsISO.substring(0,10)+"T05:00:00.000Z");
     //Only shows dates that are either (today ^ (today ^ laterThanNow)) or dates after today
     Bson oldRides= or(sameDayPastTime, tomorrowOrLater);
+    System.out.println("THE OLD RIDES: " +oldRides);
 
     Bson order = orderBy(sortDate, sortTime);
 
-    FindIterable<Document> matchingRides = rideCollection.find(filterDoc).sort(order).filter(oldRides);
+    FindIterable<Document> matchingRides = rideCollection.find(oldRides).filter(oldRides).sort(order);
 
     System.out.println("\nTHE METHOD PASSES OUT: " + DatabaseHelper.serializeIterable(matchingRides) + "\n");
     return DatabaseHelper.serializeIterable(matchingRides);
