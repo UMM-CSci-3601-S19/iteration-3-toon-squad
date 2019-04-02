@@ -43,7 +43,7 @@ public class RideControllerSpec {
       "                    seatsAvailable: 10,\n" +
       "                    origin: \"534 e 5th St, Morris MN 56261\",\n" +
       "                    destination: \"Culver's, Alexandria\"\n" +
-      "                    departureDate: \"2025-05-15T05:00:00.000Z\",\n" +
+      "                    departureDate: \"2020-05-15T05:00:00.000Z\",\n" +
       "                    departureTime: \"01:00\",\n" +
       "                    isDriving: true,\n" +
       "                    nonSmoking: true,\n" +
@@ -101,6 +101,42 @@ public class RideControllerSpec {
     List<String> expectedDrivers = Arrays.asList("Avery", "Colt", "Ellis", "Michael");
     assertEquals("Drivers should match", expectedDrivers, drivers);
   }
+
+  @Test
+  public void getAllRidesOffered() {
+    Map<String, String[]> argMap = new HashMap<>();;
+    String jsonResult = rideController.getRides(argMap);
+    BsonArray docs = parseJsonArray(jsonResult);
+
+    System.out.println("\nOFFERED RIDES" + docs + "\n");
+
+    assertEquals("Should be 1 ride", 1, docs.size());
+    List<String> drivers = docs
+      .stream()
+      .map(RideControllerSpec::getDriver)
+      .sorted()
+      .collect(Collectors.toList());
+    List<String> expectedDrivers = Arrays.asList("Avery");
+    assertEquals("Drivers should match", expectedDrivers, drivers);
+  }
+
+  @Test
+  public void getAllRidesRequested() {
+    Map<String, String[]> argMap = new HashMap<>();
+    argMap.put("isDriving", new String[]{"false"});
+    String jsonResult = rideController.getRides(argMap);
+    BsonArray docs = parseJsonArray(jsonResult);
+
+    assertEquals("Should be 3 rides", 3, docs.size());
+    List<String> drivers = docs
+      .stream()
+      .map(RideControllerSpec::getDriver)
+      .sorted()
+      .collect(Collectors.toList());
+    List<String> expectedDrivers = Arrays.asList("Colt", "Ellis", "Michael");
+    assertEquals("Drivers should match", expectedDrivers, drivers);
+  }
+
 
 
   @Test
@@ -178,11 +214,11 @@ public class RideControllerSpec {
       "Morris", "232 Alton Drive Miami, FL", "09:00", "2999-08-14T05:00:00.000Z", false, true);
 
     Map<String, String[]> argMap = new HashMap<>();
-    argMap.put("isDriving", new String[]{"false"});
+//    argMap.put("isDriving", new String[]{"false"});
     String jsonResult = rideController.getRides(argMap);
     BsonArray docs = parseJsonArray(jsonResult);
 
-    assertEquals("Should be 2 requested rides", 2, docs.size());
+    assertEquals("Should be 4 rides", 4, docs.size());
   }
 
 }
