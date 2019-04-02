@@ -122,7 +122,6 @@ export class RideListComponent implements OnInit {
     const dateDateFormat = new Date(selectedDate);
     const dateFullMonth = months[dateDateFormat.getMonth()];
     const dateDay = days[dateDateFormat.getDay()];
-    console.log('It is ' + dateDay + ' my dude');
     let date = dateDateFormat.getDate().toString();
     if (date === '1' || date === '21' || date === '31') {
       date += 'st';
