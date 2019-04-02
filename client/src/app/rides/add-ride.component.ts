@@ -27,9 +27,11 @@ export class AddRideComponent implements OnInit {
   public rideDestination: string;
   public rideDepartureDate: string;
   public rideDepartureTime: string;
+  public rideNonSmoking: boolean = false;
+
 
   // Please keep this as the default value, or you will have problems with form validation / seats available as a rider.
-  public isDriving: boolean = true;
+  public rideDriving: boolean = true;
 
 
   // Inject the RideListService into this component.
@@ -74,9 +76,11 @@ export class AddRideComponent implements OnInit {
       destination: this.rideDestination,
       departureDate: this.rideDepartureDate,
       departureTime: this.rideDepartureTime,
-      isDriving: this.isDriving
+      isDriving: this.rideDriving,
+      nonSmoking: this.rideNonSmoking
     };
 
+    console.log("first print");
     console.log(newRide);
 
     if (newRide != null) {
@@ -136,7 +140,9 @@ export class AddRideComponent implements OnInit {
 
         departureTime: new FormControl('departureTime'),
 
-        notes: new FormControl('notes')
+        notes: new FormControl('notes'),
+
+        nonSmoking: null
       })
   }
 
@@ -161,7 +167,7 @@ export class AddRideComponent implements OnInit {
 
   // IMPORTANT! This function gets called whenever the user selects 'looking for a ride'.
   //   This is so that form validator doesn't get mad for having an invalid 'rideSeats' value.
-  //   Before adding the ride to the DB, the value gets set to -1 (by the ride controller).
+  //   Before adding the ride to the DB, the value gets set to 0 (by the ride controller).
   //   Also, ride-list component HTML won't display this number unless it is indeed a Driver.
   setRideSeats() {
     this.rideSeats = 1;
@@ -172,5 +178,6 @@ export class AddRideComponent implements OnInit {
     this.createForm();
   }
 
-  }
+
+}
 

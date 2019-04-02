@@ -31,7 +31,8 @@ describe('Ride list', () => {
           destination: 'Willie\'s',
           departureDate: '3/6/2019',
           departureTime: '10:00:00',
-          isDriving: true
+          isDriving: true,
+          nonSmoking: true,
         },
         {
           _id: 'dennis_id',
@@ -42,7 +43,8 @@ describe('Ride list', () => {
           destination: 'Minneapolis, MN',
           departureDate: '8/15/2018',
           departureTime: '11:30:00',
-          isDriving: false
+          isDriving: false,
+          nonSmoking: true,
         },
         {
           _id: 'agatha_id',
@@ -53,7 +55,8 @@ describe('Ride list', () => {
           destination: 'Fergus Falls, MN',
           departureDate: '3/30/2019',
           departureTime: '16:30:00',
-          isDriving: true
+          isDriving: true,
+          nonSmoking: false,
         }
       ])
     };
@@ -122,6 +125,14 @@ describe('Ride list', () => {
     expect(rideList.rides.filter((ride: Ride) => ride.notes.includes('These are')).length).toBe(3);
   });
 
+  it('has two rides with non-smoking indicated', () => {
+    expect(rideList.rides.filter((ride: Ride) => ride.nonSmoking === true).length).toBe(2);
+  });
+
+  it('has one ride where non-smoking is not indicated', () => {
+    expect(rideList.rides.filter((ride: Ride) => ride.nonSmoking === false).length).toBe(1);
+  });
+
 
   ///////////////////////////////////////////
   ////  Does not contain certain fields   ///
@@ -182,6 +193,38 @@ describe('Ride list', () => {
     });
   });
 
+  it('filters by isDriving TRUE', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideDriving = true;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(2);
+    });
+  });
+
+  it('filters by isDriving FALSE', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideDriving = false;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(1);
+    });
+  });
+
+  it('filters by nonSmoking TRUE', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideNonSmoking = true;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(2);
+    });
+  });
+
+  it('filters by nonSmoking FALSE (should return a full list)', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideNonSmoking = false;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(3);
+    });
+  });
+
   it('filters by origin and destination', () => {
     expect(rideList.filteredRides.length).toBe(3);
     rideList.rideOrigin = 'UMM';
@@ -190,6 +233,27 @@ describe('Ride list', () => {
       expect(rideList.filteredRides.length).toBe(1);
     });
   });
+
+  it('filters by isDriving and nonSmoking', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideDriving = true;
+    rideList.rideNonSmoking = true;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(1);
+    });
+  });
+
+  it('filters by origin, destination, isDriving, and nonSmoking', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideOrigin = 'UMM';
+    rideList.rideDestination = 'w';
+    rideList.rideDriving = true;
+    rideList.rideNonSmoking = true;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(1);
+    });
+  });
+
 
 });
 

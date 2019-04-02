@@ -18,6 +18,7 @@ describe('Ride list service: ', () => {
       departureDate: '3/6/2019',
       departureTime: '10:00:00',
       isDriving: true,
+      nonSmoking: true,
     },
     {
       _id: 'dennis_id',
@@ -29,6 +30,7 @@ describe('Ride list service: ', () => {
       departureDate: '8/15/2018',
       departureTime: '11:30:00',
       isDriving: true,
+      nonSmoking: true,
     },
     {
       _id: 'agatha_id',
@@ -40,6 +42,7 @@ describe('Ride list service: ', () => {
       departureDate: '3/30/2019',
       departureTime: '16:30:00',
       isDriving: true,
+      nonSmoking: false,
     }
   ];
 
@@ -101,7 +104,8 @@ describe('Ride list service: ', () => {
       departureDate: '',
       departureTime: '',
       notes: 'I hope you brought warm clothes',
-      isDriving: true
+      isDriving: true,
+      nonSmoking: true,
     };
 
     rideListService.addNewRide(newRide).subscribe(
@@ -123,34 +127,4 @@ describe('Ride list service: ', () => {
     req.flush(newRide._id);
   });
 
-  it('getRides(isDriving) adds appropriate param string to called URL', () => {
-    rideListService.getRides("true").subscribe(
-      rides => expect(rides).toEqual(testRides)
-    );
-
-    const req = httpTestingController.expectOne(rideListService.baseUrl + '?isDriving=true&');
-    expect(req.request.method).toEqual('GET');
-    req.flush(testRides);
-  });
-
-  it('filterByDriving(rideDriving) deals appropriately with a URL that already had a parameter', () => {
-    impossibleRideUrl = rideListService.baseUrl + '?isDriving=true&something=killerrobots&';
-    rideListService['rideUrl'] = impossibleRideUrl;
-    rideListService.filterByDriving("true");
-    expect(rideListService['rideUrl']).toEqual(rideListService.baseUrl + '?something=killerrobots&isDriving=true&');
-  });
-
-  it('filterByDriving deals appropriately with a URL that already had some filtering, but not isDriving specifically', () => {
-    impossibleRideUrl = rideListService.baseUrl + '?something=killerrobots&';
-    rideListService['rideUrl'] = impossibleRideUrl;
-    rideListService.filterByDriving("true");
-    expect(rideListService['rideUrl']).toEqual(rideListService.baseUrl + '?something=killerrobots&isDriving=true&');
-  });
-
-  it('filterByDriving deals appropriately with a URL has the keyword isDriving, but nothing after the =', () => {
-    impossibleRideUrl = rideListService.baseUrl + '?isDriving=&';
-    rideListService['rideUrl'] = impossibleRideUrl;
-    rideListService.filterByDriving('');
-    expect(rideListService['rideUrl']).toEqual(rideListService.baseUrl + '');
-  });
 });

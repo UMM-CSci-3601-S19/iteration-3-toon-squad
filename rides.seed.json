@@ -10,7 +10,8 @@
     "destination": "9782 Henry Street, Hannasville, IA 20609",
     "departureDate": "March 12th",
     "departureTime": "7:59 AM",
-    "isDriving": true
+    "isDriving": true,
+    "nonSmoking": true
   },
   {
     "_id": {
@@ -18,12 +19,13 @@
     },
     "driver": "Hollie Garza",
     "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
-    "seatsAvailable": -1,
+    "seatsAvailable": 0,
     "origin": "8631 Hudson Avenue, Crayne, IA 98438",
     "destination": "1660 Judge Street, Winston, SD 44478",
     "departureDate": "March 10th",
     "departureTime": "10:43 AM",
-    "isDriving": false
+    "isDriving": false,
+    "nonSmoking": true
   },
   {
     "_id": {
@@ -36,7 +38,8 @@
     "destination": "9930 Hubbard Street, Haena, ND 21036",
     "departureDate": "March 11th",
     "departureTime": "7:55 PM",
-    "isDriving": true
+    "isDriving": true,
+    "nonSmoking": true
   },
   {
     "_id": {
@@ -49,7 +52,8 @@
     "destination": "7989 Sheffield Avenue, Frystown, IA 51752",
     "departureDate": "March 21st",
     "departureTime": "4:20 PM",
-    "isDriving": true
+    "isDriving": true,
+    "nonSmoking": true
   },
   {
     "_id": {
@@ -57,11 +61,12 @@
     },
     "driver": "Stanley Stuart",
     "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
-    "seatsAvailable": -1,
+    "seatsAvailable": 0,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
     "departureDate": "March 14th",
     "departureTime": "9:25 AM",
-    "isDriving": false
+    "isDriving": false,
+    "nonSmoking": false
   }
 ]
