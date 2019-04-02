@@ -13,6 +13,7 @@ import {Observable} from "rxjs/Observable";
 })
 
 export class AddRideComponent implements OnInit {
+  minDate = new Date();
 
   public rides: Ride[];
 
