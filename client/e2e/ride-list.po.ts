@@ -20,6 +20,13 @@ export class RidePage {
     return browser.executeScript(setStyle, element(byObject).getWebElement(), 'color: red; background-color: yellow;');
   }
 
+  backspace(n: number) {
+    let i : number;
+    for ( i = 0; i < n; i++) {
+      browser.actions().sendKeys(Key.BACK_SPACE).perform();
+    }
+  }
+
   getRideTitle() {
     const title = element(by.id('ride-list-title')).getText();
     this.highlightElement(by.id('ride-list-title'));
@@ -42,9 +49,9 @@ export class RidePage {
     radioButton.click();
   }
 
-  // getRides() {
-  //   return element.all(by.className('rides'));
-  // }
+  getRides() {
+    return element.all(by.className('rides'));
+  }
 
   elementExistsWithId(idOfElement: string): promise.Promise<boolean> {
     if (element(by.id(idOfElement)).isPresent()) {
