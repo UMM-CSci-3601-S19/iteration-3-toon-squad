@@ -22,6 +22,127 @@ browser.driver.controlFlow().execute = function () {
   return origFn.apply(browser.driver.controlFlow(), args);
 };
 
+describe('Organize rides by soonest to latest', () => {
+  let page: RidePage;
+
+  beforeEach(() => {
+    page = new RidePage();
+  });
+
+  // The ride list SHOULD be organized with rides CLOSER TO OUR TIME at the top, and rides FURTHER FROM OUR TIME
+  // towards the bottom. We made 3 pre-defined rides that should appear in this order. The drivers are, "Hollie Past",
+  // "Shelby Present", and "Jimmie Future", and appear in that order on the ride-list (assuming the rides haven't expired).
+
+  // Let's walk through the first example. The description should be self explanatory.
+  it('should find Hollie Past before Shelby Present', () => {
+
+    let pastFound = false; // When we find Hollie Past, we set this to true.
+    let presentFound = false; // When we find Shelby Present, we set this to true.
+
+    page.navigateTo(); // Go to the ride-list page...
+
+    // Here we will get all elements with class='rides' on the page, and for each element, we call a function...
+    element.all(by.className("rides")).each(function(element, index) {
+
+      // ...the function extracts ALL underlying text of that element, and then...
+      element.getText().then(function(text) {
+
+        // ...if the text includes "Hollie Past", then we know we found her ride.
+        if (text.toString().includes("Hollie Past")) {
+
+          pastFound = true; // Set to true, because we found Hollie Past
+          expect(presentFound).toBe(false); // Logically, presentFound should STILL BE FALSE.
+        }
+
+        // ... if the text includes "Shelby Present", then we know we found her ride.
+        if (text.toString().includes("Shelby Present")) {
+
+          presentFound = true; // Set to true, because we found Shelby Present
+          expect(pastFound).toBe(true); // Logically, pastFound should ALREADY BE TRUE.
+        }
+      });
+    });
+  });
+
+
+  // The second example works the same way, except we compare different rides.
+  it('should find Shelby Present before Jimmie Future', () => {
+
+    let presentFound = false;
+    let futureFound = false;
+
+    page.navigateTo();
+    element.all(by.className("rides")).each(function(element, index) {
+      element.getText().then(function(text) {
+
+        if (text.toString().includes("Shelby Present")) {
+          presentFound = true;
+          expect(futureFound).toBe(false);
+        }
+        if (text.toString().includes("Jimmie Future")) {
+          futureFound = true;
+          expect(presentFound).toBe(true);
+        }
+      });
+    });
+  });
+
+
+  // Same idea as the first two tests...
+  it('should find Hollie Past before Jimmie Future', () => {
+
+    let pastFound = false;
+    let futureFound = false;
+
+    page.navigateTo();
+    element.all(by.className("rides")).each(function(element, index) {
+      element.getText().then(function(text) {
+
+        if (text.toString().includes("Hollie Past")) {
+          pastFound = true;
+          expect(futureFound).toBe(false);
+        }
+        if (text.toString().includes("Jimmie Future")) {
+          futureFound = true;
+          expect(pastFound).toBe(true);
+        }
+      });
+    });
+  });
+
+
+  // Still the same idea, except we're dealing with three rides now, so we do some additional checking.
+  it('should find Hollie Past first, Shelby Present second, and Jimmie Future Third', () => {
+
+    let pastFound = false;
+    let presentFound = false;
+    let futureFound = false;
+
+    page.navigateTo();
+    element.all(by.className("rides")).each(function(element, index) {
+      element.getText().then(function(text) {
+
+        if (text.toString().includes("Hollie Past")) {
+          pastFound = true;
+          expect(presentFound).toBe(false);
+          expect(futureFound).toBe(false);
+        }
+        if (text.toString().includes("Shelby Present")) {
+          presentFound = true;
+          expect(pastFound).toBe(true);
+          expect(futureFound).toBe(false);
+        }
+        if (text.toString().includes("Jimmie Future")) {
+          futureFound = true;
+          expect(pastFound).toBe(true);
+          expect(presentFound).toBe(true);
+        }
+      });
+    });
+  });
+
+})
+
 
 describe('Using filters on Ride Page', () => {
   let page: RidePage;
@@ -42,13 +163,13 @@ describe('Using filters on Ride Page', () => {
     page.navigateTo();
     page.getElementById("rideOrigin").sendKeys("IA");
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(3);
+      expect(rides.length).toBe(4);
     });
   });
 
   it('should get only rides offered when radio button pressed', () => {
     page.navigateTo();
-    page.getElementById("isDrivingButton").click();
+    page.click("isDrivingButton");
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(3);
     });
@@ -56,79 +177,83 @@ describe('Using filters on Ride Page', () => {
 
   it('should get only rides requested when radio button pressed', () => {
     page.navigateTo();
-    page.getElementById("isNotDrivingButton").click();
+    page.click("isNotDrivingButton");
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(2);
+      expect(rides.length).toBe(3);
     });
   });
 
   it('should toggle nonSmoking checkbox to get rides', () => {
     page.navigateTo();
-    page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking ON... should remove 1 ride
-    page.getRides().then( (rides) => {
-      expect(rides.length).toBe(4);
-    });
-    page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking OFF... we have all (5) rides again
+    page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking ON...
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(5);
     });
+    page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking OFF...
+    page.getRides().then( (rides) => {
+      expect(rides.length).toBe(6);
+    });
   });
 
+
+  /////////////////////////////////////////////////////////////////
+  //   This test MUST be run with 100 ms delay or less to pass. ////
+  /////////////////////////////////////////////////////////////////
   it('should have all the filters work together', () => {
     page.navigateTo();
 
     page.getRides().then( (rides) => {
+      expect(rides.length).toBe(6);
+    });
+
+    page.getElementById("rideOrigin").sendKeys("u");
+    page.getRides().then( (rides) => {
       expect(rides.length).toBe(5);
     });
 
-    page.getElementById("rideOrigin").sendKeys("s"); // should remove one ride
+    page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking ON
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(4);
     });
 
-    page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking ON... should remove one ride
+    page.getElementById("isNotDrivingButton").click();
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(3);
     });
 
-    page.getElementById("isDrivingButton").click(); // should remove one ride
+    page.getElementById("rideDestination").sendKeys("w");
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(2);
     });
 
-    page.getElementById("rideDestination").sendKeys("f"); // should remove one ride
-    page.getRides().then( (rides) => {
-      expect(rides.length).toBe(1);
-    });
-
-    page.getElementById("rideDestination").sendKeys("8"); // should remove one ride (now 'rides' is empty)
+    page.getElementById("rideDestination").sendKeys("8");
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(0);
     });
 
-    page.getElementById("isNotDrivingButton").click(); // no change (still empty)
+    page.getElementById("isDrivingButton").click(); // no change (still empty)
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(0);
     });
 
     page.getElementById("rideDestination").click();
-    page.backspace(2) // erases input in destination field. should now have ONE ride
+    page.backspace(2) // erases input in destination
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(1);
     });
 
     page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking OFF...
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(2); // two rides...
+      expect(rides.length).toBe(2);
     });
 
     page.getElementById("rideOrigin").click();
-    page.backspace(1) // erases input in origin field. no change...
+    page.backspace(1) // erases input in origin field.
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(2); // two rides (requested)...
+      expect(rides.length).toBe(3);
     });
 
-    page.getElementById("isDrivingButton").click(); // should give us our remaining three rides (offered)
+    page.getElementById("isNotDrivingButton").click(); // should give us our remaining three rides (offered)
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(3);
     });
@@ -191,7 +316,7 @@ describe('Add Ride', () => {
     page.field('seatsAvailableField').sendKeys('2');
     page.field('originField').sendKeys('Morris, MN');
     page.field('destinationField').sendKeys('Alexandria, MN');
-    page.field('departureDateField').sendKeys('3/13/2019');
+    page.field('departureDateField').sendKeys('5/13/2019');
     page.field('departureTimeField').sendKeys('6:00PM');
     page.setNonSmoking();
     page.click('confirmAddRideButton');
@@ -202,9 +327,9 @@ describe('Add Ride', () => {
     expect(page.getUniqueRide('JohnDoe')).toMatch('2');
     expect(page.getUniqueRide('JohnDoe')).toMatch('Morris, MN');
     expect(page.getUniqueRide('JohnDoe')).toMatch('Alexandria, MN');
-    expect(page.getUniqueRide('JohnDoe')).toMatch('March 13th at 06:00 PM');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('May 15th at 06:00 PM');
     expect(page.getUniqueRide('JohnDoe')).toMatch('Non-smoking');
-    expect(page.getUniqueRide('JohnDoe')).toMatch('offering this ride');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe is offering this ride');
 
 
   });
@@ -222,7 +347,7 @@ describe('Add Ride', () => {
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Washington, D.C.');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Morris, MN');
-    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('requesting this ride');
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni is requesting this ride');
   });
 
 });

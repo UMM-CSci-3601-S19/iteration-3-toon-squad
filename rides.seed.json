@@ -11,7 +11,7 @@
     "departureDate": "2019-04-10T05:00:00.000Z",
     "departureTime": "16:21",
     "isDriving": true,
-    "nonSmoking": true
+    "nonSmoking": false
   },
   {
     "_id": {
@@ -24,7 +24,7 @@
     "destination": "1660 Judge Street, Winston, SD 44478",
     "departureDate": "2019-04-10T05:00:00.000Z",
     "departureTime": "16:19",
-    "isDriving": false,
+    "isDriving": true,
     "nonSmoking": true
 
   },
@@ -33,7 +33,7 @@
     "_id": {
       "$oid": "5c832bec201270bd881ace78"
     },
-    "driver": "Hollie Garza",
+    "driver": "Kyle Foss",
     "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
     "seatsAvailable": -1,
     "origin": "8631 Hudson Avenue, Crayne, IA 98438",
