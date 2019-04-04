@@ -317,7 +317,7 @@ describe('Add Ride', () => {
     page.field('seatsAvailableField').sendKeys('2');
     page.field('originField').sendKeys('Morris, MN');
     page.field('destinationField').sendKeys('Alexandria, MN');
-    page.field('departureDateField').sendKeys('4/15/2019');
+    page.field('departureDateField').sendKeys('4/15/2020');
     page.field('departureTimeField').sendKeys('6:00PM');
     page.setNonSmoking();
     page.click('confirmAddRideButton');
@@ -333,16 +333,19 @@ describe('Add Ride', () => {
     expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe is offering this ride');
   });
 
-  it('Should add the information to the database if non-required data is missing', () => {
+  it('Should accept a ride with unspecified time and date, and place at the bottom', () => {
+
+    let doeFound = false;
+    let macaroniFound = false;
+
     page.navigateTo();
     page.click('add-ride-button');
 
+    // We're going to add a ride with no specified data and time
     page.setIsNotDriving();
     page.field('driverID').sendKeys('Jefferson Macaroni');
     page.field('originField').sendKeys('Washington, D.C.');
     page.field('destinationField').sendKeys('Morris, MN');
-    page.field('departureDateField').sendKeys('4/15/2019');
-    page.field('departureTimeField').sendKeys('6:00PM');
     page.click('confirmAddRideButton');
 
 
@@ -351,6 +354,26 @@ describe('Add Ride', () => {
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Washington, D.C.');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Morris, MN');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni is requesting this ride');
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Unspecified date');
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('unspecified time');
+
+    // Now we will make sure Jefferson Macaroni (no date provided) is listed after
+    // JohnDoe (the latest ride with a date provided).
+    // This test is similar to the "organize rides soonest to latest" tests
+
+    element.all(by.className("rides")).each(function(element, index) {
+      element.getText().then(function(text) {
+
+        if (text.toString().includes("JohnDoe")) {
+          doeFound = true;
+          expect(macaroniFound).toBe(false);
+        }
+        if (text.toString().includes("Jefferson Macaroni")) {
+          macaroniFound = true;
+          expect(doeFound).toBe(true);
+        }
+      });
+    });
 
   });
 
