@@ -67,13 +67,35 @@
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
           <mat-card-title>
             <div class="departure-time">
+
               <mat-icon style="color:green"> drive_eta</mat-icon>
-              <span *ngIf="ride.departureDate">{{this.dateParse(ride.departureDate)}}</span>
+
+              <span *ngIf="ride.departureDate">
+                <span *ngIf="!checkImpossibleDate(ride)">
+                  {{this.dateParse(ride.departureDate)}}
+                </span>
+
+                <span *ngIf="checkImpossibleDate(ride)">
+                  Unspecified date
+                </span>
+              </span>
+
               <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
-              <span *ngIf="ride.departureTime">{{this.hourParse(ride.departureTime)}}</span>
+
+              <span *ngIf="ride.departureTime">
+                <span *ngIf="!checkImpossibleTime(ride)">
+                 {{this.hourParse(ride.departureTime)}}
+                </span>
+                <span *ngIf="checkImpossibleTime(ride)">
+                  unspecified time
+                </span>
+              </span>
+
             </div>
+
             <div class="seats-left">
-              <small>{{ride.seatsAvailable}} SEATS LEFT</small>
+              <small *ngIf="ride.seatsAvailable === 1"> {{ride.seatsAvailable}} SEAT LEFT </small>
+              <small *ngIf="ride.seatsAvailable > 1"> {{ride.seatsAvailable}} SEATS LEFT </small>
             </div>
           </mat-card-title>
         </mat-card-header>
@@ -82,9 +104,26 @@
           <mat-card-title>
             <div class="departure-time">
               <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
-              <span *ngIf="ride.departureDate">{{this.dateParse(ride.departureDate)}}</span>
+              <span *ngIf="ride.departureDate">
+                <span *ngIf="!checkImpossibleDate(ride)">
+                  {{this.dateParse(ride.departureDate)}}
+                </span>
+
+                <span *ngIf="checkImpossibleDate(ride)">
+                  Unspecified date
+                </span>
+              </span>
+
               <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
-              <span *ngIf="ride.departureTime">{{this.hourParse(ride.departureTime)}}</span>
+
+              <span *ngIf="ride.departureTime">
+                <span *ngIf="!checkImpossibleTime(ride)">
+                 {{this.hourParse(ride.departureTime)}}
+                </span>
+                <span *ngIf="checkImpossibleTime(ride)">
+                 unspecified time
+                </span>
+              </span>
             </div>
           </mat-card-title>
         </mat-card-header>

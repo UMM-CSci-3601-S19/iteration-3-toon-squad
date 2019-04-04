@@ -32,7 +32,14 @@ export class RideListComponent implements OnInit {
   public toggleNonSmoking() {
     this.rideNonSmoking = !this.rideNonSmoking
   }
-  //test notes
+
+  public checkImpossibleDate(ride: Ride) {
+    return (ride.departureDate.includes("3000"))
+  }
+
+  public checkImpossibleTime(ride: Ride) {
+    return (ride.departureTime.includes("99"))
+  }
 
   public filterRides(searchDestination: string, searchOrigin: string,
                      searchIsDriving: boolean, searchNonSmoking): Ride[] {
