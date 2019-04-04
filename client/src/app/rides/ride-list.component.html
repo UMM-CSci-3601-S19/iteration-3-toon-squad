@@ -33,11 +33,11 @@
 
       <mat-radio-group class="radioGroup" [(ngModel)] = "rideDriving">
         I am looking for...
-        <mat-radio-button id="isDriving" [value] = true (click)="rideDriving = $event.target.value">
+        <mat-radio-button id="isDrivingButton" [value] = true (click)="rideDriving = $event.target.value">
           <mat-icon style="color:green"> drive_eta</mat-icon> drivers
         </mat-radio-button>
 
-        <mat-radio-button id="isNotDriving" [value] = false (click)="rideDriving = $event.target.value">
+        <mat-radio-button id="isNotDrivingButton" [value] = false (click)="rideDriving = $event.target.value">
           <mat-icon style="color: blue"> transfer_within_a_station </mat-icon> riders
         </mat-radio-button>
 
@@ -61,10 +61,11 @@
 
     <div *ngIf="rides; else ridesError">
       <mat-card #elem class="rides"
-                *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving, rideNonSmoking)">
+                *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving, rideNonSmoking)"
+      [id] = "ride.driver">
 
-        <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
-          <mat-card-title>
+        <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving">
+          <mat-card-title [id] = "ride.driver">
             <div class="departure-time">
               <mat-icon style="color:green"> drive_eta</mat-icon>
               <span *ngIf="ride.departureDate">{{ride.departureDate}}</span>
@@ -77,8 +78,8 @@
           </mat-card-title>
         </mat-card-header>
 
-        <mat-card-header *ngIf="!ride.isDriving" class="ride-title" [id]="ride._id.$oid">
-          <mat-card-title>
+        <mat-card-header *ngIf="!ride.isDriving" class="ride-title-isNotDriving" [id]="ride._id.$oid">
+          <mat-card-title [id] = "ride.driver">
             <div class="departure-time">
               <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
               <span *ngIf="ride.departureDate">{{ride.departureDate}}</span>
