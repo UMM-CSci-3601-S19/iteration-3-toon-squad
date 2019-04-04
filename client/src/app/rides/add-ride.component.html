@@ -12,8 +12,8 @@
             I am...
             <br>
             <br>
-            <mat-radio-button id="isDrivingFORM" [value] = true > driving</mat-radio-button>
-            <mat-radio-button id="isNotDrivingFORM" [value] = false (click)="setRideSeats()"> looking for a ride</mat-radio-button>
+            <mat-radio-button id="isDrivingButton" [value] = true > driving</mat-radio-button>
+            <mat-radio-button id="isNotDrivingButton" [value] = false (click)="setRideSeats()"> looking for a ride</mat-radio-button>
             <mat-error *ngFor="let validation of add_ride_validation_messages.driving">
               <mat-error class="error-message" id="driving-error"
                          *ngIf="addRideForm.get('driving').hasError(validation.type) && (addRideForm.get('driving').dirty || addRideForm.get('driving').touched)">
@@ -105,7 +105,7 @@
 
           <br/>
 
-          <mat-checkbox [(ngModel)]="rideNonSmoking" id="tryThis" class="checkboxNonSmoking"
+          <mat-checkbox [(ngModel)]="rideNonSmoking" id="checkboxNonSmoking" class="checkboxNonSmoking"
                         formControlName="nonSmoking"> Non-smoking </mat-checkbox>
 
         </mat-card-content>

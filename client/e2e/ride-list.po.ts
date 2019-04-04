@@ -27,25 +27,23 @@ export class RidePage {
     return title;
   }
 
-  typeADriverName(name: string) {
-    const input = element(by.id('driverName'));
-    input.click();
-    input.sendKeys(name);
+  setNonSmoking() {
+    const checkbox = element(by.id("checkboxNonSmoking"));
+    checkbox.click();
   }
 
-  getSeatNumber(company: string) {
-    const input = element(by.id('rideSeatsAvailable'));
-    input.click();
-    input.sendKeys(company);
-    this.click('submit');
+  setIsDriving() {
+    const radioButton = element(by.id("isDrivingButton"));
+    radioButton.click();
   }
 
-  getRides() {
-    return element.all(by.className('rides'));
+  setIsNotDriving() {
+    const radioButton = element(by.id("isNotDrivingButton"));
+    radioButton.click();
   }
 
-  // getClass(theClass: string) {
-  //   return element(by.className(theClass));
+  // getRides() {
+  //   return element.all(by.className('rides'));
   // }
 
   elementExistsWithId(idOfElement: string): promise.Promise<boolean> {
@@ -59,14 +57,6 @@ export class RidePage {
     return element(by.css(cssOfElement)).isPresent();
   }
 
-  getElementById(id: string) {
-    return element(by.id(id));
-  }
-
-  getElementsByCss(css: string) {
-    return element.all(by.css(css));
-  }
-
   getUniqueRide(driver: string) {
     const ride = element(by.id(driver)).getText();
     this.highlightElement(by.id(driver));
@@ -74,30 +64,23 @@ export class RidePage {
     return ride;
   }
 
+  getElementById(id: string) {
+    return element(by.id(id));
+  }
 
+  getElementsByCss(css: string) {
+    return element.all(by.css(css));
+  }
   click(idOfButton: string): promise.Promise<void> {
     this.highlightElement(by.id(idOfButton));
     return element(by.id(idOfButton)).click();
   }
 
-  clickClass(classOfButton: string): promise.Promise<void> {
-    this.highlightElement(by.className(classOfButton));
-    return element(by.className(classOfButton)).click();
-  }
 
   field(idOfField: string) {
     return element(by.id(idOfField));
   }
 
-  button(idOfButton: string) {
-    this.highlightElement(by.id(idOfButton));
-    return element(by.id(idOfButton));
-  }
-
-  getTextFromField(idOfField: string) {
-    this.highlightElement(by.id(idOfField));
-    return element(by.id(idOfField)).getText();
-  }
 
   getAddRideTitle() {
     const title = element(by.id('ride-add-title')).getText();

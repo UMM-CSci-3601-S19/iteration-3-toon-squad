@@ -16,7 +16,7 @@ browser.driver.controlFlow().execute = function () {
   // If you're tired of it taking long you can remove this call or change the delay
   // to something smaller (even 0).
   origFn.call(browser.driver.controlFlow(), () => {
-    return protractor.promise.delayed(50);
+    return protractor.promise.delayed(100);
   });
 
   return origFn.apply(browser.driver.controlFlow(), args);
@@ -64,39 +64,46 @@ describe('Add Ride', () => {
     page.navigateTo();
     page.click('add-ride-button');
 
-    page.field('driverID').sendKeys('John Doe');
+    page.setIsDriving();
+    page.field('driverID').sendKeys('JohnDoe');
     page.field('notesField').sendKeys('Likes to play music. Climate control. Gregarious.');
     page.field('seatsAvailableField').sendKeys('2');
     page.field('originField').sendKeys('Morris, MN');
     page.field('destinationField').sendKeys('Alexandria, MN');
     page.field('departureDateField').sendKeys('3/13/2019');
     page.field('departureTimeField').sendKeys('6:00PM');
-
-
+    page.setNonSmoking();
     page.click('confirmAddRideButton');
+
     expect(page.getRideTitle()).toEqual('Upcoming Rides');
-    expect(page.getUniqueRide('John Doe')).toMatch('Likes to play music. Climate control. Gregarious.');
-    expect(page.getUniqueRide('John Doe')).toMatch('2');
-    expect(page.getUniqueRide('John Doe')).toMatch('Morris, MN');
-    expect(page.getUniqueRide('John Doe')).toMatch('Alexandria, MN');
-    expect(page.getUniqueRide('John Doe')).toMatch('March 13th at 06:00 PM');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('Likes to play music. Climate control. Gregarious.');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('2');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('Morris, MN');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('Alexandria, MN');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('March 13th at 06:00 PM');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('Non-smoking');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('offering this ride');
+
 
   });
 
   it('Should add the information to the database if non-required data is missing', () => {
     page.navigateTo();
     page.click('add-ride-button');
+
+    page.setIsNotDriving();
     page.field('driverID').sendKeys('Jefferson Macaroni');
-    page.field('seatsAvailableField').sendKeys('4');
     page.field('originField').sendKeys('Washington, D.C.');
     page.field('destinationField').sendKeys('Morris, MN');
     page.click('confirmAddRideButton')
 
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Washington, D.C.');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Morris, MN');
-    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('4');
-
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('requesting this ride');
   });
+
 });
 
 

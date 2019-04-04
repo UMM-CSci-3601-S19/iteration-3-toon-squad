@@ -29,9 +29,10 @@ export class RideListComponent implements OnInit {
   // This method is used in the HTML instead of ngModel, since it solves a problem where
   // clicking on the checkbox didn't always 'uncheck' the box. Implementing this method with
   // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
-  private toggleNonSmoking() {
+  public toggleNonSmoking() {
     this.rideNonSmoking = !this.rideNonSmoking
   }
+  //test notes
 
   public filterRides(searchDestination: string, searchOrigin: string,
                      searchIsDriving: boolean, searchNonSmoking): Ride[] {
