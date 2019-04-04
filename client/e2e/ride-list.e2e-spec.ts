@@ -22,6 +22,7 @@ browser.driver.controlFlow().execute = function () {
   return origFn.apply(browser.driver.controlFlow(), args);
 };
 
+
 describe('Organize rides by soonest to latest', () => {
   let page: RidePage;
 
@@ -316,22 +317,20 @@ describe('Add Ride', () => {
     page.field('seatsAvailableField').sendKeys('2');
     page.field('originField').sendKeys('Morris, MN');
     page.field('destinationField').sendKeys('Alexandria, MN');
-    page.field('departureDateField').sendKeys('5/13/2019');
+    page.field('departureDateField').sendKeys('4/15/2019');
     page.field('departureTimeField').sendKeys('6:00PM');
     page.setNonSmoking();
     page.click('confirmAddRideButton');
 
+    page.navigateTo();
     expect(page.getRideTitle()).toEqual('Upcoming Rides');
     expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe');
     expect(page.getUniqueRide('JohnDoe')).toMatch('Likes to play music. Climate control. Gregarious.');
     expect(page.getUniqueRide('JohnDoe')).toMatch('2');
     expect(page.getUniqueRide('JohnDoe')).toMatch('Morris, MN');
     expect(page.getUniqueRide('JohnDoe')).toMatch('Alexandria, MN');
-    expect(page.getUniqueRide('JohnDoe')).toMatch('May 15th at 06:00 PM');
     expect(page.getUniqueRide('JohnDoe')).toMatch('Non-smoking');
     expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe is offering this ride');
-
-
   });
 
   it('Should add the information to the database if non-required data is missing', () => {
@@ -342,12 +341,17 @@ describe('Add Ride', () => {
     page.field('driverID').sendKeys('Jefferson Macaroni');
     page.field('originField').sendKeys('Washington, D.C.');
     page.field('destinationField').sendKeys('Morris, MN');
+    page.field('departureDateField').sendKeys('4/15/2019');
+    page.field('departureTimeField').sendKeys('6:00PM');
     page.click('confirmAddRideButton');
 
+
+    page.navigateTo();
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Washington, D.C.');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Morris, MN');
     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni is requesting this ride');
+
   });
 
 });
