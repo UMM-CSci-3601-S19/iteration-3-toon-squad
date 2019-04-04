@@ -50,7 +50,7 @@
 
       <mat-icon aria-hidden="false">smoke_free</mat-icon>
 
-      <mat-checkbox (checked)="rideNonSmoking" (click)="toggleNonSmoking()">
+      <mat-checkbox id="checkboxNonSmoking"(checked)="rideNonSmoking" (click)="toggleNonSmoking()">
         Non-smoking </mat-checkbox>
 
       <br>
@@ -64,8 +64,8 @@
                 *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving, rideNonSmoking)"
       [id] = "ride.driver">
 
-        <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving">
-          <mat-card-title [id] = "ride.driver">
+        <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
+          <mat-card-title>
             <div class="departure-time">
               <mat-icon style="color:green"> drive_eta</mat-icon>
               <span *ngIf="ride.departureDate">{{ride.departureDate}}</span>
@@ -79,7 +79,7 @@
         </mat-card-header>
 
         <mat-card-header *ngIf="!ride.isDriving" class="ride-title-isNotDriving" [id]="ride._id.$oid">
-          <mat-card-title [id] = "ride.driver">
+          <mat-card-title>
             <div class="departure-time">
               <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
               <span *ngIf="ride.departureDate">{{ride.departureDate}}</span>
