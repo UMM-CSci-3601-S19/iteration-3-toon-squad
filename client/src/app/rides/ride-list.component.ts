@@ -32,7 +32,14 @@ export class RideListComponent implements OnInit {
   public toggleNonSmoking() {
     this.rideNonSmoking = !this.rideNonSmoking
   }
-  //test notes
+
+  public checkImpossibleDate(ride: Ride) {
+    return (ride.departureDate.includes("3000"))
+  }
+
+  public checkImpossibleTime(ride: Ride) {
+    return (ride.departureTime.includes("99"))
+  }
 
   public filterRides(searchDestination: string, searchOrigin: string,
                      searchIsDriving: boolean, searchNonSmoking): Ride[] {
@@ -113,4 +120,47 @@ export class RideListComponent implements OnInit {
     this.refreshRides();
     this.loadService();
   }
+
+  // Lifted from the server side code. Parses ISO dates for human readable month/day. For example:
+  // 2019-03-26T05:00:00.000Z becomes March 26th
+  public dateParse(selectedDate: string) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August",
+      "September", "October", "November", "December"];
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dateDateFormat = new Date(selectedDate);
+    const dateFullMonth = months[dateDateFormat.getMonth()];
+    const dateDay = days[dateDateFormat.getDay()];
+    let date = dateDateFormat.getDate().toString();
+    if (date === '1' || date === '21' || date === '31') {
+      date += 'st';
+    } else if (date === '2' || date === '22') {
+      date += 'nd';
+    } else if (date === '3' || date === '23') {
+      date += 'rd';
+    } else {
+      date += 'th';
+    }
+
+    return dateFullMonth + " " + date;
+  }
+
+  //Tushar Gupta @ https://jsfiddle.net/cse_tushar/xEuUR/
+  //Converts 24 hour time to AM/PM
+  public hourParse(time) {
+    let hours = time[0] + time[1];
+    let min = time[3] + time[4];
+    if(hours == 0) {
+      return '12:' + min + ' AM';
+    } else if (hours == 12) {
+      return '12:' + min + ' PM';
+    } else if (hours < 12) {
+      if(hours<10){return hours[1] + ':' + min + ' AM';} //strip off leading 0
+      else{return hours + ':' + min + ' AM';}
+    } else {
+      hours=hours - 12;
+      hours=(hours.length < 10) ? '0'+hours:hours;
+      return hours+ ':' + min + ' PM';
+    }
+  }
+
 }

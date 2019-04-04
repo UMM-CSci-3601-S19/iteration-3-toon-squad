@@ -3,57 +3,62 @@
     "_id": {
       "$oid": "5c832bec26656a20be5ec19a"
     },
-    "driver": "Jimmie Brennan",
+    "driver": "Jimmie Future",
     "notes": "Eiusmod laboris commodo sint cupidatat pariatur proident qui dolor cillum sit adipisicing veniam. Cupidatat mollit et anim ut labore tempor quis.",
     "seatsAvailable": 4,
     "origin": "2046 Neptune Court, Wright, IA 64892",
     "destination": "9782 Henry Street, Hannasville, IA 20609",
-    "departureDate": "March 12th",
-    "departureTime": "7:59 AM",
+    "departureDate": "2019-04-10T05:00:00.000Z",
+    "departureTime": "16:21",
     "isDriving": true,
-    "nonSmoking": true
+    "nonSmoking": false
   },
   {
     "_id": {
       "$oid": "5c832bec201270bd881ace79"
     },
-    "driver": "Hollie Garza",
+    "driver": "Hollie Past",
     "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
-    "seatsAvailable": 0,
+    "seatsAvailable": 1,
     "origin": "8631 Hudson Avenue, Crayne, IA 98438",
     "destination": "1660 Judge Street, Winston, SD 44478",
-    "departureDate": "March 10th",
-    "departureTime": "10:43 AM",
-    "isDriving": false,
-    "nonSmoking": true
-  },
-  {
-    "_id": {
-      "$oid": "5c832bec06ea97b8522d9352"
-    },
-    "driver": "Sanford Duffy",
-    "notes": "Reprehenderit eiusmod et occaecat labore aute. Consequat exercitation laborum officia labore ipsum non consectetur.",
-    "seatsAvailable": 3,
-    "origin": "7073 Rose Street, Watrous, IA 94185",
-    "destination": "9930 Hubbard Street, Haena, ND 21036",
-    "departureDate": "March 11th",
-    "departureTime": "7:55 PM",
+    "departureDate": "2019-04-10T05:00:00.000Z",
+    "departureTime": "16:19",
     "isDriving": true,
     "nonSmoking": true
+
   },
+
+  {
+    "_id": {
+      "$oid": "5c832bec201270bd881ace78"
+    },
+    "driver": "Kyle Foss",
+    "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
+    "seatsAvailable": -1,
+    "origin": "8631 Hudson Avenue, Crayne, IA 98438",
+    "destination": "1660 Judge Street, Winston, SD 44478",
+    "departureDate": "2019-05-10T05:00:00.000Z",
+    "departureTime": "13:01",
+    "isDriving": false,
+    "nonSmoking": true
+
+  },
+
   {
     "_id": {
       "$oid": "5c832bec56c6090da1ba8708"
     },
-    "driver": "Shelby Dillard",
+    "driver": "Shelby Present",
     "notes": "Anim irure incididunt est aliquip duis elit. Nulla non aliqua sit ut labore qui id eiusmod laboris adipisicing deserunt aliquip.",
     "seatsAvailable": 1,
     "origin": "7726 Franklin Street, Stewartville, SD 44780",
     "destination": "7989 Sheffield Avenue, Frystown, IA 51752",
-    "departureDate": "March 21st",
-    "departureTime": "4:20 PM",
+    "departureDate": "2019-04-10T05:00:00.000Z",
+    "departureTime": "16:20",
     "isDriving": true,
     "nonSmoking": true
+
   },
   {
     "_id": {
@@ -64,9 +69,42 @@
     "seatsAvailable": 0,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
-    "departureDate": "March 14th",
-    "departureTime": "9:25 AM",
+    "departureDate": "2019-03-14T05:00:00.000Z",
+    "departureTime": "03:55",
     "isDriving": false,
-    "nonSmoking": false
+    "nonSmoking": true
+
+  },
+
+  {
+    "_id": {
+      "$oid": "5c832bec4f173391643a16f2"
+    },
+    "driver": "Michael Small",
+    "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
+    "seatsAvailable": -1,
+    "origin": "881 Boardwalk , Waumandee, SD 97192",
+    "destination": "8974 Cyrus Avenue, Joes, SD 96915",
+    "departureDate": "2019-08-14T05:00:00.000Z",
+    "departureTime": "03:55",
+    "isDriving": false,
+    "nonSmoking": true
+
+  },
+
+  {
+    "_id": {
+      "$oid": "5c832bec4f173391643a16f2"
+    },
+    "driver": "Michael Small",
+    "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
+    "seatsAvailable": 2,
+    "origin": "881 Boardwalk , Waumandee, SD 97192",
+    "destination": "8974 Cyrus Avenue, Joes, SD 96915",
+    "departureDate": "2019-08-14T05:00:00.000Z",
+    "departureTime": "03:55",
+    "isDriving": true,
+    "nonSmoking": true
+
   }
 ]

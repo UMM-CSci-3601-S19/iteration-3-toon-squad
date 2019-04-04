@@ -30,12 +30,8 @@ export class RideListService {
       responseType: 'text' as 'json'
     };
 
-
     // Send post request to add a new user with the user data as the body with specified headers.
-
-    //this.rlc.refreshRides();
     const id = this.http.post<string>(this.rideUrl + '/new', newRide, httpOptions);
     return id;
-
   }
 }

@@ -13,6 +13,7 @@ import {Observable} from "rxjs/Observable";
 })
 
 export class AddRideComponent implements OnInit {
+  minDate = new Date();
 
   public rides: Ride[];
 
@@ -87,7 +88,6 @@ export class AddRideComponent implements OnInit {
       this.rideListService.addNewRide(newRide).subscribe(
         result => {
           this.highlightedID = result;
-
         },
         err => {
           // This should probably be turned into some sort of meaningful response.
@@ -104,7 +104,7 @@ export class AddRideComponent implements OnInit {
       this.refreshRides();
       this.refreshRides();
       this.refreshRides();
-    //This is the only solution to a refresh-on-addride
+    // This is the only solution to a refresh-on-addride
       // we were having that worked consistently, it's hacky but seems to work well.
     }
   };
@@ -180,4 +180,6 @@ export class AddRideComponent implements OnInit {
 
 
 }
+
+
 
