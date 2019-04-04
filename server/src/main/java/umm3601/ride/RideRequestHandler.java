@@ -60,7 +60,6 @@ public class RideRequestHandler {
    */
   public String getRides(Request req, Response res) {
     res.type("application/json");
-    System.out.println("\nPRE-HANDLER: " + rideController.getRides(req.queryMap().toMap()) + "\n");
     return rideController.getRides(req.queryMap().toMap());
   }
 
@@ -77,8 +76,6 @@ public class RideRequestHandler {
     res.type("application/json");
 
     Document newRide = Document.parse(req.body());
-
-    System.out.println(newRide);
 
     String driver = newRide.getString("driver");
     String notes = newRide.getString("notes");

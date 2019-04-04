@@ -83,7 +83,7 @@ public class RideController {
     Bson sortDate = ascending("departureDate");
     Bson sortTime = ascending("departureTime");
 
-    //filters out dates that aren't greater than or equal to today's date
+    //filters out dates that aren't grecomater than or equal to today's date
     Bson pastDate = gte("departureDate", nowAsISO.substring(0,10)+"T05:00:00.000Z");
     //filters out times that aren't greater than or equal to the current time
     Bson pastTime = gte("departureTime", nowAsISO.substring(11,16));
@@ -99,15 +99,24 @@ public class RideController {
 
     FindIterable<Document> matchingRides = rideCollection.find(oldRides).filter(oldRides).sort(order);
 
-    System.out.println("\nTHE METHOD PASSES OUT: " + DatabaseHelper.serializeIterable(matchingRides) + "\n");
     return DatabaseHelper.serializeIterable(matchingRides);
   }
 
   public String addNewRide(String driver, String notes, int seatsAvailable, String origin, String destination,
                            String departureTime, String departureDate, Boolean isDriving, boolean nonSmoking) {
 
+    System.out.println("Depart date is:" + departureDate);
+
     if (!isDriving) {
       seatsAvailable = 0;
+    }
+
+    if (departureDate == null) {
+      departureDate = "3000-01-01T05:00:00.000Z";
+    }
+
+    if (departureTime == null) {
+      departureTime = "99:99";
     }
 
     Document newRide = new Document();
@@ -120,8 +129,6 @@ public class RideController {
     newRide.append("departureDate", departureDate);
     newRide.append("isDriving", isDriving);
     newRide.append("nonSmoking", nonSmoking);
-
-    System.out.println(newRide);
 
     try {
       rideCollection.insertOne(newRide);
