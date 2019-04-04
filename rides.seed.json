@@ -47,53 +47,6 @@
 
   {
     "_id": {
-      "$oid": "5c832bec201270bd881ace71"
-    },
-    "driver": "Hollie Garza",
-    "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
-    "seatsAvailable": -1,
-    "origin": "8631 Hudson Avenue, Crayne, IA 98438",
-    "destination": "1660 Judge Street, Winston, SD 44478",
-    "departureDate": "2019-04-10T05:00:00.000Z",
-    "departureTime": "13:01",
-    "isDriving": false,
-    "nonSmoking": true
-
-  },
-  {
-    "_id": {
-      "$oid": "5c832bec06ea97b8522d9352"
-    },
-    "driver": "Sanford Duffy",
-    "notes": "Reprehenderit eiusmod et occaecat labore aute. Consequat exercitation laborum officia labore ipsum non consectetur.",
-    "seatsAvailable": 3,
-    "origin": "7073 Rose Street, Watrous, IA 94185",
-    "destination": "9930 Hubbard Street, Haena, ND 21036",
-    "departureDate": "2019-03-05T05:00:00.000Z",
-    "departureTime": "15:55",
-    "isDriving": true,
-    "nonSmoking": true
-
-  },
-
-  {
-    "_id": {
-      "$oid": "5c832bec06ea97b8522d9352"
-    },
-    "driver": "Sanford Duffy",
-    "notes": "Reprehenderit eiusmod et occaecat labore aute. Consequat exercitation laborum officia labore ipsum non consectetur.",
-    "seatsAvailable": 3,
-    "origin": "7073 Rose Street, Watrous, IA 94185",
-    "destination": "9930 Hubbard Street, Haena, ND 21036",
-    "departureDate": "2019-05-05T05:00:00.000Z",
-    "departureTime": "15:55",
-    "isDriving": true,
-    "nonSmoking": true
-
-  },
-
-  {
-    "_id": {
       "$oid": "5c832bec56c6090da1ba8708"
     },
     "driver": "Shelby Present",
