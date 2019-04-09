@@ -27,4 +27,5 @@ before_script:
 - ${PWD}/mongodb-linux-x86_64-${MONGODB}/bin/mongod --dbpath ${PWD}/mongodb-linux-x86_64-${MONGODB}/data --logpath ${PWD}/mongodb-linux-x86_64-${MONGODB}/mongodb.log --fork
 - npm install -g @angular/cli
 
-
+notifications:
+  slack: umm-3601-s19:tQSFjkbtOBrHY8caFnwXnPCr
