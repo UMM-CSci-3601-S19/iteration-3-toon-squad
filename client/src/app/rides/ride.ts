@@ -1,3 +1,5 @@
+import {User} from "../users/user";
+
 export interface Ride {
   _id: string;
   driver: string;
@@ -8,5 +10,7 @@ export interface Ride {
   departureDate: string;
   departureTime: string;
   isDriving: boolean;
-  nonSmoking: boolean
+  nonSmoking: boolean;
+  roundTrip?: boolean;
+  passengers?: User[];
 }
