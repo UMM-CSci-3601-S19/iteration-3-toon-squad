@@ -5,7 +5,15 @@
       <mat-card-subtitle>this is a card</mat-card-subtitle>
       <mat-divider></mat-divider>
       <mat-card-content>
-        card content
+        <div
+          id="signIn" *ngIf="!appService.isSignedIn()" class="g-signin2" (click)="appService.signIn()">
+        </div>
+
+        <div id="signOut"  *ngIf="appService.isSignedIn()" (click)="appService.signOut()">
+          <mat-icon>exit_to_app</mat-icon>
+          Sign Out
+        </div>
+
       </mat-card-content>
     </mat-card>
   </div>
