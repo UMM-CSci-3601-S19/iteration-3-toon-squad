@@ -8,7 +8,7 @@
     </mat-nav-list>
   </td-navigation-drawer>
   <td-layout-nav toolbarTitle="MoRide" navigationRoute="/">
-    <button mat-icon-button td-menu-button tdLayoutToggle>
+    <button mat-icon-button td-menu-button tdLayoutToggle *ngIf="appService.isSignedIn()">
       <mat-icon>menu</mat-icon>
     </button>
     <router-outlet></router-outlet>
