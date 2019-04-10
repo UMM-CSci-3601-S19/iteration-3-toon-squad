@@ -80,7 +80,7 @@ public class Server {
     get("api/users/:id", userRequestHandler::getUserJSON);
     post("api/users/new", userRequestHandler::addNewUser);*/
 
-    // RIDE ENDPOINTS
+    // RIDE ENDPOINTS'
     get("api/rides", rideRequestHandler::getRides);
     get("api/rides/:id", rideRequestHandler::getRideJSON);
     post("api/rides/new", rideRequestHandler::addNewRide);

@@ -15,6 +15,7 @@ import {UserListComponent} from './users/user-list.component';
 import {UserListService} from './users/user-list.service';
 import {RideListService} from './rides/ride-list.service';
 import {AppService} from "./app.service";
+import {AppAuthGuard} from "./app.authGuard";
 
 import {Routing} from './app.routes';
 import {APP_BASE_HREF} from '@angular/common';
@@ -53,7 +54,7 @@ import {MatCheckboxModule}  from "@angular/material/checkbox";
 
   ],
   providers: [
-    UserListService, RideListService, AppService,
+    UserListService, RideListService, AppService, AppAuthGuard,
     {provide: APP_BASE_HREF, useValue: '/'},
   ],
   entryComponents: [
