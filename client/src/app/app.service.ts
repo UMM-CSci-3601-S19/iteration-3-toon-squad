@@ -12,7 +12,16 @@ export class AppService {
 
   googleAuth;
 
+  initClient() {
+    gapi.client.init({
+      'clientId': '121498793046-vuuo0thmp21gmnskaei3330bq50ni6s7.apps.googleusercontent.com',
+      'scope': 'profile email'
+    });
+  }
 
+  handleClientLoad() {
+    gapi.load('client:auth2', this.initClient);
+  }
 
   // This sends the auth code of our user to the server and stores the fields in local storage when we get data back
   // from gapi
@@ -54,6 +63,29 @@ export class AppService {
       localStorage.setItem('isSignedIn', 'true');
       this.sendAuthCode(resp.code);
     });
+  }
+
+  signOut() {
+    this.handleClientLoad();
+
+    this.googleAuth = gapi.auth2.getAuthInstance();
+
+    this.googleAuth.then(() => {
+      this.googleAuth.signOut();
+      localStorage.setItem('isSignedIn', 'false');
+      localStorage.setItem("userID", "");
+      window.location.reload();
+    })
+  }
+
+  public isSignedIn(): boolean {
+    status = localStorage.getItem('isSignedIn');
+    if (status == 'true') {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
 }
