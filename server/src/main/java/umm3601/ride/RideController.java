@@ -93,7 +93,7 @@ public class RideController {
     Bson tomorrowOrLater = gt("departureDate",nowAsISO.substring(0,10)+"T05:00:00.000Z");
     //Only shows dates that are either (today ^ (today ^ laterThanNow)) or dates after today
     Bson oldRides= or(sameDayPastTime, tomorrowOrLater);
-    System.out.println("THE OLD RIDES: " +oldRides);
+    System.out.println("THE OLD RIDES: " + oldRides);
 
     Bson order = orderBy(sortDate, sortTime);
 
@@ -102,10 +102,8 @@ public class RideController {
     return DatabaseHelper.serializeIterable(matchingRides);
   }
 
-  public String addNewRide(String driver, String notes, int seatsAvailable, String origin, String destination,
+  public String addNewRide(String user, String userID, String notes, int seatsAvailable, String origin, String destination,
                            String departureTime, String departureDate, Boolean isDriving, boolean nonSmoking) {
-
-    System.out.println("Depart date is:" + departureDate);
 
     if (!isDriving) {
       seatsAvailable = 0;
@@ -120,7 +118,8 @@ public class RideController {
     }
 
     Document newRide = new Document();
-    newRide.append("driver", driver);
+    newRide.append("user", user);
+    newRide.append("userID", userID);
     newRide.append("notes", notes);
     newRide.append("seatsAvailable", seatsAvailable);
     newRide.append("origin", origin);
@@ -133,10 +132,10 @@ public class RideController {
     try {
       rideCollection.insertOne(newRide);
       ObjectId id = newRide.getObjectId("_id");
-      System.err.println("Successfully added new ride [_id=" + id + ", driver=" + driver + ", notes=" + notes +
-        ", seatsAvailable=" + seatsAvailable + ", origin=" + origin + ", destination=" + destination +
-        ", departureTime=" + departureTime + ", departureDate=" + departureDate + ", isDriving=" + isDriving +
-        ", nonSmoking=" + nonSmoking + ']');
+      System.err.println("Successfully added new ride [_id=" + id + ", user=" + user + ", userID=" +
+        userID + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable + ", origin=" + origin +
+        ", destination=" + destination + ", departureTime=" + departureTime + ", departureDate=" + departureDate +
+        ", isDriving=" + isDriving + ", nonSmoking=" + nonSmoking + ']');
       return id.toHexString();
     } catch (MongoException me) {
       me.printStackTrace();
