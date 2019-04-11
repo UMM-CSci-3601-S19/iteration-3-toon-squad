@@ -62,7 +62,7 @@
     <div *ngIf="rides; else ridesError">
       <mat-card #elem class="rides"
                 *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving, rideNonSmoking)"
-      [id] = "ride.driver">
+      [id] = "ride.user">
 
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
           <mat-card-title>
@@ -136,11 +136,20 @@
           </div>
 
           <div id="ride-info-driver-id-isDriving" class="ride-info driver" *ngIf="ride.isDriving">
-            {{ride.driver}} is offering this ride
+            <div *ngIf="userIdMatchesRide(ride.userId)" >
+               You are offering this ride
+              </div>
+            <div *ngIf="!userIdMatchesRide(ride.userId)">
+              {{userIdMatchesRide(ride.userId)}}
+              {{ride.userId}}
+              {{getLocalUserId()}}
+            </div>
           </div>
 
+
+
           <div id="ride-info-driver-id" class="ride-info driver" *ngIf="!ride.isDriving">
-            {{ride.driver}} is requesting this ride
+            {{ride.user}} is requesting this ride
           </div>
 
           <div id="ride-info-nonSmoking" class="ride-info driver" *ngIf="ride.nonSmoking === true">
