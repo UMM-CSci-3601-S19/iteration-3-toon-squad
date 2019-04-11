@@ -96,6 +96,7 @@ export class RideListComponent implements OnInit {
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
+        console.log("These are the rides getRides got " + JSON.stringify(rides));
         this.rides = rides;
         this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving, this.rideNonSmoking);
       },
