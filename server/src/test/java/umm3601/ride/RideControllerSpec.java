@@ -160,8 +160,8 @@ public class RideControllerSpec {
   @Test
   public void addRide(){
     String newId = rideController.addNewRide("Dave Roberts", "I talk a lot about math", 2,
-      "Shopko", "UMM Science Building Parking Lot", "5PM", "5/13/19", false,
-      true);
+      "Shopko", "UMM Science Building Parking Lot", "5/13/19", "5PM", false,
+      true,true);
     // NOTE: While there are 2 seats for this 'requested ride', the controller SHOULD change it to 0
     // if it is working correctly
 
@@ -187,8 +187,8 @@ public class RideControllerSpec {
     // rides to having 0 sets available.
 
     String newId = rideController.addNewRide("Nate Foss", "Good morning! How are you? ...Good.", 1,
-      "Morris", "232 Alton Drive Miami, FL", "5PM", "5/13/19", false,
-      true);
+      "Morris", "232 Alton Drive Miami, FL", "5/13/19", "5PM", false,
+      true,true);
 
     Map<String, String[]> emptyMap = new HashMap<>();
     String jsonResult = rideController.getRides(emptyMap);
