@@ -45,7 +45,8 @@ public class RideControllerSpec {
     rideDocuments.drop();
     List<Document> testRides = new ArrayList<>();
     testRides.add(Document.parse("{\n" +
-      "                    driver: \"Colt\",\n" +
+      "                    user: \"Colt\",\n" +
+      "                    userId: \"001\",\n" +
       "                    seatsAvailable: 0,\n" +
       "                    origin: \"Morris Campus, Gay Hall\",\n" +
       "                    destination: \"Twin Cities\"\n" +
@@ -55,7 +56,8 @@ public class RideControllerSpec {
       "                    nonSmoking: true,\n" +
       "                }"));
     testRides.add(Document.parse("{\n" +
-      "                    driver: \"Avery\",\n" +
+      "                    user: \"Avery\",\n" +
+      "                    userId: \"002\",\n" +
       "                    seatsAvailable: 10,\n" +
       "                    origin: \"534 e 5th St, Morris MN 56261\",\n" +
       "                    destination: \"Culver's, Alexandria\"\n" +
@@ -65,7 +67,8 @@ public class RideControllerSpec {
       "                    nonSmoking: true,\n" +
       "                }"));
     testRides.add(Document.parse("{\n" +
-      "                    driver: \"Michael\",\n" +
+      "                    user: \"Michael\",\n" +
+      "                    userId: \"003\",\n" +
       "                    seatsAvailable: 0,\n" +
       "                    origin: \"On campus\",\n" +
       "                    destination: \"Willies\"\n" +
@@ -77,7 +80,8 @@ public class RideControllerSpec {
 
     ellisRideId = new ObjectId();
     BasicDBObject ellisRide = new BasicDBObject("_id", ellisRideId);
-    ellisRide = ellisRide.append("driver", "Ellis")
+    ellisRide = ellisRide.append("user", "Ellis")
+      .append("userId", "004")
       .append("seatsAvailable", 0)
       .append("origin", "Casey's General Store")
       .append("destination", "Perkin's")
@@ -92,9 +96,9 @@ public class RideControllerSpec {
     rideController = new RideController(db);
   }
 
-  private static String getDriver(BsonValue val) {
+  private static String getUser(BsonValue val) {
     BsonDocument ride = val.asDocument();
-    return ((BsonString) ride.get("driver")).getValue();
+    return ((BsonString) ride.get("user")).getValue();
   }
 
   private static int getSeatsAvailable(BsonValue val) {
@@ -109,13 +113,13 @@ public class RideControllerSpec {
     BsonArray rides = parseJsonArray(jsonResult);
 
     assertEquals("Should be 4 rides", 4, rides.size());
-    List<String> drivers = rides
+    List<String> users = rides
       .stream()
-      .map(RideControllerSpec::getDriver)
+      .map(RideControllerSpec::getUser)
       .sorted()
       .collect(Collectors.toList());
-    List<String> expectedDrivers = Arrays.asList("Avery", "Colt", "Ellis", "Michael");
-    assertEquals("Drivers should match", expectedDrivers, drivers);
+    List<String> expectedUsers = Arrays.asList("Avery", "Colt", "Ellis", "Michael");
+    assertEquals("Users should match", expectedUsers, users);
   }
 
   //TODO: See top comment
@@ -128,13 +132,13 @@ public class RideControllerSpec {
 //    System.out.println("\nOFFERED RIDES" + docs + "\n");
 //
 //    assertEquals("Should be 1 ride", 1, docs.size());
-//    List<String> drivers = docs
+//    List<String> users = docs
 //      .stream()
-//      .map(RideControllerSpec::getDriver)
+//      .map(RideControllerSpec::getUsers)
 //      .sorted()
 //      .collect(Collectors.toList());
-//    List<String> expectedDrivers = Arrays.asList("Avery");
-//    assertEquals("Drivers should match", expectedDrivers, drivers);
+//    List<String> expectedUserss = Arrays.asList("Avery");
+//    assertEquals("Userss should match", expectedUserss, users);
 //  }
 
   //TODO: See top comment
@@ -146,20 +150,20 @@ public class RideControllerSpec {
 //    BsonArray docs = parseJsonArray(jsonResult);
 //
 //    assertEquals("Should be 3 rides", 3, docs.size());
-//    List<String> drivers = docs
+//    List<String> users = docs
 //      .stream()
-//      .map(RideControllerSpec::getDriver)
+//      .map(RideControllerSpec::getUsers)
 //      .sorted()
 //      .collect(Collectors.toList());
-//    List<String> expectedDrivers = Arrays.asList("Colt", "Ellis", "Michael");
-//    assertEquals("Drivers should match", expectedDrivers, drivers);
+//    List<String> expectedUserss = Arrays.asList("Colt", "Ellis", "Michael");
+//    assertEquals("Userss should match", expectedUserss, users);
 //  }
 
 
 
   @Test
   public void addRide(){
-    String newId = rideController.addNewRide("Dave Roberts", "I talk a lot about math", 2,
+    String newId = rideController.addNewRide("Dave Roberts", "005","I talk a lot about math", 2,
       "Shopko", "UMM Science Building Parking Lot", "5PM", "5/13/19", false,
       true);
     // NOTE: While there are 2 seats for this 'requested ride', the controller SHOULD change it to 0
@@ -167,17 +171,17 @@ public class RideControllerSpec {
 
     assertNotNull("Add new ride should return true when ride is added,", newId);
     Map<String, String[]> argMap = new HashMap<>();
-    argMap.put("driver", new String[]{"Dave Roberts"});
+    argMap.put("user", new String[]{"Dave Roberts"});
     String jsonResult = rideController.getRides(argMap);
     BsonArray docs = parseJsonArray(jsonResult);
 
-    List<String> driverName = docs
+    List<String> userName = docs
       .stream()
-      .map(RideControllerSpec::getDriver)
+      .map(RideControllerSpec::getUser)
       .sorted()
       .collect(Collectors.toList());
-    System.out.println("DRIVER NAME: " + driverName);
-    assertEquals("Should return name of new driver", "Dave Roberts", driverName.get(2));
+    System.out.println("DRIVER NAME: " + userName);
+    assertEquals("Should return name of new user", "Dave Roberts", userName.get(2));
   }
 
   @Test
@@ -186,7 +190,7 @@ public class RideControllerSpec {
     // The point of this test is that the rideController changes any requested
     // rides to having 0 sets available.
 
-    String newId = rideController.addNewRide("Nate Foss", "Good morning! How are you? ...Good.", 1,
+    String newId = rideController.addNewRide("Nate Foss", "006","Good morning! How are you? ...Good.", 1,
       "Morris", "232 Alton Drive Miami, FL", "5PM", "5/13/19", false,
       true);
 
@@ -210,12 +214,12 @@ public class RideControllerSpec {
   }
 
   @Test
-  public void getDriverByRideId() {
+  public void getUsersByRideId() {
     String jsonResult = rideController.getRide(ellisRideId.toHexString());
     Document ellis = Document.parse(jsonResult);
-    assertEquals("Name should match", "Ellis", ellis.get("driver"));
+    assertEquals("Name should match", "Ellis", ellis.get("user"));
     String noJsonResult = rideController.getRide(new ObjectId().toString());
-    assertNull("No driver name should match", noJsonResult);
+    assertNull("No user name should match", noJsonResult);
   }
 
 
