@@ -24,7 +24,8 @@ describe('Ride list', () => {
       getRides: () => Observable.of([
         {
           _id: 'chris_id',
-          driver: 'Chris',
+          user: 'Chris',
+          userId: "001",
           notes: 'These are Chris\'s ride notes',
           seatsAvailable: 3,
           origin: 'UMM',
@@ -33,10 +34,12 @@ describe('Ride list', () => {
           departureTime: '10:00:00',
           isDriving: true,
           nonSmoking: true,
+          roundTrip: true,
         },
         {
           _id: 'dennis_id',
-          driver: 'Dennis',
+          user: 'Dennis',
+          userId: "002",
           notes: 'These are Dennis\'s ride notes',
           seatsAvailable: -1,
           origin: 'Caribou Coffee',
@@ -45,10 +48,12 @@ describe('Ride list', () => {
           departureTime: '11:30:00',
           isDriving: false,
           nonSmoking: true,
+          roundTrip: true,
         },
         {
           _id: 'agatha_id',
-          driver: 'Agatha',
+          user: 'Agatha',
+          userId: "003",
           notes: 'These are Agatha\'s ride notes',
           seatsAvailable: 3,
           origin: 'UMM',
@@ -57,6 +62,7 @@ describe('Ride list', () => {
           departureTime: '16:30:00',
           isDriving: true,
           nonSmoking: false,
+          roundTrip: false,
         }
       ])
     };
@@ -158,12 +164,14 @@ describe('Ride list', () => {
     expect(rideList.rides.length).toBe(3);
   });
 
-  it('contains a ride with driver \'Chris\'', () => {
-    expect(rideList.rides.some((ride: Ride) => ride.driver === 'Chris')).toBe(true);
+  it('contains a ride with user \'Chris\' and his UserId', () => {
+    expect(rideList.rides.some((ride: Ride) => ride.user === 'Chris')).toBe(true);
+    expect(rideList.rides.some((ride: Ride) => ride.userId === '001')).toBe(true);
   });
 
-  it('contain a ride with driver \'Dennis\'', () => {
-    expect(rideList.rides.some((ride: Ride) => ride.driver === 'Dennis')).toBe(true);
+  it('contain a ride with user \'Dennis\' and his UserId', () => {
+    expect(rideList.rides.some((ride: Ride) => ride.user === 'Dennis')).toBe(true);
+    expect(rideList.rides.some((ride: Ride) => ride.userId === '002')).toBe(true);
   });
 
   it('has two rides that have 3 available seats', () => {
@@ -210,14 +218,22 @@ describe('Ride list', () => {
     expect(rideList.rides.filter((ride: Ride) => ride.nonSmoking === false).length).toBe(1);
   });
 
+  it('has two rides with round-trip indicated', () => {
+    expect(rideList.rides.filter((ride: Ride) => ride.roundTrip === true).length).toBe(2);
+  });
+
+  it('has one ride declared one way indicated', () => {
+    expect(rideList.rides.filter((ride: Ride) => ride.roundTrip === false).length).toBe(1);
+  });
+
 
   ///////////////////////////////////////////
   ////  Does not contain certain fields   ///
   //////////////////////////////////////////
 
 
-  it('doesn\'t contain a ride with driver \'Dilbert\'', () => {
-    expect(rideList.rides.some((ride: Ride) => ride.driver === 'Dilbert')).toBe(false);
+  it('doesn\'t contain a ride with user \'Dilbert\'', () => {
+    expect(rideList.rides.some((ride: Ride) => ride.user === 'Dilbert')).toBe(false);
   });
 
   it('doesn\'t contain a ride with origin \'The Circus\'', () => {

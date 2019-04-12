@@ -9,7 +9,7 @@
 
           <mat-radio-group flex [(ngModel)]="rideDriving" formControlName="driving" required>
             <br>
-            I am...
+            {{this.rideUser}} is...
             <br>
             <br>
             <mat-radio-button id="isDrivingButton" [value] = true > driving</mat-radio-button>
@@ -24,17 +24,17 @@
 
           <br>
 
-          <mat-form-field>
-            <input name="driverField" matInput #input id="driverID" placeholder="Name"
-                   required [(ngModel)]="rideDriver" formControlName="driver">
-            <mat-error *ngFor="let validation of add_ride_validation_messages.driver">
+          <!--<mat-form-field>
+            <input name="userField" matInput #input id="userID" placeholder="Name"
+                   required [(ngModel)]="rideUser" formControlName="user">
+            <mat-error *ngFor="let validation of add_ride_validation_messages.user">
               <mat-error class="error-message"
-                         *ngIf="addRideForm.get('driver').hasError(validation.type) &&
-                       (addRideForm.get('driver').dirty || addRideForm.get('driver').touched)">
+                         *ngIf="addRideForm.get('user').hasError(validation.type) &&
+                       (addRideForm.get('user').dirty || addRideForm.get('user').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>
-          </mat-form-field>
+          </mat-form-field>-->
 
           <mat-form-field *ngIf="rideDriving">
               <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
@@ -105,11 +105,13 @@
 
           <br/>
 
-          <mat-checkbox [(ngModel)]="rideNonSmoking" id="checkboxNonSmoking" class="checkboxNonSmoking"
-                        formControlName="nonSmoking"> Non-smoking </mat-checkbox>
+          <mat-checkbox id="roundTripCheckBox" [(ngModel)]="rideRoundTrip"
+                        [ngModelOptions]="{standalone: true}">Round Trip</mat-checkbox>
+          <br/>
 
+          <mat-checkbox class="checkboxNonSmoking" id="checkboxNonSmoking" [(ngModel)]="rideNonSmoking"
+                        [ngModelOptions]="{standalone: true}">Non-smoking</mat-checkbox>
         </mat-card-content>
-
 
         <mat-card-actions layout="row">
           <button class="addRideButton" mat-raised-button id="confirmAddRideButton"  type="button" color="primary"

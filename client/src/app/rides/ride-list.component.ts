@@ -33,6 +33,10 @@ export class RideListComponent implements OnInit {
     this.rideNonSmoking = !this.rideNonSmoking
   }
 
+  public getLocalUserId() {
+    return localStorage.getItem("userId");
+  }
+
   public checkImpossibleDate(ride: Ride) {
     return (ride.departureDate.includes("3000"))
   }
@@ -96,6 +100,7 @@ export class RideListComponent implements OnInit {
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
+        console.log("These are the rides getRides got " + JSON.stringify(rides));
         this.rides = rides;
         this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving, this.rideNonSmoking);
       },
@@ -108,6 +113,7 @@ export class RideListComponent implements OnInit {
   loadService(): void {
     this.rideListService.getRides().subscribe(
       rides => {
+        console.log("Here are the rides:" + JSON.stringify(rides) );
         this.rides = rides;
       },
       err => {

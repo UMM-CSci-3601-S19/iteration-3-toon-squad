@@ -2,7 +2,8 @@ import {User} from "../users/user";
 
 export interface Ride {
   _id: string;
-  driver: string;
+  user: string;
+  userId: string;
   notes: string;
   seatsAvailable: number;
   origin: string;
@@ -10,7 +11,7 @@ export interface Ride {
   departureDate: string;
   departureTime: string;
   isDriving: boolean;
-  nonSmoking: boolean;
   roundTrip?: boolean;
+  nonSmoking: boolean;
   passengers?: User[];
 }
