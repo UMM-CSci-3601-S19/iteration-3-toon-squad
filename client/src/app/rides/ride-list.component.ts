@@ -112,7 +112,6 @@ export class RideListComponent implements OnInit {
   loadService(): void {
     this.rideListService.getRides().subscribe(
       rides => {
-        console.log("Here are the rides:" + JSON.stringify(rides) );
         this.rides = rides;
       },
       err => {
