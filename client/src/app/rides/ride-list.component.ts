@@ -33,10 +33,6 @@ export class RideListComponent implements OnInit {
     this.rideNonSmoking = !this.rideNonSmoking
   }
 
-  public userIdMatchesRide(inputId : string) {
-    return localStorage.getItem("userId") == inputId;
-  }
-
   public getLocalUserId() {
     return localStorage.getItem("userId");
   }

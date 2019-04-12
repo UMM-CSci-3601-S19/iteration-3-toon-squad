@@ -25,7 +25,7 @@
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput id="rideOrigin" #input t placeholder="Filter by origin"
+        <input matInput id="rideOrigin" #input placeholder="Filter by origin"
                (input)="rideOrigin = $event.target.value">
       </mat-form-field>
 
@@ -136,20 +136,15 @@
           </div>
 
           <div id="ride-info-driver-id-isDriving" class="ride-info driver" *ngIf="ride.isDriving">
-            <div *ngIf="userIdMatchesRide(ride.userId)" >
-               You are offering this ride
-              </div>
-            <div *ngIf="!userIdMatchesRide(ride.userId)">
-              {{userIdMatchesRide(ride.userId)}}
-              {{ride.userId}}
-              {{getLocalUserId()}}
-            </div>
+            {{ride.user}} is offering this ride
           </div>
-
-
 
           <div id="ride-info-driver-id" class="ride-info driver" *ngIf="!ride.isDriving">
             {{ride.user}} is requesting this ride
+          </div>
+
+          <div *ngIf="getLocalUserId() === ride.userId">
+            This is your ride (can you tell?)
           </div>
 
           <div id="ride-info-nonSmoking" class="ride-info driver" *ngIf="ride.nonSmoking === true">
