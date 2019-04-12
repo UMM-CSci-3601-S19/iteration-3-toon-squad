@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Ride} from './ride';
 import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
-import {RideListComponent} from "./ride-list.component";
 import {RideListService} from "./ride-list.service";
 import {Observable} from "rxjs/Observable";
 
@@ -9,7 +8,6 @@ import {Observable} from "rxjs/Observable";
   selector: 'add-ride.component',
   templateUrl: 'add-ride.component.html',
   styleUrls: ['./add-ride.component.scss'],
-  providers: [ RideListComponent],
 })
 
 export class AddRideComponent implements OnInit {
@@ -30,11 +28,12 @@ export class AddRideComponent implements OnInit {
   public rideDestination: string;
   public rideDepartureDate: string;
   public rideDepartureTime: string;
+
+  // Please leave as true for now, it's important.
+  public rideDriving: boolean = true;
+  public rideRoundTrip: boolean = false;
   public rideNonSmoking: boolean = false;
 
-
-  // Please keep this as the default value, or you will have problems with form validation / seats available as a rider.
-  public rideDriving: boolean = true;
 
 
   // Inject the RideListService into this component.
@@ -81,11 +80,11 @@ export class AddRideComponent implements OnInit {
       departureDate: this.rideDepartureDate,
       departureTime: this.rideDepartureTime,
       isDriving: this.rideDriving,
+      roundTrip: this.rideRoundTrip,
       nonSmoking: this.rideNonSmoking
     };
 
-    console.log("first print");
-    console.log(newRide);
+    console.log(" The new Ride in addRide() is " + JSON.stringify(newRide));
 
     if (newRide != null) {
       this.rideListService.addNewRide(newRide).subscribe(
@@ -108,8 +107,6 @@ export class AddRideComponent implements OnInit {
       this.refreshRides();
       this.refreshRides();
       this.refreshRides();
-    // This is the only solution to a refresh-on-addride
-      // we were having that worked consistently, it's hacky but seems to work well.
     }
   };
 
@@ -145,11 +142,8 @@ export class AddRideComponent implements OnInit {
         departureTime: new FormControl('departureTime'),
 
         notes: new FormControl('notes'),
-
-        nonSmoking: null
       })
   }
-
 
   refreshRides(): Observable<Ride[]> {
     // Get Rides returns an Observable, basically a "promise" that
@@ -160,6 +154,7 @@ export class AddRideComponent implements OnInit {
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
+        console.log("THESE ARE THE RIDES addRide Refresh got " + JSON.stringify(rides));
         this.rides = rides;
       },
       err => {
@@ -167,7 +162,6 @@ export class AddRideComponent implements OnInit {
       });
     return rides;
   }
-
 
   // IMPORTANT! This function gets called whenever the user selects 'looking for a ride'.
   //   This is so that form validator doesn't get mad for having an invalid 'rideSeats' value.
