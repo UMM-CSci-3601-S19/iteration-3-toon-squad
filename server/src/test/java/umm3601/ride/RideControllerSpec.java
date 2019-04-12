@@ -163,7 +163,9 @@ public class RideControllerSpec {
 
   @Test
   public void addRide(){
+
     String newId = rideController.addNewRide("Dave Roberts", "005","I talk a lot about math", 2,
+
       "Shopko", "UMM Science Building Parking Lot", "5/13/19", "5PM", false,
       true,true);
     // NOTE: While there are 2 seats for this 'requested ride', the controller SHOULD change it to 0
@@ -190,7 +192,9 @@ public class RideControllerSpec {
     // The point of this test is that the rideController changes any requested
     // rides to having 0 sets available.
 
+
     String newId = rideController.addNewRide("Nate Foss", "006","Good morning! How are you? ...Good.", 1,
+
       "Morris", "232 Alton Drive Miami, FL", "5/13/19", "5PM", false,
       true,true);
 

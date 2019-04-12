@@ -29,11 +29,11 @@ export class AddRideComponent implements OnInit {
   public rideDepartureDate: string;
   public rideDepartureTime: string;
 
+
   // Please leave as true for now, it's important.
   public rideDriving: boolean = true;
   public rideRoundTrip: boolean = false;
   public rideNonSmoking: boolean = false;
-
 
 
   // Inject the RideListService into this component.
