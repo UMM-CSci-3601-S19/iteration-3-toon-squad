@@ -10,7 +10,8 @@ describe('Ride list service: ', () => {
   const testRides: Ride[] = [
     {
       _id: 'chris_id',
-      driver: 'Chris',
+      user: 'Chris',
+      userId: "001",
       notes: 'These are Chris\'s ride notes',
       seatsAvailable: 3,
       origin: 'UMM',
@@ -22,7 +23,8 @@ describe('Ride list service: ', () => {
     },
     {
       _id: 'dennis_id',
-      driver: 'Dennis',
+      user: 'Dennis',
+      userId: "002",
       notes: 'These are Dennis\'s ride notes',
       seatsAvailable: 3,
       origin: 'Caribou Coffee',
@@ -34,7 +36,8 @@ describe('Ride list service: ', () => {
     },
     {
       _id: 'agatha_id',
-      driver: 'Agatha',
+      user: 'Agatha',
+      userId: "003",
       notes: 'These are Agatha\'s ride notes',
       seatsAvailable: 6,
       origin: 'UMM',
@@ -97,7 +100,8 @@ describe('Ride list service: ', () => {
     const ride_id = 'ride_id';
     const newRide: Ride = {
       _id: 'ride_id',
-      driver: 'Jesse',
+      user: 'Jesse',
+      userId: "004",
       seatsAvailable: 10,
       origin: 'UMM',
       destination: 'North Pole',

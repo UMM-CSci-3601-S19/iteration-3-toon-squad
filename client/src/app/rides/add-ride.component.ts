@@ -19,13 +19,17 @@ export class AddRideComponent implements OnInit {
 
   public addRideForm: FormGroup;
 
-  public rideDriver: string;
+  // public rideUser: string;
+  public rideUser = localStorage.getItem("userFullName");
+  public rideUserId = localStorage.getItem("userId");
   public rideNotes: string;
   public rideSeats: number;
   public rideOrigin: string;
   public rideDestination: string;
   public rideDepartureDate: string;
   public rideDepartureTime: string;
+
+  // Please leave as true for now, it's important.
   public rideDriving: boolean = true;
   public rideRoundTrip: boolean = false;
   public rideNonSmoking: boolean = false;
@@ -39,7 +43,7 @@ export class AddRideComponent implements OnInit {
 
   add_ride_validation_messages = {
 
-    'driver': [
+    'user': [
       {type: 'required', message: 'Please enter your name'},
       {type: 'minlength', message: 'Please enter your full name'},
       {type: 'pattern', message: 'Please enter a valid name'}
@@ -60,14 +64,15 @@ export class AddRideComponent implements OnInit {
     ],
 
     'driving' : [
-      {type: 'required', message: 'You must indicate whether you are the driver or not'},
+      {type: 'required', message: 'You must indicate whether you are the user or not'},
     ]
   };
 
   addRide(): void {
     const newRide: Ride = {
       _id: '',
-      driver: this.rideDriver,
+      user: this.rideUser,
+      userId: this.rideUserId,
       notes: this.rideNotes,
       seatsAvailable: this.rideSeats,
       origin: this.rideOrigin,
@@ -84,6 +89,7 @@ export class AddRideComponent implements OnInit {
     if (newRide != null) {
       this.rideListService.addNewRide(newRide).subscribe(
         result => {
+          console.log("here it is:" + result);
           this.highlightedID = result;
         },
         err => {
@@ -107,7 +113,7 @@ export class AddRideComponent implements OnInit {
   createForm() {
 
       this.addRideForm = this.fb.group({
-        driver: new FormControl('driver', Validators.compose([
+        user: new FormControl('user', Validators.compose([
           Validators.required,
           Validators.minLength(2),
           Validators.pattern('^[A-Za-z0-9\\s]+[A-Za-z0-9\\s]+$(\\.0-9+)?')
@@ -148,7 +154,6 @@ export class AddRideComponent implements OnInit {
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
-        console.log("THESE ARE THE RIDES addRide Refresh got " + JSON.stringify(rides));
         this.rides = rides;
       },
       err => {
@@ -160,7 +165,7 @@ export class AddRideComponent implements OnInit {
   // IMPORTANT! This function gets called whenever the user selects 'looking for a ride'.
   //   This is so that form validator doesn't get mad for having an invalid 'rideSeats' value.
   //   Before adding the ride to the DB, the value gets set to 0 (by the ride controller).
-  //   Also, ride-list component HTML won't display this number unless it is indeed a Driver.
+  //   Also, ride-list component HTML won't display this number unless it is indeed a User that is driving.
   setRideSeats() {
     this.rideSeats = 1;
   }

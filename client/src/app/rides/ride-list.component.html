@@ -25,7 +25,7 @@
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput id="rideOrigin" #input t placeholder="Filter by origin"
+        <input matInput id="rideOrigin" #input placeholder="Filter by origin"
                (input)="rideOrigin = $event.target.value">
       </mat-form-field>
 
@@ -62,7 +62,7 @@
     <div *ngIf="rides; else ridesError">
       <mat-card #elem class="rides"
                 *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving, rideNonSmoking)"
-      [id] = "ride.driver">
+      [id] = "ride.user">
 
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
           <mat-card-title>
@@ -136,11 +136,15 @@
           </div>
 
           <div id="ride-info-driver-id-isDriving" class="ride-info driver" *ngIf="ride.isDriving">
-            {{ride.driver}} is offering this ride
+            {{ride.user}} is offering this ride
           </div>
 
           <div id="ride-info-driver-id" class="ride-info driver" *ngIf="!ride.isDriving">
-            {{ride.driver}} is requesting this ride
+            {{ride.user}} is requesting this ride
+          </div>
+
+          <div *ngIf="getLocalUserId() === ride.userId">
+            This is your ride (can you tell?)
           </div>
 
           <div id="ride-info-tags" class="ride-info driver" >
@@ -149,12 +153,6 @@
             <mat-icon  aria-hidden="false" *ngIf="ride.roundTrip">repeat</mat-icon>
             <b *ngIf="ride.roundTrip">Round Trip</b>
           </div>
-
-
-
-
-
-
 
           <mat-divider [inset]="true" *ngIf="ride.notes"></mat-divider>
 

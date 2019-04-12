@@ -101,10 +101,8 @@ public class RideController {
     return DatabaseHelper.serializeIterable(matchingRides);
   }
 
-  public String addNewRide(String driver, String notes, int seatsAvailable, String origin, String destination,
+  public String addNewRide(String user, String userId, String notes, int seatsAvailable, String origin, String destination,
                            String departureDate, String departureTime, boolean isDriving, boolean roundTrip, boolean nonSmoking) {
-
-    System.out.println("Depart date is:" + departureDate);
 
     if (!isDriving) {
       seatsAvailable = 0;
@@ -119,7 +117,8 @@ public class RideController {
     }
 
     Document newRide = new Document();
-    newRide.append("driver", driver);
+    newRide.append("user", user);
+    newRide.append("userId", userId);
     newRide.append("notes", notes);
     newRide.append("seatsAvailable", seatsAvailable);
     newRide.append("origin", origin);
@@ -133,9 +132,10 @@ public class RideController {
     try {
       rideCollection.insertOne(newRide);
       ObjectId id = newRide.getObjectId("_id");
-      System.err.println("Successfully added new ride [_id=" + id + ", driver=" + driver + ", notes=" + notes +
-        ", seatsAvailable=" + seatsAvailable + ", origin=" + origin + ", destination=" + destination + ", departureDate=" + departureDate +
-        ", departureTime=" + departureTime + ", isDriving=" + isDriving + ", roundTrip=" + roundTrip + ", nonSmoking=" + nonSmoking + ']');
+      System.err.println("Successfully added new ride [_id=" + id + ", user=" + user + ", userId=" +
+        userId + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable + ", origin=" + origin +
+        ", destination=" + destination + ", departureDate=" + departureDate + ", departureTime=" + departureTime +
+        ", isDriving=" + isDriving + ", roundTrip=" + roundTrip + ", nonSmoking=" + nonSmoking + ']');
       return id.toHexString();
     } catch (MongoException me) {
       me.printStackTrace();
