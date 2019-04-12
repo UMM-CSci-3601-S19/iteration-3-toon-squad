@@ -7,12 +7,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
-import {UserComponent} from './users/user.component';
 
 import {RideListComponent} from "./rides/ride-list.component";
-import {UserListComponent} from './users/user-list.component';
 
-import {UserListService} from './users/user-list.service';
 import {RideListService} from './rides/ride-list.service';
 import {AppService} from "./app.service";
 import {AppAuthGuard} from "./app.authGuard";
@@ -22,7 +19,6 @@ import {APP_BASE_HREF} from '@angular/common';
 
 import {CustomModule} from './custom.module';
 
-import {AddUserComponent} from './users/add-user.component';
 import {AddRideComponent} from './rides/add-ride.component';
 
 import {MatCardModule} from '@angular/material/card';
@@ -45,18 +41,15 @@ import {MatCheckboxModule}  from "@angular/material/checkbox";
   declarations: [
     AppComponent,
     HomeComponent,
-    UserListComponent,
     RideListComponent,
-    UserComponent,
-    AddUserComponent,
     AddRideComponent,
   ],
   providers: [
-    UserListService, RideListService, AppService, AppAuthGuard,
+    RideListService, AppService, AppAuthGuard,
     {provide: APP_BASE_HREF, useValue: '/'},
   ],
   entryComponents: [
-    AddUserComponent, AddRideComponent
+    AddRideComponent
   ],
   bootstrap: [AppComponent]
 })

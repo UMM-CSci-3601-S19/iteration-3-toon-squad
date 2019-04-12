@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ride} from './ride';
 import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
 import {RideListService} from "./ride-list.service";
@@ -79,9 +79,9 @@ export class AddRideComponent implements OnInit {
       destination: this.rideDestination,
       departureDate: this.rideDepartureDate,
       departureTime: this.rideDepartureTime,
-      isDriving: this.rideDriving,
       roundTrip: this.rideRoundTrip,
-      nonSmoking: this.rideNonSmoking
+      isDriving: this.rideDriving,
+      nonSmoking: this.rideNonSmoking,
     };
 
     console.log(" The new Ride in addRide() is " + JSON.stringify(newRide));

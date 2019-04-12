@@ -71,15 +71,6 @@ public class Server {
 
     get("/", clientRoute);
 
-    /// User Endpoints ///////////////////////////
-    /////////////////////////////////////////////
-
-    //List users, filtered using query parameters
-
-   /* get("api/users", userRequestHandler::getUsers);
-    get("api/users/:id", userRequestHandler::getUserJSON);
-    post("api/users/new", userRequestHandler::addNewUser);*/
-
     // RIDE ENDPOINTS'
     get("api/rides", rideRequestHandler::getRides);
     get("api/rides/:id", rideRequestHandler::getRideJSON);
