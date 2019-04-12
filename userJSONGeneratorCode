@@ -29,3 +29,6 @@ CODE
   }
 ]
 ---------------------------------------------------------------------------------------------
+
+Note: The reason _id field si not generated through this code is because, MongoDB by default creates
+       _id field and value for every item in the database.
