@@ -86,16 +86,17 @@ public class RideRequestHandler {
     String departureDate = newRide.getString("departureDate");
     String departureTime = newRide.getString("departureTime");
     boolean isDriving = newRide.getBoolean("isDriving");
+    boolean roundTrip = newRide.getBoolean("roundTrip");
     boolean nonSmoking = newRide.getBoolean("nonSmoking");
 
     System.out.println("Adding new ride [user=" + user + ", userId=" + userId + ", driving=" + isDriving +
       ", notes=" + notes + ", seatsAvailable=" + seatsAvailable +
       ", origin=" + origin + ", destination=" + destination +
-      ", departureTime=" + departureTime + ", departureDate="
-      + departureDate + ", isDriving=" + isDriving + ", nonSmoking=" + nonSmoking + ']');
+       ", departureDate=" + departureDate + ", departureTime=" + departureTime +
+      ", isDriving=" + isDriving + ", roundTrip=" + roundTrip +", nonSmoking=" + nonSmoking + ']');
 
     return rideController.addNewRide(user, userId, notes, seatsAvailable, origin, destination,
-      departureTime, departureDate, isDriving, nonSmoking);
+      departureDate, departureTime, isDriving, roundTrip, nonSmoking);
   }
 
 }
