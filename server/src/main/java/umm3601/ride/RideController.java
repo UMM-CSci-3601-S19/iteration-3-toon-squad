@@ -93,7 +93,6 @@ public class RideController {
     Bson tomorrowOrLater = gt("departureDate",nowAsISO.substring(0,10)+"T05:00:00.000Z");
     //Only shows dates that are either (today ^ (today ^ laterThanNow)) or dates after today
     Bson oldRides= or(sameDayPastTime, tomorrowOrLater);
-    System.out.println("THE OLD RIDES: " +oldRides);
 
     Bson order = orderBy(sortDate, sortTime);
 
@@ -103,7 +102,7 @@ public class RideController {
   }
 
   public String addNewRide(String driver, String notes, int seatsAvailable, String origin, String destination,
-                           String departureTime, String departureDate, Boolean isDriving, boolean nonSmoking) {
+                           String departureDate, String departureTime, boolean isDriving, boolean roundTrip, boolean nonSmoking) {
 
     System.out.println("Depart date is:" + departureDate);
 
@@ -125,18 +124,18 @@ public class RideController {
     newRide.append("seatsAvailable", seatsAvailable);
     newRide.append("origin", origin);
     newRide.append("destination", destination);
-    newRide.append("departureTime", departureTime);
     newRide.append("departureDate", departureDate);
+    newRide.append("departureTime", departureTime);
     newRide.append("isDriving", isDriving);
+    newRide.append("roundTrip", roundTrip);
     newRide.append("nonSmoking", nonSmoking);
 
     try {
       rideCollection.insertOne(newRide);
       ObjectId id = newRide.getObjectId("_id");
       System.err.println("Successfully added new ride [_id=" + id + ", driver=" + driver + ", notes=" + notes +
-        ", seatsAvailable=" + seatsAvailable + ", origin=" + origin + ", destination=" + destination +
-        ", departureTime=" + departureTime + ", departureDate=" + departureDate + ", isDriving=" + isDriving +
-        ", nonSmoking=" + nonSmoking + ']');
+        ", seatsAvailable=" + seatsAvailable + ", origin=" + origin + ", destination=" + destination + ", departureDate=" + departureDate +
+        ", departureTime=" + departureTime + ", isDriving=" + isDriving + ", roundTrip=" + roundTrip + ", nonSmoking=" + nonSmoking + ']');
       return id.toHexString();
     } catch (MongoException me) {
       me.printStackTrace();

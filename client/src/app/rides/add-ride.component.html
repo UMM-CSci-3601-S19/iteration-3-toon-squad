@@ -105,11 +105,13 @@
 
           <br/>
 
-          <mat-checkbox [(ngModel)]="rideNonSmoking" id="checkboxNonSmoking" class="checkboxNonSmoking"
-                        formControlName="nonSmoking"> Non-smoking </mat-checkbox>
+          <mat-checkbox id="roundTripCheckBox" [(ngModel)]="rideRoundTrip"
+                        [ngModelOptions]="{standalone: true}">Round Trip</mat-checkbox>
+          <br/>
 
+          <mat-checkbox class="checkboxNonSmoking" id="checkboxNonSmoking" [(ngModel)]="rideNonSmoking"
+                        [ngModelOptions]="{standalone: true}">Non-smoking</mat-checkbox>
         </mat-card-content>
-
 
         <mat-card-actions layout="row">
           <button class="addRideButton" mat-raised-button id="confirmAddRideButton"  type="button" color="primary"
