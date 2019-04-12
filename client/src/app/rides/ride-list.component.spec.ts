@@ -34,6 +34,7 @@ describe('Ride list', () => {
           departureTime: '10:00:00',
           isDriving: true,
           nonSmoking: true,
+          roundTrip: true,
         },
         {
           _id: 'dennis_id',
@@ -47,6 +48,7 @@ describe('Ride list', () => {
           departureTime: '11:30:00',
           isDriving: false,
           nonSmoking: true,
+          roundTrip: true,
         },
         {
           _id: 'agatha_id',
@@ -60,6 +62,7 @@ describe('Ride list', () => {
           departureTime: '16:30:00',
           isDriving: true,
           nonSmoking: false,
+          roundTrip: false,
         }
       ])
     };
@@ -213,6 +216,14 @@ describe('Ride list', () => {
 
   it('has one ride where non-smoking is not indicated', () => {
     expect(rideList.rides.filter((ride: Ride) => ride.nonSmoking === false).length).toBe(1);
+  });
+
+  it('has two rides with round-trip indicated', () => {
+    expect(rideList.rides.filter((ride: Ride) => ride.roundTrip === true).length).toBe(2);
+  });
+
+  it('has one ride declared one way indicated', () => {
+    expect(rideList.rides.filter((ride: Ride) => ride.roundTrip === false).length).toBe(1);
   });
 
 
