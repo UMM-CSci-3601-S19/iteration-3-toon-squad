@@ -45,13 +45,11 @@ import {MatCheckboxModule}  from "@angular/material/checkbox";
   declarations: [
     AppComponent,
     HomeComponent,
-
-    UserListComponent, RideListComponent,
-
+    UserListComponent,
+    RideListComponent,
     UserComponent,
-
-    AddUserComponent, AddRideComponent,
-
+    AddUserComponent,
+    AddRideComponent,
   ],
   providers: [
     UserListService, RideListService, AppService, AppAuthGuard,
