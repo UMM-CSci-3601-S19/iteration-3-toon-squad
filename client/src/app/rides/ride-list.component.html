@@ -143,6 +143,7 @@
             {{ride.user}} is requesting this ride
           </div>
 
+
           <div *ngIf="getLocalUserId() === ride.userId">
             This is your ride (can you tell?)
           </div>
@@ -153,6 +154,7 @@
             <mat-icon  aria-hidden="false" *ngIf="ride.roundTrip">repeat</mat-icon>
             <b *ngIf="ride.roundTrip">Round Trip</b>
           </div>
+
 
 
 

@@ -89,6 +89,7 @@ public class RideRequestHandler {
     boolean roundTrip = newRide.getBoolean("roundTrip");
     boolean nonSmoking = newRide.getBoolean("nonSmoking");
 
+
     System.out.println("Adding new ride [user=" + user + ", userId=" + userId + ", driving=" + isDriving +
       ", notes=" + notes + ", seatsAvailable=" + seatsAvailable +
       ", origin=" + origin + ", destination=" + destination +
@@ -97,6 +98,7 @@ public class RideRequestHandler {
 
     return rideController.addNewRide(user, userId, notes, seatsAvailable, origin, destination,
       departureDate, departureTime, isDriving, roundTrip, nonSmoking);
+
   }
 
 }
