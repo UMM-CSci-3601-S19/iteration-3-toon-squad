@@ -22,12 +22,32 @@ browser.driver.controlFlow().execute = function () {
   return origFn.apply(browser.driver.controlFlow(), args);
 };
 
+describe('Test round trip functionality', () => {
+  let page: RidePage;
+
+  beforeEach(() => {
+    page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+  });
+
+  it('Should see the roundtrip checkbox in addride', () => {
+    page.navigateTo();
+
+
+  });
+
+
+
+  });
+
 
 describe('Organize rides by soonest to latest', () => {
   let page: RidePage;
 
   beforeEach(() => {
     page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+
   });
 
   // The ride list SHOULD be organized with rides CLOSER TO OUR TIME at the top, and rides FURTHER FROM OUR TIME
@@ -150,6 +170,8 @@ describe('Using filters on Ride Page', () => {
 
   beforeEach(() => {
     page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+
   });
 
   it('should filter by destination', () => {
@@ -267,6 +289,8 @@ describe('Ride list', () => {
 
   beforeEach(() => {
     page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+
   });
 
   it('should get and highlight Rides title attribute ', () => {
@@ -303,6 +327,7 @@ describe('Add Ride', () => {
 
   beforeEach(() => {
     page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
     page.navigateTo();
     page.click('add-ride-button');
   });
