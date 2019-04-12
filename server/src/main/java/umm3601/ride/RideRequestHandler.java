@@ -88,7 +88,7 @@ public class RideRequestHandler {
     boolean isDriving = newRide.getBoolean("isDriving");
     boolean nonSmoking = newRide.getBoolean("nonSmoking");
 
-    System.out.println("Adding new ride [user=" + user + ", userID=" + userId + ", driving=" + isDriving +
+    System.out.println("Adding new ride [user=" + user + ", userId=" + userId + ", driving=" + isDriving +
       ", notes=" + notes + ", seatsAvailable=" + seatsAvailable +
       ", origin=" + origin + ", destination=" + destination +
       ", departureTime=" + departureTime + ", departureDate="

@@ -102,7 +102,7 @@ public class RideController {
     return DatabaseHelper.serializeIterable(matchingRides);
   }
 
-  public String addNewRide(String user, String userID, String notes, int seatsAvailable, String origin, String destination,
+  public String addNewRide(String user, String userId, String notes, int seatsAvailable, String origin, String destination,
                            String departureTime, String departureDate, Boolean isDriving, boolean nonSmoking) {
 
     if (!isDriving) {
@@ -119,7 +119,7 @@ public class RideController {
 
     Document newRide = new Document();
     newRide.append("user", user);
-    newRide.append("userID", userID);
+    newRide.append("userId", userId);
     newRide.append("notes", notes);
     newRide.append("seatsAvailable", seatsAvailable);
     newRide.append("origin", origin);
@@ -132,8 +132,8 @@ public class RideController {
     try {
       rideCollection.insertOne(newRide);
       ObjectId id = newRide.getObjectId("_id");
-      System.err.println("Successfully added new ride [_id=" + id + ", user=" + user + ", userID=" +
-        userID + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable + ", origin=" + origin +
+      System.err.println("Successfully added new ride [_id=" + id + ", user=" + user + ", userId=" +
+        userId + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable + ", origin=" + origin +
         ", destination=" + destination + ", departureTime=" + departureTime + ", departureDate=" + departureDate +
         ", isDriving=" + isDriving + ", nonSmoking=" + nonSmoking + ']');
       return id.toHexString();
