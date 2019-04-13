@@ -1,0 +1,241 @@
+The app.component grabs userFullName from local storage, and assigns it to an
+attribute called userFullName (belongs to app component).
+
+THe ride-list component HTML has the following...
+
+'''
+///////////////////////////////
+// Ride list component HTML ///
+///////////////////////////////
+
+<mat-menu #menu="matMenu" >
+
+ /// So the button below calls openEditDialog, and passes in parameter from the current ride in the card... ///
+
+  <button mat-menu-item (click)="openEditDialog(ride._id, ride.driver, ride.destination,
+   ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)" >
+      <span>Edit Ride</span>
+   </button>
+
+   <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+      <span>Delete Ride</span>
+   </button>
+
+</mat-menu>
+
+'''
+
+Ride-list component has a method openEditDialog....
+
+'''
+/////////////////////////////
+// Ride list component TS //
+///////////////////////////
+
+openEditDialog(currentId: object,currentDriver: string, currentDestination: string, currentOrigin: string, currentRoundTrip: boolean, currentDriving: boolean, currentDepartureDate: string, currentDepartureTime: string, currentNotes: string): void {
+    const currentRide: Ride = {
+      _id: currentId,
+      driver: this.appComponent.getUsername(),
+      destination: currentDestination,
+      origin: currentOrigin,
+      roundTrip: currentRoundTrip,
+      driving: currentDriving,
+      departureDate: currentDepartureDate,
+      departureTime: currentDepartureTime,
+      notes: currentNotes
+    };
+
+    // This opens a dialog box populated with a editRideComponent, and the data 'currentRide' created above
+
+    const dialogRef = this.dialog.open(EditRideComponent, {
+      width: '500px',
+      data: {ride: currentRide}
+    });
+
+
+    // after closing dialog box...
+
+    dialogRef.afterClosed().subscribe(currentRide => {
+      if (currentRide != null) {
+
+        // Passes the info to ride-list service (see below)
+
+        this.rideListService.editRide(currentRide).subscribe(
+          result => {
+            this.highlightedDestination = result;
+            this.refreshRides();
+            console.log('The currentRide or dialogResult was ' + JSON.stringify(currentRide));
+          },
+          err => {
+            console.log('There was an error editing the ride.');
+            console.log('The currentRide or dialogResult was error ' + JSON.stringify(currentRide));
+            console.log('The error was ' + JSON.stringify(err));
+          });
+      }
+    });
+  }
+
+'''
+////////////////////////
+// ride-list service ///
+////////////////////////
+
+
+editRide(editedRide: Ride): Observable<string> {
+
+    ////////////////////////////////////////////////////
+    // not sure about the significance of this... //////
+    ////////////////////////////////////////////////////
+
+    console.log("The edited Time NON FORMAT and passed was " + editedRide.departureTime);
+
+    this.hour = editedRide.departureTime.split(":",2)[0];
+    this.minute = editedRide.departureTime.split(":",2)[1];
+
+    console.log("The hour is " + this.hour );
+    console.log("The minute is " + this.minute);
+
+    if(this.minute.includes("PM")){
+      this.hour = (parseInt(this.hour) + 12).toString();
+    }
+
+    if(this.minute.includes("AM")){
+      if(parseInt(this.hour)<10){
+        this.hour = "0" + this.hour;
+      }
+    }
+
+    this.minute = this.minute.replace(" PM","");
+    this.minute = this.minute.replace(" AM","");
+
+    editedRide.departureTime = this.hour + ":" + this.minute;
+
+    console.log("The edited Time formatted and passed was " + editedRide.departureTime);
+
+    //////////////////////////////////////////
+    //// end of the time/date parsing ////////
+    //////////////////////////////////////////
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      responseType: 'text' as 'json'
+    };
+
+    /////////////////////////////////////////////////////
+    ///// This goes to the server (see below) ///////////
+    /////////////////////////////////////////////////////
+
+    return this.http.post<string>(this.rideUrl + '/update', editedRide, httpOptions);
+  }
+
+'''
+
+//////////////////////
+////  Server  ////////
+//////////////////////
+
+  post("api/rides/update", rideRequestHandler::updateRide);
+
+  /// self explanatory.... ///
+
+
+```
+
+//////////////////////////
+/// Ride req handler ////
+/////////////////////////
+
+public Boolean updateRide(Request req, Response res) {
+    res.type("application/json");
+
+    Document editRide = Document.parse(req.body());
+
+    String id = editRide.getObjectId("_id").toHexString();
+    String driver = editRide.getString("driver");
+    String destination = editRide.getString("destination");
+    String origin = editRide.getString("origin");
+    Boolean roundTrip = editRide.getBoolean("roundTrip");
+    Boolean driving = editRide.getBoolean("driving");
+    String departureDate = parseDate(editRide.getString("departureDate"));
+
+    String departureTime = parseTime(editRide.getString("departureTime"));
+    String notes = editRide.getString("notes");
+
+    String sortingDate = editRide.getString("departureDate");
+    System.err.println(" This is with the parse in editing " + departureTime);
+    String sortingTime = editRide.getString("departureTime");
+    System.err.println(" This is without the parse in editing " + sortingTime);
+
+    String sortDateTime =  parseDateSorting(sortingDate)+parseColon(sortingTime);
+
+    System.err.println("Editing ride [id=" + id + " driver=" + driver + " destination=" + destination + " origin=" + origin + " roundTrip=" + roundTrip + " driving=" + driving
+      + " departureDate=" + departureDate + " departureTime=" + departureTime + " notes=" + notes + " sortDateTime=" + sortDateTime + ']');
+
+    return rideController.updateRide(id, driver, destination, origin, roundTrip, driving, departureDate, departureTime, notes, sortDateTime);
+  }
+
+```
+
+/////////////////////////
+///  Ride controller ////
+/////////////////////////
+
+Boolean updateRide(String id, String driver, String destination, String origin, Boolean roundTrip, Boolean driving,
+    String departureDate, String departureTime, String notes, String sortDateTime)
+
+    {
+
+    // Create new ObjectId from the id passed in
+    ObjectId objId = new ObjectId(id);
+
+    // Create a filter for to match any current documents that match the id passed in
+    Document filter = new Document("_id", objId);
+
+    //
+    Document updateFields = new Document();
+    updateFields.append("driver", driver);
+    updateFields.append("destination", destination);
+    updateFields.append("origin", origin);
+    updateFields.append("driving", driving);
+    updateFields.append("roundTrip", roundTrip);
+    updateFields.append("departureDate", departureDate);
+    updateFields.append("departureTime", departureTime);
+    updateFields.append("notes", notes);
+    updateFields.append("sortDateTime", sortDateTime);
+
+
+    Document updateDoc = new Document("$set", updateFields);
+
+    try{
+
+      // Find the doc that matches 'filter', and update with the updateDoc fields
+      UpdateResult out = rideCollection.updateOne(filter, updateDoc);
+
+      //returns false if no documents were modified, true otherwise
+      return out.getModifiedCount() != 0;
+    }
+
+    catch(MongoException e){
+      e.printStackTrace();
+      return false;
+    }
+
+  }
+
+///////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
