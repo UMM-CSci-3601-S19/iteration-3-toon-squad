@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {RideListService} from './ride-list.service';
 import {Ride} from './ride';
 import {Observable} from 'rxjs/Observable';
+import {AppComponent} from "../app.component";
+import {MatDialog} from "@angular/material";
+import {EditRideComponent} from "./edit-ride.component";
 
 @Component({
   selector: 'ride-list-component',
@@ -20,9 +23,10 @@ export class RideListComponent implements OnInit {
   public rideOrigin: string;
   public rideDriving: boolean;
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
+  private highlightedDestination: string = '';
 
   // Inject the RideListService into this component.
-  constructor(public rideListService: RideListService) {
+  constructor(public appComponent: AppComponent, public rideListService: RideListService, public dialog: MatDialog) {
  //   rideListService.addListener(this);
   }
 
@@ -167,6 +171,45 @@ export class RideListComponent implements OnInit {
       hours=(hours.length < 10) ? '0'+hours:hours;
       return hours+ ':' + min + ' PM';
     }
+  }
+
+  openEditDialog(currentId: string, currentUser: string, currentUserId: string,
+                 currentNotes: string, currentSeatsAvailable: number,
+                 currentOrigin: string, currentDestination: string,
+                 currentDepartureDate: string, currentDepartureTime: string,
+                 currentIsDriving: boolean, currentRoundTrip: boolean, currentNonSmoking : boolean
+                  ): void {
+
+    const currentRide: Ride = {
+      _id: currentId, user: localStorage.getItem("userFullName"), userId: localStorage.getItem("userId"),
+      notes: currentNotes, seatsAvailable:  currentSeatsAvailable,
+      origin: currentOrigin, destination: currentDestination,
+      departureDate: currentDepartureDate, departureTime: currentDepartureTime,
+      isDriving: currentIsDriving, roundTrip: currentRoundTrip, nonSmoking: currentNonSmoking
+    };
+
+    const dialogRef = this.dialog.open(EditRideComponent, {
+      width: '500px',
+      data: {ride: currentRide}
+    });
+
+
+    dialogRef.afterClosed().subscribe(currentRide => {
+      if (currentRide != null) {
+
+        this.rideListService.editRide(currentRide).subscribe(
+          result => {
+            this.highlightedDestination = result;
+            this.refreshRides();
+            console.log('The currentRide or dialogResult was ' + JSON.stringify(currentRide));
+          },
+          err => {
+            console.log('There was an error editing the ride.');
+            console.log('The currentRide or dialogResult was error ' + JSON.stringify(currentRide));
+            console.log('The error was ' + JSON.stringify(err));
+          });
+      }
+    });
   }
 
 }

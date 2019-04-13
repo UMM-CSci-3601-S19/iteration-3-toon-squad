@@ -40,7 +40,6 @@
         <mat-radio-button id="isNotDrivingButton" [value] = false (click)="rideDriving = $event.target.value">
           <mat-icon style="color: blue"> transfer_within_a_station </mat-icon> riders
         </mat-radio-button>
-
       </mat-radio-group>
 
       <br/>
@@ -62,9 +61,34 @@
     <div *ngIf="rides; else ridesError">
       <mat-card #elem class="rides"
                 *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving, rideNonSmoking)"
-      [id] = "ride.user">
+                [id] = "ride.user">
+
+
 
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
+
+          <button mat-icon-button [matMenuTriggerFor]="menu" id="settings" class="card-top-right-button">
+            <mat-icon class="dots">more_vert</mat-icon>
+          </button>
+
+          <mat-menu #menu="matMenu">
+            /// This button should show edit/delete ride  IF the ride belongs to you ///
+            <div *ngIf="getLocalUserId() === ride.userId">
+
+              <button mat-menu-item (click)="openEditDialog(ride._id, ride.driver, ride.destination,
+              ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)" >
+
+                <span>Edit Ride</span>
+
+              </button>
+
+              <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+                <span>Delete Ride</span>
+              </button>
+
+            </div>
+          </mat-menu>
+
           <mat-card-title>
             <div class="departure-time">
 
@@ -97,13 +121,39 @@
               <small *ngIf="ride.seatsAvailable === 1"> {{ride.seatsAvailable}} SEAT LEFT </small>
               <small *ngIf="ride.seatsAvailable > 1"> {{ride.seatsAvailable}} SEATS LEFT </small>
             </div>
+
           </mat-card-title>
         </mat-card-header>
 
         <mat-card-header *ngIf="!ride.isDriving" class="ride-title-isNotDriving" [id]="ride._id.$oid">
+
+          <button mat-icon-button [matMenuTriggerFor]="menu" id="settings" class="card-top-right-button">
+            <mat-icon class="dots">more_vert</mat-icon>
+          </button>
+
+          <mat-menu #menu="matMenu">
+            /// This button should show edit/delete ride  IF the ride belongs to you ///
+            <div *ngIf="getLocalUserId() === ride.userId">
+
+              <button mat-menu-item (click)="openEditDialog(ride._id, ride.driver, ride.destination,
+              ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)" >
+
+                <span>Edit Ride</span>
+
+              </button>
+
+              <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+                <span>Delete Ride</span>
+              </button>
+
+            </div>
+          </mat-menu>
+
           <mat-card-title>
             <div class="departure-time">
+
               <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
+
               <span *ngIf="ride.departureDate">
                 <span *ngIf="!checkImpossibleDate(ride)">
                   {{this.dateParse(ride.departureDate)}}
@@ -124,11 +174,13 @@
                  unspecified time
                 </span>
               </span>
+
             </div>
           </mat-card-title>
         </mat-card-header>
 
         <mat-card-content>
+
           <div class="route">
             <div class="ride-info origin">{{ride.origin}}</div>
             <mat-icon>play_arrow</mat-icon>
@@ -143,7 +195,6 @@
             {{ride.user}} is requesting this ride
           </div>
 
-
           <div *ngIf="getLocalUserId() === ride.userId">
             This is your ride (can you tell?)
           </div>
@@ -155,28 +206,23 @@
             <b *ngIf="ride.roundTrip">Round Trip</b>
           </div>
 
-
-
-
-
-
-
-
           <mat-divider [inset]="true" *ngIf="ride.notes"></mat-divider>
 
           <div  *ngIf="ride.notes" class="ride-info notes">
             <small>DRIVER NOTES:</small>
             <div>{{ride.notes}}</div>
           </div>
+
         </mat-card-content>
+
       </mat-card>
     </div>
 
     <ng-template #ridesError>
-        <mat-error>
-          There was a problem loading the rides. Possibly the server is down or perhaps there are network
-          issues.
-        </mat-error>
-      </ng-template>
+      <mat-error>
+        There was a problem loading the rides. Possibly the server is down or perhaps there are network
+        issues.
+      </mat-error>
+    </ng-template>
   </div>
 </div>

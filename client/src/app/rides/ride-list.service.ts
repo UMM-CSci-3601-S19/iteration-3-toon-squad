@@ -35,4 +35,17 @@ export class RideListService {
     // Send post request to add a new user with the user data as the body with specified headers.
     return this.http.post<string>(this.rideUrl + '/new', newRide, httpOptions);
   }
+
+  editRide(editedRide: Ride): Observable<string> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      responseType: 'text' as 'json'
+    };
+
+    return this.http.post<string>(this.rideUrl + '/update', editedRide, httpOptions);
+  }
+
 }
