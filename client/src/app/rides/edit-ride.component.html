@@ -1,0 +1,83 @@
+<div class="edit-ride">
+
+  <form [formGroup]="editRideForm">
+    <h2 mat-dialog-title>Edit Your Ride</h2>
+
+    <mat-dialog-content layout="column">
+
+      <mat-form-field flex>
+        <input matInput #input id="originField" placeholder="Origin" [(ngModel)]="data.ride.origin" formControlName="origin"
+               required>
+        <mat-error *ngFor="let validation of edit_ride_validation_messages.origin">
+          <mat-error class="error-message" id="origin-error"
+                     *ngIf="editRideForm.get('origin').hasError(validation.type) && (editRideForm.get('origin').dirty || editRideForm.get('origin').touched)">
+            {{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field flex>
+        <input matInput #input id="destinationField" placeholder="Destination" [(ngModel)]="data.ride.destination" formControlName="destination"
+               required [maxLength]="50">
+        <mat-error *ngFor="let validation of edit_ride_validation_messages.destination">
+          <mat-error class="error-message" id="destination-error"
+                     *ngIf="editRideForm.get('destination').hasError(validation.type) && (editRideForm.get('destination').dirty || editRideForm.get('destination').touched)">
+            {{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-divider></mat-divider>
+      <p></p>
+
+      <mat-form-field flex>
+        <input type="time" matInput #input id="departureTimeField" placeholder="Departure Time" [(ngModel)]="data.ride.departureTime" formControlName="departureTime"
+               required>
+        <mat-error *ngFor="let validation of edit_ride_validation_messages.departureTime">
+          <mat-error class="error-message" id="departureTime-error"
+                     *ngIf="editRideForm.get('departureTime').hasError(validation.type) && (editRideForm.get('departureTime').dirty || editRideForm.get('departureTime').touched)">
+            {{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field flex>
+
+        <input id="departureDateField" matInput [matDatepicker]="picker" placeholder="Departure Date" [(ngModel)]="data.ride.departureDate" formControlName="departureDate"
+               required [maxLength]="0">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngFor="let validation of edit_ride_validation_messages.departureDate">
+          <mat-error class="error-message" id="departureDate-error"
+                     *ngIf="editRideForm.get('departureDate').hasError(validation.type) && (editRideForm.get('departureDate').dirty || editRideForm.get('departureDate').touched)">
+            {{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field flex>
+        <input matInput #input id="notesField" placeholder="Notes" [(ngModel)]="data.ride.notes" formControlName="notes" [maxLength]="50">
+        <mat-error *ngFor="let validation of edit_ride_validation_messages.notes">
+          <mat-error class="error-message" id="notes-error"
+                     *ngIf="editRideForm.get('notes').hasError(validation.type) && (editRideForm.get('notes').dirty || editRideForm.get('notes').touched)">
+            {{validation.message}}
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <div>
+        <mat-checkbox name ="roundTripStatus" ngDefaultControl [(ngModel)]="data.ride.roundTrip" [ngModelOptions]="{standalone: true}" >Round Trip</mat-checkbox>
+        <mat-checkbox name ="drivingStatus" ngDefaultControl [(ngModel)]="data.ride.driving" [ngModelOptions]="{standalone: true}" >Driving</mat-checkbox>
+      </div>
+
+
+
+
+    </mat-dialog-content>
+    <mat-dialog-actions layout="row">
+      <button mat-raised-button id="confirmEditRideButon" [mat-dialog-close]="data.ride" type="button" color="primary"
+              [disabled]="!editRideForm.valid">Edit Ride
+      </button>
+
+      <button mat-raised-button id="exitWithoutAddingButton" [mat-dialog-close]="null" type="button">Cancel</button>
+    </mat-dialog-actions>
+  </form>
+</div>
+
