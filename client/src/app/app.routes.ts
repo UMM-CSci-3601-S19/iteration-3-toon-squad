@@ -11,7 +11,8 @@ import {AppAuthGuard} from "./app.authGuard";
 export const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'rides', component: RideListComponent, canActivate: [AppAuthGuard]},
-  {path: 'addride', component: AddRideComponent,canActivate: [AppAuthGuard]}
+  {path: 'addride', component: AddRideComponent,canActivate: [AppAuthGuard]},
+  {path: 'profile', component: AddRideComponent, canActivate: [AppAuthGuard]}
 
 ];
 
