@@ -24,7 +24,7 @@ CODE
 
         return `${this.fullName.split(' ')[0]}`;
       },
-      phone: '{{phone("(xxx)xxx-xxxx")}}',
+      phone: '{{phone("(xxx) xxx-xxxx")}}',
     }
   }
 ]
