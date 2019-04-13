@@ -26,6 +26,19 @@ public class UserController {
     userCollection = database.getCollection("users");
   }
 
+  public String getUser(String id) {
+    FindIterable<Document> jsonUsers = userCollection.find(eq("_id", new ObjectId(id)));
+
+    Iterator<Document> iterator = jsonUsers.iterator();
+    if (iterator.hasNext()) {
+      Document user = iterator.next();
+      return user.toJson();
+    } else {
+      // We didn't find the desired user
+      return null;
+    }
+  }
+
   public String addNewUser(String userId, String email, String fullName, String pictureUrl, String lastName, String firstName) {
 
     Document filterDoc = new Document();
