@@ -1,14 +1,33 @@
+<title>MoRide - Profile</title>
 <div layout-gt-sm="row">
-  <div flex-gt-sm="80" flex-offset-gt-sm="10">
-    <mat-card>
-      <mat-card-title>Hello Profile Page</mat-card-title>
-      <mat-card-subtitle>this is a profile</mat-card-subtitle>
-      <mat-divider></mat-divider>
-      <mat-card-content>
 
+  <div flex-gt-sm="50" flex-offset-gt-sm="25">
+    <h1 id="profile-title">Profile Page</h1>
+    <mat-divider></mat-divider>
 
+    <br>
 
-      </mat-card-content>
-    </mat-card>
+    <div *ngIf="profile; else profileError">
+      <mat-card #elem class="profile" [id] = "profile._id.$oid">
+        <mat-card-title>{{profile.fullName}}</mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-content class="profileContent">
+          <div>
+          {{profile.email}}<br><br>{{profile.phone}}<br><br>{{profile.userId}}
+          </div>
+        <div>
+        <img src="{{profile.pictureUrl}}">
+        </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <ng-template #profileError>
+      <mat-error>
+        There was a problem loading the profile. Possibly the server is down or perhaps there are network
+        issues.
+      </mat-error>
+    </ng-template>
   </div>
 </div>
+

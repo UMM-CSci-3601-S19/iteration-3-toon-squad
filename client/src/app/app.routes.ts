@@ -14,7 +14,6 @@ export const routes: Routes = [
   {path: 'rides', component: RideListComponent, canActivate: [AppAuthGuard]},
   {path: 'addride', component: AddRideComponent,canActivate: [AppAuthGuard]},
   {path: 'profile', component: ProfileComponent, canActivate: [AppAuthGuard]}
-
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

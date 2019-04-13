@@ -11,6 +11,7 @@ import {HomeComponent} from './home/home.component';
 import {RideListComponent} from "./rides/ride-list.component";
 
 import {RideListService} from './rides/ride-list.service';
+import {UserListService} from "./users/user.service";
 import {AppService} from "./app.service";
 import {AppAuthGuard} from "./app.authGuard";
 
@@ -47,7 +48,7 @@ import {ProfileComponent} from "./users/profile.component";
     ProfileComponent
   ],
   providers: [
-    RideListService, AppService, AppAuthGuard,
+    RideListService, AppService, AppAuthGuard, UserListService,
     {provide: APP_BASE_HREF, useValue: '/'},
   ],
   entryComponents: [
