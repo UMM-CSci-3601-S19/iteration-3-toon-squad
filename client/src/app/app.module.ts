@@ -24,6 +24,7 @@ import {AddRideComponent} from './rides/add-ride.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule}  from "@angular/material/checkbox";
+import {ProfileComponent} from "./users/profile.component";
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {MatCheckboxModule}  from "@angular/material/checkbox";
     HomeComponent,
     RideListComponent,
     AddRideComponent,
+    ProfileComponent
   ],
   providers: [
     RideListService, AppService, AppAuthGuard,
