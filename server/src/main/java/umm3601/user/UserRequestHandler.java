@@ -16,17 +16,17 @@ public class UserRequestHandler {
 
   public String getUserJSON(Request req, Response res) {
     res.type("application/json");
-    String id = req.params("id");
-    System.err.println("The id req params got was is " + id);
+    String userId = req.params("id");
+    System.err.println("The user userId req params got is " + userId);
     String user;
     try {
-      user = userController.getUser(id);
+      user = userController.getUser(userId);
     } catch (IllegalArgumentException e) {
       // This is thrown if the ID doesn't have the appropriate
       // form for a Mongo Object ID.
       // https://docs.mongodb.com/manual/reference/method/ObjectId/
       res.status(400);
-      res.body("The requested user id " + id + " wasn't a legal Mongo Object ID.\n" +
+      res.body("The requested user userId " + userId + " wasn't a legal Mongo Object ID.\n" +
         "See 'https://docs.mongodb.com/manual/reference/method/ObjectId/' for more info.");
       return "";
     }
@@ -34,7 +34,7 @@ public class UserRequestHandler {
       return user;
     } else {
       res.status(404);
-      res.body("The requested user with id " + id + " was not found");
+      res.body("The requested user with userId " + userId + " was not found");
       return "";
     }
   }

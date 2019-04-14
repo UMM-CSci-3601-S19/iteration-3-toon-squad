@@ -26,10 +26,10 @@ public class UserController {
     userCollection = database.getCollection("users");
   }
 
-  public String getUser(String id) {
-    FindIterable<Document> jsonUsers = userCollection.find(eq("_id", new ObjectId(id)));
+  public String getUser(String userId) {
+    FindIterable<Document> jsonUser = userCollection.find(eq("userId", userId));
 
-    Iterator<Document> iterator = jsonUsers.iterator();
+    Iterator<Document> iterator = jsonUser.iterator();
     if (iterator.hasNext()) {
       Document user = iterator.next();
       return user.toJson();
