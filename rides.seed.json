@@ -3,13 +3,15 @@
     "_id": {
       "$oid": "5c832bec26656a20be5ec19a"
     },
-    "driver": "Jimmie Future",
+    "user": "Jimmie Future",
+    "userId": "001",
     "notes": "Eiusmod laboris commodo sint cupidatat pariatur proident qui dolor cillum sit adipisicing veniam. Cupidatat mollit et anim ut labore tempor quis.",
     "seatsAvailable": 4,
     "origin": "2046 Neptune Court, Wright, IA 64892",
     "destination": "9782 Henry Street, Hannasville, IA 20609",
-    "departureDate": "2019-04-10T05:00:00.000Z",
+    "departureDate": "2019-05-11T05:00:00.000Z",
     "departureTime": "16:21",
+    "roundTrip": true,
     "isDriving": true,
     "nonSmoking": false
   },
@@ -17,13 +19,15 @@
     "_id": {
       "$oid": "5c832bec201270bd881ace79"
     },
-    "driver": "Hollie Past",
+    "user": "Hollie Past",
+    "userId": "002",
     "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
     "seatsAvailable": 1,
     "origin": "8631 Hudson Avenue, Crayne, IA 98438",
     "destination": "1660 Judge Street, Winston, SD 44478",
-    "departureDate": "2019-04-10T05:00:00.000Z",
+    "departureDate": "2019-05-11T05:00:00.000Z",
     "departureTime": "16:19",
+    "roundTrip": false,
     "isDriving": true,
     "nonSmoking": true
 
@@ -33,13 +37,15 @@
     "_id": {
       "$oid": "5c832bec201270bd881ace78"
     },
-    "driver": "Kyle Foss",
+    "user": "Kyle Foss",
+    "userId": "003",
     "notes": "Occaecat reprehenderit do exercitation laborum. Dolore culpa ut veniam ipsum fugiat voluptate excepteur labore laborum ad Lorem sint aute.",
     "seatsAvailable": -1,
     "origin": "8631 Hudson Avenue, Crayne, IA 98438",
     "destination": "1660 Judge Street, Winston, SD 44478",
     "departureDate": "2019-05-10T05:00:00.000Z",
     "departureTime": "13:01",
+    "roundTrip": false,
     "isDriving": false,
     "nonSmoking": true
 
@@ -49,13 +55,15 @@
     "_id": {
       "$oid": "5c832bec56c6090da1ba8708"
     },
-    "driver": "Shelby Present",
+    "user": "Shelby Present",
+    "userId": "004",
     "notes": "Anim irure incididunt est aliquip duis elit. Nulla non aliqua sit ut labore qui id eiusmod laboris adipisicing deserunt aliquip.",
     "seatsAvailable": 1,
     "origin": "7726 Franklin Street, Stewartville, SD 44780",
     "destination": "7989 Sheffield Avenue, Frystown, IA 51752",
-    "departureDate": "2019-04-10T05:00:00.000Z",
+    "departureDate": "2019-05-11T05:00:00.000Z",
     "departureTime": "16:20",
+    "roundTrip": false,
     "isDriving": true,
     "nonSmoking": true
 
@@ -64,23 +72,25 @@
     "_id": {
       "$oid": "5c832bec3f173391643a15f1"
     },
-    "driver": "Stanley Stuart",
+    "user": "Stanley Stuart",
+    "userId": "005",
     "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
     "seatsAvailable": 0,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
     "departureDate": "2019-03-14T05:00:00.000Z",
     "departureTime": "03:55",
+    "roundTrip": true,
     "isDriving": false,
     "nonSmoking": true
 
   },
-
   {
     "_id": {
       "$oid": "5c832bec4f173391643a16f2"
     },
-    "driver": "Michael Small",
+    "user": "Michael Small",
+    "userId": "006",
     "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
     "seatsAvailable": -1,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
@@ -90,14 +100,28 @@
     "isDriving": false,
     "roundTrip": true,
     "nonSmoking": true
-
+  },
+  {
+    "_id": {
+      "$oid": "5c832bec4f173391643a16f9"
+    },
+    "user": "Utkarsh",
+    "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
+    "seatsAvailable": 2,
+    "origin": "881 Boardwalk , Waumandee, SD 97192",
+    "destination": "8974 Cyrus Avenue, Joes, SD 96915",
+    "departureDate": "2019-09-14T05:00:00.000Z",
+    "departureTime": "03:55",
+    "isDriving": true,
+    "roundTrip": true,
+    "nonSmoking": false
   },
 
   {
     "_id": {
       "$oid": "5c832bec4f173391643a16f6"
     },
-    "driver": "Mcphee",
+    "user": "Mcphee",
     "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
     "seatsAvailable": 2,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
@@ -107,6 +131,7 @@
     "isDriving": true,
     "roundTrip": false,
     "nonSmoking": true
+
   },
 
   {
@@ -123,6 +148,7 @@
     "isDriving": true,
     "roundTrip": true,
     "nonSmoking": false
+
   }
 
 ]
