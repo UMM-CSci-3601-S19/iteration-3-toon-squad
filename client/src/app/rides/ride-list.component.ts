@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {RideListService} from './ride-list.service';
 import {Ride} from './ride';
 import {Observable} from 'rxjs/Observable';
-import {AppComponent} from "../app.component";
 import {MatDialog} from "@angular/material";
 import {EditRideComponent} from "./edit-ride.component";
 
@@ -26,7 +25,7 @@ export class RideListComponent implements OnInit {
   private highlightedDestination: string = '';
 
   // Inject the RideListService into this component.
-  constructor(public appComponent: AppComponent, public rideListService: RideListService, public dialog: MatDialog) {
+  constructor(public rideListService: RideListService, public dialog: MatDialog) {
  //   rideListService.addListener(this);
   }
 
@@ -173,20 +172,28 @@ export class RideListComponent implements OnInit {
     }
   }
 
-  openEditDialog(currentId: string, currentUser: string, currentUserId: string,
+  openEditDialog(currentId: string, currentUser: string, currentUserId : string,
                  currentNotes: string, currentSeatsAvailable: number,
                  currentOrigin: string, currentDestination: string,
-                 currentDepartureDate: string, currentDepartureTime: string,
-                 currentIsDriving: boolean, currentRoundTrip: boolean, currentNonSmoking : boolean
+                 currentDepartureDate?: string, currentDepartureTime?: string,
+                 currentIsDriving?: boolean, currentRoundTrip?: boolean, currentNonSmoking?: boolean
                   ): void {
 
+    console.log(currentDestination);
+
+    if (currentDepartureDate === "3000-01-01T05:00:00.000Z") {
+      currentDepartureDate = null;
+    }
+
     const currentRide: Ride = {
-      _id: currentId, user: localStorage.getItem("userFullName"), userId: localStorage.getItem("userId"),
+      _id: currentId, user: currentUser, userId: currentUserId,
       notes: currentNotes, seatsAvailable:  currentSeatsAvailable,
       origin: currentOrigin, destination: currentDestination,
       departureDate: currentDepartureDate, departureTime: currentDepartureTime,
       isDriving: currentIsDriving, roundTrip: currentRoundTrip, nonSmoking: currentNonSmoking
     };
+
+    console.log(currentRide);
 
     const dialogRef = this.dialog.open(EditRideComponent, {
       width: '500px',
@@ -210,6 +217,10 @@ export class RideListComponent implements OnInit {
           });
       }
     });
+  }
+
+  printCurrRide(ride : Ride) : void {
+    console.log(ride);
   }
 
 }

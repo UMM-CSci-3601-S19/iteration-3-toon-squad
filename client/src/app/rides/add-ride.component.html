@@ -4,8 +4,12 @@
     <form [formGroup]="addRideForm">
       <mat-card class="addARide">
 
+        <!--=====================================================================================-->
+
         <mat-card-title id="ride-add-title" class="rideAddTitle">Add a Ride</mat-card-title>
         <mat-card-content class="addARideContent">
+
+          <!--==========================================================================================-->
 
           <mat-radio-group flex [(ngModel)]="rideDriving" formControlName="driving" required>
             <br>
@@ -24,17 +28,7 @@
 
           <br>
 
-          <!--<mat-form-field>
-            <input name="userField" matInput #input id="userID" placeholder="Name"
-                   required [(ngModel)]="rideUser" formControlName="user">
-            <mat-error *ngFor="let validation of add_ride_validation_messages.user">
-              <mat-error class="error-message"
-                         *ngIf="addRideForm.get('user').hasError(validation.type) &&
-                       (addRideForm.get('user').dirty || addRideForm.get('user').touched)">
-                {{validation.message}}
-              </mat-error>
-            </mat-error>
-          </mat-form-field>-->
+          <!--==============================================================================================-->
 
           <mat-form-field *ngIf="rideDriving">
               <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
@@ -54,6 +48,8 @@
 
           <br/>
 
+          <!--========================================================================================================-->
+
           <mat-form-field>
             <input class="inputRideInfo" matInput #input id="originField" placeholder="Origin"
                    required [(ngModel)]="rideOrigin" formControlName="origin">
@@ -65,6 +61,8 @@
               </mat-error>
             </mat-error>
           </mat-form-field>
+
+          <!--======================================================================================================-->
 
           <mat-form-field>
             <input class="inputRideInfo" matInput #input id="destinationField" placeholder="Destination"
@@ -80,6 +78,8 @@
 
           <br/>
 
+          <!--========================================================================================================-->
+
           <mat-form-field>
             <input matInput class="inputRideInfo" id="departureDateField" [min]="minDate" [matDatepicker]="picker"
                    placeholder="Choose Departure Date" [(ngModel)]="rideDepartureDate" formControlName="departureDate">
@@ -94,12 +94,16 @@
 
           <br/>
 
+          <!--===============================================================================================-->
+
           <mat-form-field>
             <textarea class="inputRideInfo" matInput #input id="notesField" placeholder="Notes"
                       [(ngModel)]="rideNotes" formControlName="notes"></textarea>
           </mat-form-field>
 
           <br/>
+
+          <!--=====================================================================================================-->
 
           <label> I would prefer my ride to be... </label>
 
@@ -111,6 +115,9 @@
 
           <mat-checkbox class="checkboxNonSmoking" id="checkboxNonSmoking" [(ngModel)]="rideNonSmoking"
                         [ngModelOptions]="{standalone: true}">Non-smoking</mat-checkbox>
+
+          <!--=================================================================================================-->
+
         </mat-card-content>
 
         <mat-card-actions layout="row">
