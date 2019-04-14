@@ -110,6 +110,7 @@ public class UserController {
     filterDoc = filterDoc.append("userId", contentRegQuery);
 
     FindIterable<Document> matchingUsers = userCollection.find(filterDoc);
+    System.out.println("HERRREEEEEE~~~!!" + matchingUsers);
 
     if(JSON.serialize(matchingUsers).equals("[ ]")){
       ObjectId id = new ObjectId();
@@ -127,16 +128,18 @@ public class UserController {
         userCollection.insertOne(newUser);
         System.err.println("Successfully added new user [_id=" + id + ", userId=" + userId + " email=" + email + " fullName=" + fullName + " pictureUrl " + pictureUrl + " lastName " + lastName
           + " firstName " + firstName + "]");
-        // return JSON.serialize(newUser);
-        Document userInfo = new Document();
-        userInfo.append("_id", matchingUsers.first().get("_id"));
-        userInfo.append("email", matchingUsers.first().get("email"));
-        userInfo.append("fullName", matchingUsers.first().get("fullName"));
-        userInfo.append("pictureUrl", matchingUsers.first().get("pictureUrl"));
-        userInfo.append("lastName", matchingUsers.first().get("lastName"));
-        userInfo.append("firstName", matchingUsers.first().get("firstName"));
+         return JSON.serialize(newUser);
 
-        return JSON.serialize(userInfo);
+//        Document userInfo = new Document();
+//        userInfo.append("_id", matchingUsers.first().get("_id"));
+//        userInfo.append("userId", matchingUsers.first().get("userId"));
+//        userInfo.append("email", matchingUsers.first().get("email"));
+//        userInfo.append("fullName", matchingUsers.first().get("fullName"));
+//        userInfo.append("pictureUrl", matchingUsers.first().get("pictureUrl"));
+//        userInfo.append("lastName", matchingUsers.first().get("lastName"));
+//        userInfo.append("firstName", matchingUsers.first().get("firstName"));
+
+//        return JSON.serialize(userInfo);
 
       } catch(MongoException me) {
         me.printStackTrace();
@@ -147,6 +150,7 @@ public class UserController {
 
       Document userInfo = new Document();
       userInfo.append("_id", matchingUsers.first().get("_id"));
+      userInfo.append("userId", matchingUsers.first().get("userId"));
       userInfo.append("email", matchingUsers.first().get("email"));
       userInfo.append("fullName", matchingUsers.first().get("fullName"));
       userInfo.append("pictureUrl", matchingUsers.first().get("pictureUrl"));

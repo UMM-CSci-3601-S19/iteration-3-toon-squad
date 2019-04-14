@@ -77,7 +77,8 @@ public class RideRequestHandler {
 
     Document newRide = Document.parse(req.body());
 
-    String driver = newRide.getString("driver");
+    String user = newRide.getString("user");
+    String userId = newRide.getString("userId");
     String notes = newRide.getString("notes");
     int seatsAvailable = newRide.getInteger("seatsAvailable");
     String origin = newRide.getString("origin");
@@ -89,11 +90,15 @@ public class RideRequestHandler {
     boolean nonSmoking = newRide.getBoolean("nonSmoking");
 
 
-    System.out.println("Adding new ride [driver=" + driver + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable
-      + ", origin=" + origin + ", destination=" + destination + ", departureDate=" + departureDate + ", departureTime=" + departureTime
-      +  ", isDriving=" + isDriving + ", roundTrip=" + roundTrip + ", nonSmoking=" + nonSmoking + ']');
+    System.out.println("Adding new ride [user=" + user + ", userId=" + userId + ", driving=" + isDriving +
+      ", notes=" + notes + ", seatsAvailable=" + seatsAvailable +
+      ", origin=" + origin + ", destination=" + destination +
+       ", departureDate=" + departureDate + ", departureTime=" + departureTime +
+      ", isDriving=" + isDriving + ", roundTrip=" + roundTrip +", nonSmoking=" + nonSmoking + ']');
 
-    return rideController.addNewRide(driver, notes, seatsAvailable, origin, destination, departureDate, departureTime, isDriving, roundTrip, nonSmoking);
+    return rideController.addNewRide(user, userId, notes, seatsAvailable, origin, destination,
+      departureDate, departureTime, isDriving, roundTrip, nonSmoking);
+
   }
 
 }
