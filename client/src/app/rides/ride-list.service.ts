@@ -48,4 +48,16 @@ export class RideListService {
     return this.http.post<string>(this.rideUrl + '/update', editedRide, httpOptions);
   }
 
+  deleteRide(deleteId: String): Observable<string> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      responseType: 'text' as 'json'
+    };
+    let deleteDoc: string = "{ \"_id\": \"" + deleteId + "\"}";
+
+    return this.http.post<string>(this.rideUrl + '/remove', deleteDoc, httpOptions);
+  }
+
 }
