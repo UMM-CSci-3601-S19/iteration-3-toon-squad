@@ -4,6 +4,7 @@ import {Ride} from './ride';
 import {Observable} from 'rxjs/Observable';
 import {MatDialog} from "@angular/material";
 import {EditRideComponent} from "./edit-ride.component";
+import {DeleteRideComponent} from "./delete-ride.component";
 
 @Component({
   selector: 'ride-list-component',
@@ -213,6 +214,30 @@ export class RideListComponent implements OnInit {
           err => {
             console.log('There was an error editing the ride.');
             console.log('The currentRide or dialogResult was error ' + JSON.stringify(currentRide));
+            console.log('The error was ' + JSON.stringify(err));
+          });
+      }
+    });
+  }
+
+  openDeleteDialog(currentId: object): void {
+    console.log("openDeleteDialog");
+    const dialogRef = this.dialog.open(DeleteRideComponent, {
+      width: '500px',
+      data: {id: currentId}
+    });
+    dialogRef.afterClosed().subscribe(deletedRideId => {
+      if (deletedRideId != null) {
+        this.rideListService.deleteRide(deletedRideId).subscribe(
+          result => {
+            console.log("openDeleteDialog has gotten a result!");
+            this.highlightedDestination = result;
+            console.log("The result is " + result);
+            this.refreshRides();
+          },
+          err => {
+            console.log('There was an error deleting the ride.');
+            console.log('The id we attempted to delete was  ' + deletedRideId);
             console.log('The error was ' + JSON.stringify(err));
           });
       }
