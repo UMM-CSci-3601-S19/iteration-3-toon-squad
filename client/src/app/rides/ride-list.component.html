@@ -68,7 +68,7 @@
 
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
 
-          <button mat-icon-button [matMenuTriggerFor]="menu" id="settings" class="card-top-right-button">
+          <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsDriving" class="card-top-right-button">
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
@@ -131,7 +131,7 @@
 
         <mat-card-header *ngIf="!ride.isDriving" class="ride-title-isNotDriving" [id]="ride._id.$oid">
 
-          <button mat-icon-button [matMenuTriggerFor]="menu" id="settings" class="card-top-right-button">
+          <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsNotDriving" class="card-top-right-button">
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
