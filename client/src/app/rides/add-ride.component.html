@@ -61,7 +61,7 @@
               <mat-error class="error-message"
                          *ngIf="addRideForm.get('origin').hasError(validation.type) &&
                        (addRideForm.get('origin').dirty || addRideForm.get('origin').touched)">
-                {{validation.message}}
+                {{validation.messagefunction}}
               </mat-error>
             </mat-error>
           </mat-form-field>
