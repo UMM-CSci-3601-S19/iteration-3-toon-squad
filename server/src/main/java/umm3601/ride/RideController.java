@@ -4,6 +4,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -143,6 +144,19 @@ public class RideController {
     } catch (MongoException me) {
       me.printStackTrace();
       return null;
+    }
+  }
+
+  Boolean deleteRide(String id){
+    ObjectId objId = new ObjectId(id);
+    try{
+      DeleteResult out = rideCollection.deleteOne(new Document("_id", objId));
+      //Returns true if at least 1 document was deleted
+      return out.getDeletedCount() != 0;
+    }
+    catch(MongoException e){
+      e.printStackTrace();
+      return false;
     }
   }
 }
