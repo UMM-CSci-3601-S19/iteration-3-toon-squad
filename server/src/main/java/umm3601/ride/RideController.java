@@ -11,17 +11,13 @@ import umm3601.DatabaseHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.ascending;
-import static com.mongodb.client.model.Sorts.descending;
 import static com.mongodb.client.model.Sorts.orderBy;
 
 public class RideController {
@@ -83,7 +79,7 @@ public class RideController {
     Bson sortDate = ascending("departureDate");
     Bson sortTime = ascending("departureTime");
 
-    //filters out dates that aren't grecomater than or equal to today's date
+    //filters out dates that aren't greater than or equal to today's date
     Bson pastDate = gte("departureDate", nowAsISO.substring(0,10)+"T05:00:00.000Z");
     //filters out times that aren't greater than or equal to the current time
     Bson pastTime = gte("departureTime", nowAsISO.substring(11,16));

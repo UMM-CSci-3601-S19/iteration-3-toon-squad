@@ -4,14 +4,9 @@ import org.bson.Document;
 import spark.Request;
 import spark.Response;
 
-import java.text.DateFormatSymbols;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 public class RideRequestHandler {
 
   private final RideController rideController;
-  private String departureDateDay;
 
   public RideRequestHandler(RideController rideController) {
     this.rideController = rideController;
