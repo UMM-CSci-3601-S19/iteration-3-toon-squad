@@ -10,7 +10,7 @@ CODE
 [
   {
     'repeat(5)': {
-      userId: "'{{integer([100000000000000000000], [999999999999999999999])}}'",
+      userId: "{{integer([100000000000000000000], [999999999999999999999])}}",
       email: '{{company()}}{{integer(0,99)}}@{{random("gmail.com", "morris.umn.edu")}}',
       fullName: '{{firstName()}} {{surname()}}',
       pictureUrl: 'https://picsum.photos/200/300/?random',
