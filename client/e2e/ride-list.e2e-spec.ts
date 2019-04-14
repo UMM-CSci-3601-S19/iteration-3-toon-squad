@@ -28,6 +28,7 @@ describe('Organize rides by soonest to latest', () => {
 
   beforeEach(() => {
     page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
   });
 
   // The ride list SHOULD be organized with rides CLOSER TO OUR TIME at the top, and rides FURTHER FROM OUR TIME
@@ -150,6 +151,7 @@ describe('Using filters on Ride Page', () => {
 
   beforeEach(() => {
     page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
   });
 
   it('should filter by destination', () => {
@@ -164,7 +166,7 @@ describe('Using filters on Ride Page', () => {
     page.navigateTo();
     page.getElementById("rideOrigin").sendKeys("IA");
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(4);
+      expect(rides.length).toBe(3);
     });
   });
 
@@ -172,7 +174,7 @@ describe('Using filters on Ride Page', () => {
     page.navigateTo();
     page.click("isDrivingButton");
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(3);
+      expect(rides.length).toBe(5);
     });
   });
 
@@ -180,7 +182,7 @@ describe('Using filters on Ride Page', () => {
     page.navigateTo();
     page.click("isNotDrivingButton");
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(3);
+      expect(rides.length).toBe(2);
     });
   });
 
@@ -192,7 +194,7 @@ describe('Using filters on Ride Page', () => {
     });
     page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking OFF...
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(6);
+      expect(rides.length).toBe(7);
     });
   });
 
@@ -204,12 +206,12 @@ describe('Using filters on Ride Page', () => {
     page.navigateTo();
 
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(6);
+      expect(rides.length).toBe(7);
     });
 
     page.getElementById("rideOrigin").sendKeys("u");
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(5);
+      expect(rides.length).toBe(6);
     });
 
     page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking ON
@@ -219,12 +221,12 @@ describe('Using filters on Ride Page', () => {
 
     page.getElementById("isNotDrivingButton").click();
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(3);
+      expect(rides.length).toBe(2);
     });
 
     page.getElementById("rideDestination").sendKeys("w");
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(2);
+      expect(rides.length).toBe(1);
     });
 
     page.getElementById("rideDestination").sendKeys("8");
@@ -238,23 +240,23 @@ describe('Using filters on Ride Page', () => {
     });
 
     page.getElementById("rideDestination").click();
-    page.backspace(2) // erases input in destination
+    page.backspace(2); // erases input in destination
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(1);
     });
 
     page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking OFF...
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(2);
+      expect(rides.length).toBe(4);
     });
 
     page.getElementById("rideOrigin").click();
-    page.backspace(1) // erases input in origin field.
+    page.backspace(1); // erases input in origin field.
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(3);
+      expect(rides.length).toBe(5);
     });
 
-    page.getElementById("isNotDrivingButton").click(); // should give us our remaining three rides (offered)
+    page.getElementById("isNotDrivingButton").click(); // should give us our remaining two rides (requested)
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(3);
     });
@@ -266,7 +268,8 @@ describe('Ride list', () => {
   let page: RidePage;
 
   beforeEach(() => {
-    page = new RidePage();
+    page = new RidePage()
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
   });
 
   it('should get and highlight Rides title attribute ', () => {
@@ -303,6 +306,7 @@ describe('Add Ride', () => {
 
   beforeEach(() => {
     page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
     page.navigateTo();
     page.click('add-ride-button');
   });
@@ -312,7 +316,6 @@ describe('Add Ride', () => {
     page.click('add-ride-button');
 
     page.setIsDriving();
-    page.field('driverID').sendKeys('JohnDoe');
     page.field('notesField').sendKeys('Likes to play music. Climate control. Gregarious.');
     page.field('seatsAvailableField').sendKeys('2');
     page.field('originField').sendKeys('Morris, MN');
@@ -343,7 +346,6 @@ describe('Add Ride', () => {
 
     // We're going to add a ride with no specified data and time
     page.setIsNotDriving();
-    page.field('driverID').sendKeys('Jefferson Macaroni');
     page.field('originField').sendKeys('Washington, D.C.');
     page.field('destinationField').sendKeys('Morris, MN');
     page.click('confirmAddRideButton');
