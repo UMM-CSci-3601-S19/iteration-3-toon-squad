@@ -143,7 +143,7 @@ describe('Organize rides by soonest to latest', () => {
     });
   });
 
-})
+});
 
 
 describe('Using filters on Ride Page', () => {
@@ -377,6 +377,25 @@ describe('Add Ride', () => {
       });
     });
 
+  });
+
+});
+
+describe('Interacts with more options button (editing/deleting ride)', () => {
+  let page: RidePage;
+
+  beforeEach(() => {
+    page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+    page.navigateTo();
+  });
+
+  it('can click on the more options button (ride OFFERED)', () => {
+    page.click('settingsDriving');
+  });
+
+  it('can click on the more options button (ride REQUESTED)', () => {
+    page.click('settingsNotDriving');
   });
 
 });
