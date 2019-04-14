@@ -63,6 +63,7 @@
                 *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving, rideNonSmoking)"
                 [id] = "ride.user">
 
+        <button (click)="printCurrRide(ride)"> print ride </button>
 
 
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
@@ -75,8 +76,11 @@
             /// This button should show edit/delete ride  IF the ride belongs to you ///
             <div *ngIf="getLocalUserId() === ride.userId">
 
-              <button mat-menu-item (click)="openEditDialog(ride._id, ride.driver, ride.destination,
-              ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)" >
+              <button mat-menu-item (click)="openEditDialog(ride._id, ride.user, ride.userId,
+              ride.notes, ride.seatsAvailable,
+              ride.origin, ride.destination,
+              ride.departureDate, ride.departureTime,
+              ride.isDriving, ride.roundTrip, ride.nonSmoking)" >
 
                 <span>Edit Ride</span>
 

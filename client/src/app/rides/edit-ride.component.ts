@@ -81,6 +81,7 @@ export class EditRideComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+    console.log(this.data);
   }
 
 }
