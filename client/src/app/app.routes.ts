@@ -12,8 +12,8 @@ import {ProfileComponent} from "./users/profile.component";
 export const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'rides', component: RideListComponent, canActivate: [AppAuthGuard]},
-  {path: 'addride', component: AddRideComponent,canActivate: [AppAuthGuard]},
-  {path: 'profile', component: ProfileComponent, canActivate: [AppAuthGuard]}
+  {path: 'addride', component: AddRideComponent, canActivate: [AppAuthGuard]},
+  {path: 'profile/:id', component: ProfileComponent, canActivate: [AppAuthGuard]}
 ];
 
 export const Routing: ModuleWithProviders = RouterModule.forRoot(routes);

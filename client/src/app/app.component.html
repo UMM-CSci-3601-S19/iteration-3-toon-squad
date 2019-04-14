@@ -5,7 +5,7 @@
         <mat-icon>directions_car</mat-icon>
         Rides
         </a>
-      <a mat-list-item [routerLink]="['/profile']" (click)="layout.close()" routerLinkActive="nav-active">
+      <a mat-list-item routerLink="/profile/{{appService.userId}}" (click)="layout.close()" routerLinkActive="nav-active">
         <mat-icon>account_box</mat-icon>
         Profile
       </a>

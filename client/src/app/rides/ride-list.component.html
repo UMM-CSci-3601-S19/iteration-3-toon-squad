@@ -143,9 +143,14 @@
             {{ride.user}} is requesting this ride
           </div>
 
+          <div>
+            <a routerLink="/profile/{{ride.userId}}">
+              This is the ride's owner user id: {{ride.userId}}
+            </a>
+          </div>
 
           <div *ngIf="getLocalUserId() === ride.userId">
-            This is your ride (can you tell?)
+             This is your ride (can you tell?)
           </div>
 
           <div id="ride-info-tags" class="ride-info driver" >
