@@ -7,9 +7,9 @@
 
       <!--===============================================================================-->
 
-      <mat-radio-group flex [(ngModel)]="data.ride.isDriving" formControlName="driving" required>
+      <mat-radio-group flex [(ngModel)]="rideListService.singleRide.isDriving" formControlName="driving" required>
         <br>
-        {{data.ride.user}} is...
+        {{rideListService.singleRide.user}} is...
         <br>
         <br>
         <mat-radio-button id="editIsDrivingButton" [value] = true > driving</mat-radio-button>
@@ -26,10 +26,10 @@
 
       <!--==========================================================================================-->
 
-      <mat-form-field *ngIf="data.ride.isDriving">
+      <mat-form-field *ngIf="rideListService.singleRide.isDriving">
         <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
                placeholder="Seats Available"
-               [(ngModel)]="data.ride.seatsAvailable" formControlName="seatsAvailable">
+               [(ngModel)]="rideListService.singleRide.seatsAvailable" formControlName="seatsAvailable">
 
         <mat-error *ngIf="isDriving">
           <mat-error *ngFor="let validation of edit_ride_validation_messages.seatsAvailable">
@@ -48,7 +48,7 @@
       <!--==================================================================================================-->
 
       <mat-form-field flex>
-        <input matInput #input id="originField" placeholder="Origin" [(ngModel)]="data.ride.origin" formControlName="origin"
+        <input matInput #input id="originField" placeholder="Origin" [(ngModel)]="rideListService.singleRide.origin" formControlName="origin"
                required>
         <mat-error *ngFor="let validation of edit_ride_validation_messages.origin">
           <mat-error class="error-message" id="origin-error"
@@ -62,7 +62,7 @@
       <!--================================================================-->
 
       <mat-form-field flex>
-        <input matInput #input id="destinationField" placeholder="Destination" [(ngModel)]="data.ride.destination" formControlName="destination"
+        <input matInput #input id="destinationField" placeholder="Destination" [(ngModel)]="rideListService.singleRide.destination" formControlName="destination"
                required [maxLength]="50">
         <mat-error *ngFor="let validation of edit_ride_validation_messages.destination">
           <mat-error class="error-message" id="destination-error"
@@ -78,7 +78,7 @@
 
 
       <mat-form-field flex>
-        <input id="departureDateField" matInput [matDatepicker]="picker" placeholder="Departure Date" [(ngModel)]="data.ride.departureDate" formControlName="departureDate">
+        <input id="departureDateField" matInput [matDatepicker]="picker" placeholder="Departure Date" [(ngModel)]="rideListService.singleRide.departureDate" formControlName="departureDate">
 
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 
@@ -97,7 +97,7 @@
         <!--==================================================================-->
 
         <mat-form-field flex>
-          <input type="time" matInput #input id="departureTimeField" placeholder="Departure Time" [(ngModel)]="data.ride.departureTime" formControlName="departureTime">
+          <input type="time" matInput #input id="departureTimeField" placeholder="Departure Time" [(ngModel)]="rideListService.singleRide.departureTime" formControlName="departureTime">
 
           <mat-error *ngFor="let validation of edit_ride_validation_messages.departureTime">
             <mat-error class="error-message" id="departureTime-error"
@@ -112,7 +112,7 @@
       <!--=======================================================================-->
 
       <mat-form-field flex>
-        <textarea matInput #input id="notesField" placeholder="Notes" [(ngModel)]="data.ride.notes" formControlName="notes"></textarea>
+        <textarea matInput #input id="notesField" placeholder="Notes" [(ngModel)]="rideListService.singleRide.notes" formControlName="notes"></textarea>
 
         <mat-error *ngFor="let validation of edit_ride_validation_messages.notes">
           <mat-error class="error-message" id="notes-error"
@@ -132,18 +132,18 @@
 
       <br/>
 
-      <mat-checkbox name ="roundTripStatus" ngDefaultControl [(ngModel)]="data.ride.roundTrip" [ngModelOptions]="{standalone: true}" >Round Trip</mat-checkbox>
+      <mat-checkbox name ="roundTripStatus" ngDefaultControl [(ngModel)]="rideListService.singleRide.roundTrip" [ngModelOptions]="{standalone: true}" >Round Trip</mat-checkbox>
 
       <br/>
 
-      <mat-checkbox name ="nonSmokingStatus" ngDefaultControl [(ngModel)]="data.ride.nonSmoking" [ngModelOptions]="{standalone: true}" >Non-smoking</mat-checkbox>
+      <mat-checkbox name ="nonSmokingStatus" ngDefaultControl [(ngModel)]="rideListService.singleRide.nonSmoking" [ngModelOptions]="{standalone: true}" >Non-smoking</mat-checkbox>
 
       <!--====================================================================================-->
 
     </mat-dialog-content>
 
     <mat-dialog-actions layout="row">
-      <button mat-raised-button id="confirmEditRideButon" [mat-dialog-close]="data.ride" type="button" color="primary"
+      <button mat-raised-button id="confirmEditRideButon" [mat-dialog-close]="rideListService.singleRide" type="button" color="primary"
               [disabled]="!editRideForm.valid">Edit Ride
       </button>
 

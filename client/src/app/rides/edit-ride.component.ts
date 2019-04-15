@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {Ride} from './ride';
 import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
+import {RideListService} from "./ride-list.service";
 
 
 @Component({
@@ -13,7 +14,7 @@ export class EditRideComponent implements OnInit {
   editRideForm: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { ride: Ride }, private fb: FormBuilder) {
+    public rideListService : RideListService, private fb: FormBuilder) {
   }
 
   edit_ride_validation_messages = {
@@ -81,7 +82,7 @@ export class EditRideComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    console.log(this.data);
+    console.log(this.rideListService.singleRide);
   }
 
 }

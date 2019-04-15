@@ -76,14 +76,20 @@
             /// This button should show edit/delete ride  IF the ride belongs to you ///
             <div *ngIf="getLocalUserId() === ride.userId">
 
-              <button mat-menu-item (click)="openEditDialog(ride._id, ride.user, ride.userId,
-              ride.notes, ride.seatsAvailable,
-              ride.origin, ride.destination,
-              ride.departureDate, ride.departureTime,
-              ride.isDriving, ride.roundTrip, ride.nonSmoking)" >
+              <!--routerLink="/editride"-->
+              <!--<button mat-menu-item (click)="openEditDialog(ride._id, ride.user, ride.userId,-->
+              <!--ride.notes, ride.seatsAvailable,-->
+              <!--ride.origin, ride.destination,-->
+              <!--ride.departureDate, ride.departureTime,-->
+              <!--ride.isDriving, ride.roundTrip, ride.nonSmoking)" >-->
 
+                <!--<span>Edit Ride</span>-->
+
+              <!--</button>-->
+
+              <button mat-menu-item (click) = "giveRideToService(ride)"
+                      routerLink="/editride">
                 <span>Edit Ride</span>
-
               </button>
 
               <button mat-menu-item (click)="openDeleteDialog(ride._id)" >

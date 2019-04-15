@@ -177,6 +177,10 @@ export class RideListComponent implements OnInit {
     }
   }
 
+  giveRideToService(ride: Ride){
+    this.rideListService.grabRide(ride);
+  }
+
   openEditDialog(currentId: string, currentUser: string, currentUserId : string,
                  currentNotes: string, currentSeatsAvailable: number,
                  currentOrigin: string, currentDestination: string,
