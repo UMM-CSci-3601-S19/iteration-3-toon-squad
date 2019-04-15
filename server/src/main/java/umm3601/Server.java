@@ -74,7 +74,7 @@ public class Server {
 
     // RIDE ENDPOINTS'
     get("api/rides", rideRequestHandler::getRides);
-    get("api/rides/:id", rideRequestHandler::getRideJSON);
+    get("api/myRides", rideRequestHandler::getMyRides);
     post("api/rides/new", rideRequestHandler::addNewRide);
 
     // USER ENDPOINTS
