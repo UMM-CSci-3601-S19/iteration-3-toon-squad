@@ -140,13 +140,14 @@
             <div *ngIf="getLocalUserId() === ride.userId">
 
               <button mat-menu-item (click)="openEditDialog(ride._id, ride.driver, ride.destination,
-              ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)" >
+              ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)"
+                      id="editDialogOpen">
 
                 <span>Edit Ride</span>
 
               </button>
 
-              <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+              <button mat-menu-item (click)="openDeleteDialog(ride._id)" id="deleteDialogOpen">
                 <span>Delete Ride</span>
               </button>
 
