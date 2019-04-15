@@ -242,7 +242,7 @@ describe('Using filters on Ride Page', () => {
     page.getElementById("rideDestination").click();
     page.backspace(2); // erases input in destination
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(1);
+      expect(rides.length).toBe(2);
     });
 
     page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking OFF...
@@ -258,7 +258,7 @@ describe('Using filters on Ride Page', () => {
 
     page.getElementById("isNotDrivingButton").click(); // should give us our remaining two rides (requested)
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(3);
+      expect(rides.length).toBe(2);
     });
   });
 
@@ -315,6 +315,7 @@ describe('Add Ride', () => {
     page.navigateTo();
     page.click('add-ride-button');
 
+    browser.executeScript("window.localStorage.setItem('userFullName','JohnDoe')");
     page.setIsDriving();
     page.field('notesField').sendKeys('Likes to play music. Climate control. Gregarious.');
     page.field('seatsAvailableField').sendKeys('2');
@@ -345,6 +346,7 @@ describe('Add Ride', () => {
     page.click('add-ride-button');
 
     // We're going to add a ride with no specified data and time
+    browser.executeScript("window.localStorage.setItem('userFullName','Jefferson Macaroni')");
     page.setIsNotDriving();
     page.field('originField').sendKeys('Washington, D.C.');
     page.field('destinationField').sendKeys('Morris, MN');
@@ -405,7 +407,7 @@ describe('Interacts with more options button (editing/deleting ride)', () => {
     page.click('exitWithoutDeletingButton');
     expect(page.getUniqueRide('Kyle Foss')).toMatch('Kyle Foss');
     page.getRides().then( (rides) => {
-      expect(rides.length).toBe(7);
+      expect(rides.length).toBe(9);
     });
   });
 
@@ -416,7 +418,7 @@ describe('Interacts with more options button (editing/deleting ride)', () => {
   //   page.click('confirmDeleteRideButton');
   //   // expect(page.elementExistsWithId('Kyle Foss')).toBeFalsy();
   //   page.getRides().then( (rides) => {
-  //     expect(rides.length).toBe(6);
+  //     expect(rides.length).toBe(8);
   //   });
   // });
 
