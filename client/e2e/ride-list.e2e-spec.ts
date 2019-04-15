@@ -411,16 +411,15 @@ describe('Interacts with more options button (editing/deleting ride)', () => {
     });
   });
 
-  //TODO: Not exactly sure how to proceed with the checking for existence when something doesn't exist as it breaks the test
-  // it('can delete ride from the ride deletion prompt (ride REQUESTED)', () => {
-  //   page.click('settingsNotDriving');
-  //   page.click('deleteDialogOpen');
-  //   page.click('confirmDeleteRideButton');
-  //   // expect(page.elementExistsWithId('Kyle Foss')).toBeFalsy();
-  //   page.getRides().then( (rides) => {
-  //     expect(rides.length).toBe(8);
-  //   });
-  // });
+  it('can delete ride from the ride deletion prompt (ride REQUESTED)', () => {
+    page.click('settingsNotDriving');
+    page.click('deleteDialogOpen');
+    page.click('confirmDeleteRideButton');
+    expect(page.elementDoesNotExistWithId('Kyle Foss')).toBeFalsy();
+    page.getRides().then( (rides) => {
+      expect(rides.length).toBe(8);
+    });
+  });
 
 });
 
