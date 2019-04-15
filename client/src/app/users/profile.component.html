@@ -7,20 +7,54 @@
 
     <br>
 
-    <div *ngIf="profile; else profileError">
-      <mat-card #elem class="profile" [id] = "profile._id.$oid">
+    <div #elem class="profile" [id] = "profile._id.$oid" *ngIf="profile; else profileError">
+      <mat-card>
         <mat-card-title>{{profile.fullName}}</mat-card-title>
         <mat-divider></mat-divider>
-        <mat-card-content class="profileContent">
+        <mat-card-content class="profileInfo">
           <div>
-          {{profile.email}}<br><br>{{profile.phone}}
+            Email: {{profile.email}}
+            <br><br>
+            <form class="example-form">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Phone">
+              </mat-form-field>
+            </form>
           </div>
         <div>
         <img src="{{profile.pictureUrl}}">
         </div>
         </mat-card-content>
       </mat-card>
+      <mat-card>
+
+        <mat-card-title>Upcoming Rides</mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-content> You can see all your current Rides Below
+          <br><br>
+          <mat-accordion *ngIf="userRides; else userError">
+          <mat-expansion-panel #elem *ngFor="let ride of this.userRides">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ride.origin}} &nbsp; <mat-icon class="arrow">label_important</mat-icon> &nbsp; {{ride.destination}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description> Seats Available: {{ride.seatsAvailable}}</mat-panel-description>
+            <mat-panel-description> Leaving On: {{ride.departureDate}} at {{ride.departureTime}}</mat-panel-description>
+            <mat-panel-description> Round Trip: {{ride.roundTrip}}</mat-panel-description>
+            <mat-panel-description> Smoking Allowed?: {{ride.nonSmoking}}</mat-panel-description>
+          </mat-expansion-panel>
+        </mat-accordion>
+        </mat-card-content>
+      </mat-card>
     </div>
+
+    <ng-template #userError>
+      <mat-error>
+        There was a problem loading your upcoming rides. Possibly the server is down or perhaps there are network
+        issues.
+      </mat-error>
+    </ng-template>
 
     <ng-template #profileError>
       <mat-error>
@@ -28,6 +62,8 @@
         issues.
       </mat-error>
     </ng-template>
+
+
   </div>
 </div>
 
