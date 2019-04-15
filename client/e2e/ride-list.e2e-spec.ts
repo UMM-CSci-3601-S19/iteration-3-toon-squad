@@ -387,6 +387,7 @@ describe('Interacts with more options button (editing/deleting ride)', () => {
   beforeEach(() => {
     page = new RidePage();
     browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+    browser.executeScript("window.localStorage.setItem('userId', '001')");
     page.navigateTo();
   });
 
@@ -397,6 +398,27 @@ describe('Interacts with more options button (editing/deleting ride)', () => {
   it('can click on the more options button (ride REQUESTED)', () => {
     page.click('settingsNotDriving');
   });
+
+  it('can click "Cancel" from the ride deletion prompt (ride REQUESTED)', () => {
+    page.click('settingsNotDriving');
+    page.click('deleteDialogOpen');
+    page.click('exitWithoutDeletingButton');
+    expect(page.getUniqueRide('Kyle Foss')).toMatch('Kyle Foss');
+    page.getRides().then( (rides) => {
+      expect(rides.length).toBe(7);
+    });
+  });
+
+  //TODO: Not exactly sure how to proceed with the checking for existence when something doesn't exist as it breaks the test
+  // it('can delete ride from the ride deletion prompt (ride REQUESTED)', () => {
+  //   page.click('settingsNotDriving');
+  //   page.click('deleteDialogOpen');
+  //   page.click('confirmDeleteRideButton');
+  //   // expect(page.elementExistsWithId('Kyle Foss')).toBeFalsy();
+  //   page.getRides().then( (rides) => {
+  //     expect(rides.length).toBe(6);
+  //   });
+  // });
 
 });
 
