@@ -78,7 +78,7 @@
 
 
       <mat-form-field flex>
-        <input id="departureDateField" matInput [matDatepicker]="picker" placeholder="Departure Date" [(ngModel)]="rideListService.singleRide.departureDate" formControlName="departureDate">
+        <input id="departureDateField" matInput [matDatepicker]="picker" [min]="minDate" placeholder="Departure Date" [(ngModel)]="rideListService.singleRide.departureDate" formControlName="departureDate">
 
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 
@@ -148,11 +148,12 @@
       (click) = "rideListService.editRide(singleRide)"
               routerLink="/rides"
       >Submit Ride
-
       </button>
 
       <button mat-raised-button id="exitWithoutAddingButton" [mat-dialog-close]="null" type="button"
-              routerLink="/rides">Cancel</button>
+              routerLink="/rides">
+        Cancel
+      </button>
 
     </mat-dialog-actions>
   </form>

@@ -12,6 +12,7 @@ import {RideListService} from "./ride-list.service";
 
 export class EditRideComponent implements OnInit {
   editRideForm: FormGroup;
+  minDate = new Date();
 
   constructor(
     public rideListService : RideListService, private fb: FormBuilder) {
