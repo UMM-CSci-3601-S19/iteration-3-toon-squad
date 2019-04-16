@@ -9,7 +9,7 @@
         Welcome to MoRide! You can look for and post rides for the Morris Community.
       </mat-card-subtitle>
       <div>
-        <button id="rideslistbutton" mat-raised-button
+        <button *ngIf="appService.isSignedIn()" id="rideslistbutton" mat-raised-button
                 routerLink="/rides"
                 color="primary"
                 type="button">
@@ -17,7 +17,7 @@
           View Rides
         </button>
 
-        <button mat-raised-button
+        <button *ngIf="appService.isSignedIn()"  mat-raised-button
                 routerLink="/addride"
                 type="button">
           <mat-icon>add_circle_outline</mat-icon>
