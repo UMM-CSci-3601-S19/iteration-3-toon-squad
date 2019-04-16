@@ -20,7 +20,6 @@ export class UserService {
   }
 
   getMyRides(userId: string): Observable<Ride[]> {
-    console.log("This is where we are sending the url rom getMyRides " + environment.API_URL + 'myRides?userId=' + userId);
     return this.http.get<Ride[]>(environment.API_URL + 'myRides?userId=' + userId);
   }
 }

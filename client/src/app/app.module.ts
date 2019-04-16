@@ -45,7 +45,7 @@ import {ProfileComponent} from "./users/profile.component";
     HomeComponent,
     RideListComponent,
     AddRideComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   providers: [
     RideListService, AppService, AppAuthGuard, UserService,

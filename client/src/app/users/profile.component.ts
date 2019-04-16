@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit{
   public profile: User;
   public profileId: string;
   public userRides: Ride[];
+  // private sub: any;
 
 
 
@@ -25,6 +26,7 @@ export class ProfileComponent implements OnInit{
   getProfile(): void{
     const id = this.route.snapshot.paramMap.get('id');
     this.profileId= id;
+    // this.sub =
     this.userService.getUserById(id).subscribe(user => this.profile = user);
   }
 
@@ -44,5 +46,9 @@ export class ProfileComponent implements OnInit{
     this.getProfile();
     this.getUserRideFromService();
   }
+
+  /*ngOnDestroy(){
+    this.sub.unsubscribe();
+  }*/
 
 }

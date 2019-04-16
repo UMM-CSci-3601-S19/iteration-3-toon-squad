@@ -2,30 +2,20 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {TestBed} from '@angular/core/testing';
 import {HttpClient} from '@angular/common/http';
 import {User} from "./user";
-import {Ride} from "../rides/ride";
+// import {Ride} from "../rides/ride";
 import {UserService} from "./user.service";
 
 describe ('User Service: ',() =>{
-  const testUsers: User[] = [
+  const testUser: User =
     {
-      _id: "5cb4fc0e61617348950e29db",
-      userId: "342389477594424000000",
-      email: "Dreamia5@gmail.com",
-      fullName: "Suzette Rutledge",
-      pictureUrl: "https://picsum.photos/200/300/?random",
-      lastName: "Rutledge",
-      firstName: "Suzette",
-    },
-    {
-      _id:"5cb4fc0e61617348950e29d8",
-    userId:"655477182929676100000",
-    email:"bananacat123@hotmail.com",
-    fullName: "Bindi Jenson",
-    pictureUrl:"https://bit.ly/2IyHf4I",
-    lastName: "Jenson",
-    firstName: "Bindi",
-    }
-  ];
+      _id: "5cb4fc0e61617348950e29d8",
+      userId: "655477182929676100000",
+      email: "bananacat123@hotmail.com",
+      fullName: "Bindi Jenson",
+      pictureUrl: "https://bit.ly/2IyHf4I",
+      lastName: "Jenson",
+      firstName: "Bindi",
+    };
 
  /* const testRides: Ride[] = [
     {
@@ -83,13 +73,13 @@ describe ('User Service: ',() =>{
 
   it('getUserById(userId: string) calls api/user/:id', () => {
 
-    userService.getUserById("655477182929676100000").subscribe(
-      user => expect(user).toBe(testUsers[1])
+    userService.getUserById('655477182929676100000').subscribe(
+      user => expect(user).toBe(testUser)
     );
 
     const req = httpTestingController.expectOne(userService.baseUrl + '/655477182929676100000');
     expect(req.request.method).toEqual('GET');
-    req.flush(testUsers);
+    req.flush(testUser);
   });
 
 
