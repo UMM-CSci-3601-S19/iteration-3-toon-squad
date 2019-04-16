@@ -44,6 +44,8 @@ export class RideListService {
 
   editRide(editedRide: Ride): Observable<string> {
 
+    console.log("SERVICE: Here is the edited ride" + JSON.stringify(editedRide));
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -51,6 +53,7 @@ export class RideListService {
       responseType: 'text' as 'json'
     };
 
+    console.log("Sending the ride to the server " + this.rideUrl);
     return this.http.post<string>(this.rideUrl + '/update', editedRide, httpOptions);
   }
 
