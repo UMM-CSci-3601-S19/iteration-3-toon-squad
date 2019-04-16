@@ -1,6 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ride} from './ride';
-import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
 import {RideListService} from "./ride-list.service";
 import {Observable} from "rxjs/Observable";
 import {ValidatorService} from "../validator.service";
