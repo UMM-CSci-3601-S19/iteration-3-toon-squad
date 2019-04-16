@@ -36,6 +36,7 @@ import static umm3601.DatabaseHelper.parseJsonArray;
 public class RideControllerSpec {
   private RideController rideController;
   private ObjectId ellisRideId;
+  public String ellisRideIdToString;
 
   @Before
   public void clearAndPopulateDB() {
@@ -80,6 +81,8 @@ public class RideControllerSpec {
 
     ellisRideId = new ObjectId();
     BasicDBObject ellisRide = new BasicDBObject("_id", ellisRideId);
+    ellisRideIdToString = ellisRide.getString("_id");
+
     ellisRide = ellisRide.append("user", "Ellis")
       .append("userId", "004")
       .append("seatsAvailable", 0)
@@ -104,6 +107,11 @@ public class RideControllerSpec {
   private static int getSeatsAvailable(BsonValue val) {
     BsonDocument ride = val.asDocument();
     return ((BsonInt32) ride.get("seatsAvailable")).getValue();
+  }
+
+  private static String getOrigin(BsonValue val) {
+    BsonDocument ride = val.asDocument();
+    return ((BsonString) ride.get("origin")).getValue();
   }
 
   @Test
@@ -226,6 +234,33 @@ public class RideControllerSpec {
     assertNull("No user name should match", noJsonResult);
   }
 
+  @Test
+  public void editRide(){
+    System.out.println(ellisRideIdToString);
+    rideController.editRide(ellisRideIdToString, "", 1, "Pizza Hut", "Perkin's",
+      "2024-011-27T05:00:00.000Z","20:00", true, false, false);
+//    Map<String, String[]> emptyMap = new HashMap<>();
+//    String jsonResult = rideController.getRides(emptyMap);
+//    BsonArray rides = parseJsonArray(jsonResult);
+
+    String jsonSingle = rideController.getRide(ellisRideIdToString);
+    String[] tempArray = new String[]{jsonSingle};
+
+    BsonArray ride = parseJsonArray(jsonSingle);
+ //*************************************************************
+
+//    assertNotEquals(0, getSeatsAvailable(ride));
+//    assertEquals(1, getSeatsAvailable(ride));
+//
+//   assertNotEquals("Casey's General Store", getOrigin(ride));
+//   assertEquals("Pizza Hut", getOrigin(ride));
+
+  }
+
+
+
+  }
+
 
   //TODO: See top comment
 //  @Test
@@ -249,4 +284,4 @@ public class RideControllerSpec {
 //    assertEquals("Should be 4 rides", 4, docs.size());
 //  }
 
-}
+
