@@ -160,6 +160,19 @@ public class RideController {
   Boolean editRide(String id, String notes, Number seatsAvailable, String origin, String destination,
                    String departureDate, String departureTime, Boolean isDriving, Boolean roundTrip, Boolean nonSmoking)
   {
+
+    if (!isDriving) {
+      seatsAvailable = 0;
+    }
+
+    if (departureDate == null) {
+      departureDate = "3000-01-01T05:00:00.000Z";
+    }
+
+    if (departureTime == null || departureTime == "") {
+      departureTime = "99:99";
+    }
+
     ObjectId objId = new ObjectId(id);
     Document filter = new Document("_id", objId);
 

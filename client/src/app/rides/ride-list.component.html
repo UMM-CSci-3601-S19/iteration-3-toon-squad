@@ -90,7 +90,7 @@
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
-          <!--=================================================================================================-->
+          <!--=========================================-->
 
           <mat-menu #menu="matMenu">
             /// This button should show edit/delete ride  IF the ride belongs to you ///
@@ -108,7 +108,7 @@
             </div>
           </mat-menu>
 
-          <!--=========================================================================================================-->
+          <!--==============================================-->
 
           <mat-card-title>
 
@@ -116,26 +116,15 @@
 
               <mat-icon style="color:green"> drive_eta</mat-icon>
 
-              <span *ngIf="ride.departureDate">
-                <span *ngIf="!checkImpossibleDate(ride)">
-                  {{this.dateParse(ride.departureDate)}}
-                </span>
+              <div *ngIf="!checkImpossibleDate(ride); then possible_date else impossible_date"> </div>
+              <ng-template #possible_date > {{this.dateParse(ride.departureDate)}} </ng-template>
+              <ng-template #impossible_date> Unspecified date </ng-template>
 
-                <span *ngIf="checkImpossibleDate(ride)">
-                  Unspecified date
-                </span>
-              </span>
+              at
 
-              <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
-
-              <span *ngIf="ride.departureTime">
-                <span *ngIf="!checkImpossibleTime(ride)">
-                 {{this.hourParse(ride.departureTime)}}
-                </span>
-                <span *ngIf="checkImpossibleTime(ride)">
-                  unspecified time
-                </span>
-              </span>
+              <div *ngIf="!checkImpossibleTime(ride); then possible_time else impossible_time"> </div>
+              <ng-template #possible_time > {{this.hourParse(ride.departureTime)}} </ng-template>
+              <ng-template #impossible_time> unspecified time </ng-template>
 
             </div>
 
@@ -155,6 +144,8 @@
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
+          <!--======================================-->
+
           <mat-menu #menu="matMenu">
             /// This button should show edit/delete ride  IF the ride belongs to you ///
             <div *ngIf="getLocalUserId() === ride.userId">
@@ -173,31 +164,22 @@
             </div>
           </mat-menu>
 
+          <!--=============================================-->
+
           <mat-card-title>
             <div class="departure-time">
 
               <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
 
-              <span *ngIf="ride.departureDate">
-                <span *ngIf="!checkImpossibleDate(ride)">
-                  {{this.dateParse(ride.departureDate)}}
-                </span>
+              <div *ngIf="!checkImpossibleDate(ride); then possible_date else impossible_date"> </div>
+              <ng-template #possible_date > {{this.dateParse(ride.departureDate)}} </ng-template>
+              <ng-template #impossible_date> Unspecified date </ng-template>
 
-                <span *ngIf="checkImpossibleDate(ride)">
-                  Unspecified date
-                </span>
-              </span>
+               at
 
-              <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
-
-              <span *ngIf="ride.departureTime">
-                <span *ngIf="!checkImpossibleTime(ride)">
-                 {{this.hourParse(ride.departureTime)}}
-                </span>
-                <span *ngIf="checkImpossibleTime(ride)">
-                 unspecified time
-                </span>
-              </span>
+              <div *ngIf="!checkImpossibleTime(ride); then possible_time else impossible_time"> </div>
+              <ng-template #possible_time > {{this.hourParse(ride.departureTime)}} </ng-template>
+              <ng-template #impossible_time> unspecified time </ng-template>
 
             </div>
           </mat-card-title>

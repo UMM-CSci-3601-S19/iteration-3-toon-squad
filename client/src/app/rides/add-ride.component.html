@@ -34,7 +34,6 @@
               <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
                      placeholder="Seats Available"
                      [(ngModel)]="rideSeats" formControlName="seatsAvailable">
-              <mat-error *ngIf="isDriving">
                 <mat-error *ngFor="let validation of add_ride_validation_messages.seatsAvailable">
                   <mat-error class="error-message"
                              *ngIf="addRideForm.get('seatsAvailable').hasError(validation.type) &&
@@ -42,7 +41,6 @@
                     {{validation.message}}
                   </mat-error>
                 </mat-error>
-              </mat-error>
 
           </mat-form-field>
 

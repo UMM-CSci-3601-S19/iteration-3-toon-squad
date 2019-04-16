@@ -46,7 +46,7 @@ export class RideListComponent implements OnInit {
   }
 
   public checkImpossibleTime(ride: Ride) {
-    return (ride.departureTime.includes("99"))
+    return (ride.departureTime.includes("99") || ride.departureTime === "")
   }
 
   public filterRides(searchDestination: string, searchOrigin: string,
@@ -212,7 +212,7 @@ export class RideListComponent implements OnInit {
   }
 
   printCurrRide(ride : Ride) : void {
-    console.log(ride);
+    console.log((ride));
   }
 
 }
