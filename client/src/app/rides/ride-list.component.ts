@@ -178,54 +178,15 @@ export class RideListComponent implements OnInit {
   }
 
   giveRideToService(ride: Ride){
-    this.rideListService.grabRide(ride);
-  }
 
-  openEditDialog(currentId: string, currentUser: string, currentUserId : string,
-                 currentNotes: string, currentSeatsAvailable: number,
-                 currentOrigin: string, currentDestination: string,
-                 currentDepartureDate?: string, currentDepartureTime?: string,
-                 currentIsDriving?: boolean, currentRoundTrip?: boolean, currentNonSmoking?: boolean
-                  ): void {
-
-    console.log(currentDestination);
-
-    if (currentDepartureDate === "3000-01-01T05:00:00.000Z") {
-      currentDepartureDate = null;
+    // Since unspecified times are still being given an 'impossible' date, we need to change that back
+    // before we send the ride to edit-ride component. NOTE: This is not necessary with impossible times,
+    // since the form handles those appropriately by leaving the time field empty.
+    if (ride.departureDate === "3000-01-01T05:00:00.000Z") {
+      ride.departureDate = null;
     }
 
-    const currentRide: Ride = {
-      _id: currentId, user: currentUser, userId: currentUserId,
-      notes: currentNotes, seatsAvailable:  currentSeatsAvailable,
-      origin: currentOrigin, destination: currentDestination,
-      departureDate: currentDepartureDate, departureTime: currentDepartureTime,
-      isDriving: currentIsDriving, roundTrip: currentRoundTrip, nonSmoking: currentNonSmoking
-    };
-
-    console.log(currentRide);
-
-    const dialogRef = this.dialog.open(EditRideComponent, {
-      width: '500px',
-      data: {ride: currentRide}
-    });
-
-
-    dialogRef.afterClosed().subscribe(currentRide => {
-      if (currentRide != null) {
-
-        this.rideListService.editRide(currentRide).subscribe(
-          result => {
-            this.highlightedDestination = result;
-            this.refreshRides();
-            console.log('The currentRide or dialogResult was ' + JSON.stringify(currentRide));
-          },
-          err => {
-            console.log('There was an error editing the ride.');
-            console.log('The currentRide or dialogResult was error ' + JSON.stringify(currentRide));
-            console.log('The error was ' + JSON.stringify(err));
-          });
-      }
-    });
+    this.rideListService.grabRide(ride);
   }
 
   openDeleteDialog(currentId: object): void {
