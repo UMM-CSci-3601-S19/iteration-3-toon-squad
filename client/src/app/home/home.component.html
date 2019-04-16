@@ -1,7 +1,11 @@
 
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
-    <img  id="logohome" class="morideFulllogo" src="assets/img/moridelogoFull.png"/>
+    <input type="image"
+           src="assets/img/moridelogoFull.png"
+           routerLink="/"
+           class="morideFulllogo"
+    />
 
     <mat-card>
       <mat-card-title id="hello-world">MoRide Home</mat-card-title>
@@ -13,15 +17,9 @@
                src="assets/img/viewridesbutton.png"
                *ngIf="appService.isSignedIn()"
                routerLink="/rides"
+               class="morideViewRidelogo"
         />
-        <button *ngIf="appService.isSignedIn()" id="rideslistbutton" mat-raised-button
-                src="assets/img/moridelogoFull.png"
-                routerLink="/rides"
-                color="primary"
-                type="button">
-          <mat-icon>directions_car</mat-icon>
-          View Rides
-        </button>
+
 
         <button *ngIf="appService.isSignedIn()"  mat-raised-button
                 routerLink="/addride"
