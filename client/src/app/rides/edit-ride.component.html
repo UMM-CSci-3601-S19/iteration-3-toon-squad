@@ -11,13 +11,13 @@
 
           <!--==========================================================================================-->
 
-          <mat-radio-group flex [(ngModel)]="rideListService.singleRide.isDriving" formControlName="driving" required>
+          <mat-radio-group flex [(ngModel)]="rideIsDriving" formControlName="driving" required>
             <br>
-            {{rideListService.singleRide.user}} is...
+            {{rideUser}} is...
             <br>
             <br>
             <mat-radio-button id="isDrivingButton" [value] = true > driving</mat-radio-button>
-            <mat-radio-button id="isNotDrivingButton" [value] = false (click)="setRideSeats()"> looking for a ride</mat-radio-button>
+            <mat-radio-button id="isNotDrivingButton" [value] = false> looking for a ride</mat-radio-button>
             <mat-error *ngFor="let validation of edit_ride_validation_messages.driving">
               <mat-error class="error-message" id="driving-error"
                          *ngIf="editRideForm.get('driving').hasError(validation.type) && (editRideForm.get('driving').dirty || editRideForm.get('driving').touched)">
@@ -30,11 +30,11 @@
 
           <!--==============================================================================================-->
 
-          <mat-form-field *ngIf="rideListService.singleRide.isDriving">
+          <mat-form-field *ngIf="rideIsDriving">
             <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
                    placeholder="Seats Available"
-                   [(ngModel)]="rideListService.singleRide.seatsAvailable" formControlName="seatsAvailable">
-            <mat-error *ngIf="rideListService.singleRide.isDriving">
+                   [(ngModel)]="rideSeatsAvailable" formControlName="seatsAvailable">
+            <mat-error *ngIf="rideIsDriving">
               <mat-error *ngFor="let validation of edit_ride_validation_messages.seatsAvailable">
                 <mat-error class="error-message"
                            *ngIf="editRideForm.get('seatsAvailable').hasError(validation.type) &&
@@ -52,7 +52,7 @@
 
           <mat-form-field>
             <input class="inputRideInfo" matInput #input id="originField" placeholder="Origin"
-                   required [(ngModel)]="rideListService.singleRide.origin" formControlName="origin">
+                   required [(ngModel)]="rideOrigin" formControlName="origin">
             <mat-error *ngFor="let validation of edit_ride_validation_messages.origin">
               <mat-error class="error-message"
                          *ngIf="editRideForm.get('origin').hasError(validation.type) &&
@@ -66,7 +66,7 @@
 
           <mat-form-field>
             <input class="inputRideInfo" matInput #input id="destinationField" placeholder="Destination"
-                   required [(ngModel)]="rideListService.singleRide.destination" formControlName="destination">
+                   required [(ngModel)]="rideDestination" formControlName="destination">
             <mat-error *ngFor="let validation of edit_ride_validation_messages.destination">
               <mat-error class="error-message"
                          *ngIf="editRideForm.get('destination').hasError(validation.type) &&
@@ -82,7 +82,7 @@
 
           <mat-form-field>
             <input matInput class="inputRideInfo" id="departureDateField" [min]="minDate" [matDatepicker]="picker"
-                   placeholder="Choose Departure Date" [(ngModel)]="rideListService.singleRide.departureDate"
+                   placeholder="Choose Departure Date" [(ngModel)]="rideDepartureDate"
                    formControlName="departureDate">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -90,7 +90,7 @@
 
           <mat-form-field>
             <input type="time" class="inputRideInfo" matInput #input id="departureTimeField" placeholder="Departure Time"
-                   [(ngModel)]="rideListService.singleRide.departureTime" formControlName="departureTime">
+                   [(ngModel)]="rideDepartureTime" formControlName="departureTime">
           </mat-form-field>
 
           <br/>
@@ -99,7 +99,7 @@
 
           <mat-form-field>
             <textarea class="inputRideInfo" matInput #input id="notesField" placeholder="Notes"
-                      [(ngModel)]="rideListService.singleRide.notes" formControlName="notes"></textarea>
+                      [(ngModel)]="rideNotes" formControlName="notes"></textarea>
           </mat-form-field>
 
           <br/>
@@ -110,11 +110,11 @@
 
           <br/>
 
-          <mat-checkbox id="roundTripCheckBox" [(ngModel)]="rideListService.singleRide.roundTrip"
+          <mat-checkbox id="roundTripCheckBox" [(ngModel)]="rideRoundTrip"
                         [ngModelOptions]="{standalone: true}">Round Trip</mat-checkbox>
           <br/>
 
-          <mat-checkbox class="checkboxNonSmoking" id="checkboxNonSmoking" [(ngModel)]="rideListService.singleRide.nonSmoking"
+          <mat-checkbox class="checkboxNonSmoking" id="checkboxNonSmoking" [(ngModel)]="rideNonSmoking"
                         [ngModelOptions]="{standalone: true}">Non-smoking</mat-checkbox>
 
           <!--=================================================================================================-->
@@ -122,10 +122,13 @@
         </mat-card-content>
 
         <mat-card-actions layout="row">
+
           <button class="editRideButton" mat-raised-button id="confirmEditRideButton"  type="button" color="primary"
-                  (click)="editRide()" routerLink="/rides" [disabled]="!editRideForm.valid">Edit Ride
+                  (click)="editRide()" routerLink="/rides" [disabled]="!editRideForm.valid">
+            Edit Ride
           </button>
           <button class="cancelRideButton" mat-button id="exitWithoutEditingButton" routerLink="/rides"  type="button">Cancel</button>
+
         </mat-card-actions>
 
       </mat-card>

@@ -106,4 +106,37 @@ public class RideRequestHandler {
     return rideController.deleteRide(id);
   }
 
+  public Boolean editRide(Request req, Response res) {
+
+    System.err.println("Print something!");
+
+    res.type("application/json");
+
+    // Turn the request into a Document
+    Document editRide = Document.parse(req.body());
+
+    String id = editRide.getObjectId("_id").toHexString();
+//    We don't include the following fields, because they shouldn't be edited.
+//    String user = editRide.getString("user");
+//    String userId = editRide.getString("userId");
+    String notes = editRide.getString("notes");
+    Number seatsAvailable = editRide.getInteger("seatsAvailable");
+    String origin = editRide.getString("origin");
+    String destination = editRide.getString("destination");
+    String departureDate = editRide.getString("departureDate");
+    String departureTime = editRide.getString("departureTime");
+    Boolean isDriving = editRide.getBoolean("isDriving");
+    Boolean roundTrip = editRide.getBoolean("roundTrip");
+    Boolean nonSmoking = editRide.getBoolean("nonSmoking");
+
+
+    System.out.println("Editing ride [id=" + id + " notes=" + notes +" seatsAvailable=" + seatsAvailable
+      + " origin=" + origin + " destination=" + destination + " departureDate=" + departureDate
+      + " departureTime=" + departureTime + " isDriving=" + isDriving + " roundTrip=" + roundTrip
+      + " nonSmoking=" + nonSmoking);
+
+    return rideController.editRide(id, notes, seatsAvailable, origin, destination,
+      departureDate, departureTime, isDriving, roundTrip, nonSmoking);
+  }
+
 }
