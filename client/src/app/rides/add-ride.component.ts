@@ -84,7 +84,7 @@ export class AddRideComponent implements OnInit {
       nonSmoking: this.rideNonSmoking
     };
 
-    console.log(" The new Ride in addRide() is " + JSON.stringify(newRide));
+    console.log("COMPONENT: The new Ride in addRide() is " + JSON.stringify(newRide));
 
     if (newRide != null) {
       this.rideListService.addNewRide(newRide).subscribe(
