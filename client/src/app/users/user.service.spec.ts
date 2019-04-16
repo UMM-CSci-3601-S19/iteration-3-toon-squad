@@ -56,8 +56,8 @@ describe ('User Service: ',() =>{
       roundTrip: false,
       nonSmoking: true
 
-    },*/
-  ];
+    },
+  ]; */
 
 
 
