@@ -35,6 +35,22 @@ public class RideController {
     rideCollection = database.getCollection("rides");
   }
 
+  public String getRide(String id) {
+    FindIterable<Document> jsonRides
+      = rideCollection
+      .find(eq("_id", new ObjectId(id)));
+
+    Iterator<Document> iterator = jsonRides.iterator();
+    if (iterator.hasNext()) {
+      Document ride = iterator.next();
+      return ride.toJson();
+    } else {
+      // We didn't find the desired ride
+      return null;
+    }
+  }
+
+
   public String getMyRides(Map<String, String[]> queryParams) {
 
     Document filterDoc = new Document();
@@ -45,7 +61,6 @@ public class RideController {
       contentRegQuery.append("$regex", targetContent);
       contentRegQuery.append("$options", "i");
       filterDoc = filterDoc.append("userId", contentRegQuery);
-      System.err.println("I am inside the queryParams of userId");
     }
 
     FindIterable<Document> matchingRides = rideCollection.find(filterDoc);
