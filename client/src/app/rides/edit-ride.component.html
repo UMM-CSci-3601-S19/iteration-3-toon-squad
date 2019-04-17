@@ -1,7 +1,7 @@
 <title>MoRide - Edit a ride</title>
 <div layout-gt-sm="row">
   <div flex-gt-sm="40" flex-offset-gt-sm="30">
-    <form [formGroup]="editRideForm">
+    <form [formGroup]="validatorService.rideForm">
       <mat-card class="editARide">
 
         <!--=====================================================================================-->
@@ -18,9 +18,9 @@
             <br>
             <mat-radio-button id="isDrivingButton" [value] = true > driving</mat-radio-button>
             <mat-radio-button id="isNotDrivingButton" [value] = false> looking for a ride</mat-radio-button>
-            <mat-error *ngFor="let validation of edit_ride_validation_messages.driving">
+            <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.driving">
               <mat-error class="error-message" id="driving-error"
-                         *ngIf="editRideForm.get('driving').hasError(validation.type) && (editRideForm.get('driving').dirty || editRideForm.get('driving').touched)">
+                         *ngIf="validatorService.rideForm.get('driving').hasError(validation.type) && (validatorService.rideForm.get('driving').dirty || validatorService.rideForm.get('driving').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>
@@ -35,10 +35,10 @@
                    placeholder="Seats Available"
                    [(ngModel)]="rideSeatsAvailable" formControlName="seatsAvailable">
             <mat-error *ngIf="rideIsDriving">
-              <mat-error *ngFor="let validation of edit_ride_validation_messages.seatsAvailable">
+              <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.seatsAvailable">
                 <mat-error class="error-message"
-                           *ngIf="editRideForm.get('seatsAvailable').hasError(validation.type) &&
-                           (editRideForm.get('seatsAvailable').dirty || editRideForm.get('seatsAvailable').touched)">
+                           *ngIf="validatorService.rideForm.get('seatsAvailable').hasError(validation.type) &&
+                           (validatorService.rideForm.get('seatsAvailable').dirty || validatorService.rideForm.get('seatsAvailable').touched)">
                   {{validation.message}}
                 </mat-error>
               </mat-error>
@@ -53,10 +53,10 @@
           <mat-form-field>
             <input class="inputRideInfo" matInput #input id="originField" placeholder="Origin"
                    required [(ngModel)]="rideOrigin" formControlName="origin">
-            <mat-error *ngFor="let validation of edit_ride_validation_messages.origin">
+            <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.origin">
               <mat-error class="error-message"
-                         *ngIf="editRideForm.get('origin').hasError(validation.type) &&
-                       (editRideForm.get('origin').dirty || editRideForm.get('origin').touched)">
+                         *ngIf="validatorService.rideForm.get('origin').hasError(validation.type) &&
+                       (validatorService.rideForm.get('origin').dirty || validatorService.rideForm.get('origin').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>
@@ -67,10 +67,10 @@
           <mat-form-field>
             <input class="inputRideInfo" matInput #input id="destinationField" placeholder="Destination"
                    required [(ngModel)]="rideDestination" formControlName="destination">
-            <mat-error *ngFor="let validation of edit_ride_validation_messages.destination">
+            <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.destination">
               <mat-error class="error-message"
-                         *ngIf="editRideForm.get('destination').hasError(validation.type) &&
-                       (editRideForm.get('destination').dirty || editRideForm.get('destination').touched)">
+                         *ngIf="validatorService.rideForm.get('destination').hasError(validation.type) &&
+                       (validatorService.rideForm.get('destination').dirty || validatorService.rideForm.get('destination').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>
@@ -124,7 +124,7 @@
         <mat-card-actions layout="row">
 
           <button class="editRideButton" mat-raised-button id="confirmEditRideButton"  type="button" color="primary"
-                  (click)="editRide()" routerLink="/rides" [disabled]="!editRideForm.valid">
+                  (click)="editRide()" routerLink="/rides" [disabled]="!validatorService.rideForm.valid">
             Edit Ride
           </button>
           <button class="cancelRideButton" mat-button id="exitWithoutEditingButton" routerLink="/rides"  type="button">Cancel</button>
