@@ -13,7 +13,6 @@ import {ValidatorService} from "../validator.service";
 })
 
 export class EditRideComponent implements OnInit {
-  editRideForm: FormGroup;
   minDate = new Date();
   public rides: Ride[];
   private highlightedID: string = '';
