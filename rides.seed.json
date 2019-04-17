@@ -15,6 +15,7 @@
     "roundTrip": true,
     "nonSmoking": false
   },
+
   {
     "_id": {
       "$oid": "5c832bec201270bd881ace79"
@@ -85,6 +86,7 @@
     "roundTrip": true,
     "nonSmoking": true
   },
+
   {
     "_id": {
       "$oid": "5c832bec4f173391643a16f9"
@@ -135,7 +137,6 @@
     "isDriving": false,
     "roundTrip": true,
     "nonSmoking": true
-
   }
 
 ]
