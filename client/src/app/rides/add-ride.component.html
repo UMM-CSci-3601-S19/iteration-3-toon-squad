@@ -117,7 +117,7 @@
 
         <mat-card-actions layout="row">
           <button class="addRideButton" mat-raised-button id="confirmAddRideButton"  type="button" color="primary"
-                  (click)="addRide()" routerLink="/rides" [disabled]="!addRideForm.valid">Add Ride
+                  (click)="addRide()" routerLink="/rides" [disabled]="!validatorService.rideForm.valid">Add Ride
           </button>
           <button class="cancelRideButton" mat-button id="exitWithoutAddingButton" routerLink="/rides"  type="button">Cancel</button>
         </mat-card-actions>
