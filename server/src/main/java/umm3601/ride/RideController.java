@@ -165,7 +165,7 @@ public class RideController {
       seatsAvailable = 0;
     }
 
-    if (departureDate == null) {
+    if (departureDate == null || departureDate == "") {
       departureDate = "3000-01-01T05:00:00.000Z";
     }
 
