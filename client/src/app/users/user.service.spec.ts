@@ -2,7 +2,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {TestBed} from '@angular/core/testing';
 import {HttpClient} from '@angular/common/http';
 import {User} from "./user";
-// import {Ride} from "../rides/ride";
+import {Ride} from "../rides/ride";
 import {UserService} from "./user.service";
 
 describe ('User Service: ',() =>{
@@ -17,21 +17,7 @@ describe ('User Service: ',() =>{
       firstName: "Bindi",
     };
 
- /* const testRides: Ride[] = [
-    {
-      _id: '5c832bec26656a20be5ec19a',
-      user: "Bindi Jenson",
-      userId: "655477182929676100000",
-      notes: "Eiusmod laboris commodo sint cupidatat pariatur proident qui dolor cillum sit adipisicing veniam. Cupidatat mollit et anim ut labore tempor quis.",
-      seatsAvailable: 4,
-      origin: "2046 Neptune Court, Wright, IA 64892",
-      destination: "9782 Henry Street, Hannasville, IA 20609",
-      departureDate: "2019-05-11T05:00:00.000Z",
-      departureTime: "16:21",
-      isDriving: true,
-      roundTrip: true,
-      nonSmoking: false
-    },
+  const testRides: Ride[] = [
     {
       _id: '5c832bec201270bd881ace79',
       user: "Suzette Rutledge",
@@ -47,7 +33,7 @@ describe ('User Service: ',() =>{
       nonSmoking: true
 
     },
-  ]; */
+  ];
 
 
 
@@ -83,15 +69,15 @@ describe ('User Service: ',() =>{
   });
 
 
-  /*it('getMyRides(userId: string) calls api/MyRides', () => {
+  it('getMyRides(userId: string) calls api/MyRides', () => {
 
      userService.getMyRides("342389477594424000000").subscribe(
-       userRides => expect(userRides).toBe(testRides[1])
+       userRides => expect(userRides).toBe(testRides)
      );
 
      const req = httpTestingController.expectOne('http://localhost:4567/api/myRides?userId=342389477594424000000');
      expect(req.request.method).toEqual('GET');
-     req.flush(testUsers);
-  })*/
+     req.flush(testRides);
+  })
 
 });
