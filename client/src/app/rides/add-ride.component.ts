@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ride} from './ride';
-import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
 import {RideListService} from "./ride-list.service";
 import {Observable} from "rxjs/Observable";
+import {ValidatorService} from "../validator.service";
 
 @Component({
   selector: 'add-ride.component',
@@ -16,8 +16,6 @@ export class AddRideComponent implements OnInit {
   public rides: Ride[];
 
   private highlightedID: string = '';
-
-  public addRideForm: FormGroup;
 
   // public rideUser: string;
   public rideUser = localStorage.getItem("userFullName");
@@ -37,36 +35,10 @@ export class AddRideComponent implements OnInit {
 
 
   // Inject the RideListService into this component.
-  constructor(public rideListService: RideListService, private fb: FormBuilder) {
+  constructor(public rideListService: RideListService,
+              public validatorService: ValidatorService) {
 
   }
-
-  add_ride_validation_messages = {
-
-    'user': [
-      {type: 'required', message: 'Please enter your name'},
-      {type: 'minlength', message: 'Please enter your full name'},
-      {type: 'pattern', message: 'Please enter a valid name'}
-    ],
-
-    'seatsAvailable': [
-      {type: 'required', message: 'Please specify how many seats you\'re offering'},
-      {type: 'min', message: 'Please offer at least 1 seat'},
-      {type: 'max', message: 'Can\'t offer more than 12 seats'},
-    ],
-
-    'origin': [
-      {type: 'required', message: 'Origin is required'}
-    ],
-
-    'destination': [
-      {type: 'required', message: 'Destination is required'}
-    ],
-
-    'driving' : [
-      {type: 'required', message: 'You must indicate whether you are the user or not'},
-    ]
-  };
 
   addRide(): void {
     const newRide: Ride = {
@@ -110,41 +82,6 @@ export class AddRideComponent implements OnInit {
     }
   };
 
-  createForm() {
-
-      this.addRideForm = this.fb.group({
-        user: new FormControl('user', Validators.compose([
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern('^[A-Za-z0-9\\s]+[A-Za-z0-9\\s]+$(\\.0-9+)?')
-        ])),
-
-        origin: new FormControl('origin', Validators.compose([
-          Validators.required
-        ])),
-
-        destination: new FormControl('destination', Validators.compose([
-          Validators.required
-        ])),
-
-        seatsAvailable: new FormControl('seatsAvailable', Validators.compose([
-          Validators.required,
-          Validators.min(1),
-          Validators.max(12)
-        ])),
-
-        driving: new FormControl('driving', Validators.compose([
-          Validators.required
-        ])),
-
-        departureDate: new FormControl('departureDate'),
-
-        departureTime: new FormControl('departureTime'),
-
-        notes: new FormControl('notes'),
-      })
-  }
-
   refreshRides(): Observable<Ride[]> {
     // Get Rides returns an Observable, basically a "promise" that
     // we will get the data from the server.
@@ -173,7 +110,7 @@ export class AddRideComponent implements OnInit {
 
 
   ngOnInit() {
-    this.createForm();
+    this.validatorService.createForm();
 
   }
 
