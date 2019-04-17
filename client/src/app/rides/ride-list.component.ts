@@ -192,16 +192,19 @@ export class RideListComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteRideComponent, {
       width: '500px',
       data: {id: currentId}
-    });
+    })
+
     dialogRef.afterClosed().subscribe(deletedRideId => {
       if (deletedRideId != null) {
         this.rideListService.deleteRide(deletedRideId).subscribe(
+
           result => {
             console.log("openDeleteDialog has gotten a result!");
             this.highlightedDestination = result;
             console.log("The result is " + result);
             this.refreshRides();
           },
+
           err => {
             console.log('There was an error deleting the ride.');
             console.log('The id we attempted to delete was  ' + deletedRideId);
