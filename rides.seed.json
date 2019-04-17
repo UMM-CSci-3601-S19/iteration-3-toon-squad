@@ -11,8 +11,8 @@
     "destination": "9782 Henry Street, Hannasville, IA 20609",
     "departureDate": "2019-05-11T05:00:00.000Z",
     "departureTime": "16:21",
-    "roundTrip": true,
     "isDriving": true,
+    "roundTrip": true,
     "nonSmoking": false
   },
   {
@@ -27,8 +27,8 @@
     "destination": "1660 Judge Street, Winston, SD 44478",
     "departureDate": "2019-05-11T05:00:00.000Z",
     "departureTime": "16:19",
-    "roundTrip": false,
     "isDriving": true,
+    "roundTrip": false,
     "nonSmoking": true
 
   },
@@ -45,8 +45,8 @@
     "destination": "1660 Judge Street, Winston, SD 44478",
     "departureDate": "2019-05-10T05:00:00.000Z",
     "departureTime": "13:01",
-    "roundTrip": false,
     "isDriving": false,
+    "roundTrip": false,
     "nonSmoking": true
 
   },
@@ -63,28 +63,12 @@
     "destination": "7989 Sheffield Avenue, Frystown, IA 51752",
     "departureDate": "2019-05-11T05:00:00.000Z",
     "departureTime": "16:20",
-    "roundTrip": false,
     "isDriving": true,
+    "roundTrip": false,
     "nonSmoking": true
 
   },
-  {
-    "_id": {
-      "$oid": "5c832bec3f173391643a15f1"
-    },
-    "user": "Patton Vang",
-    "userId": "832471086850197300000",
-    "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
-    "seatsAvailable": 0,
-    "origin": "881 Boardwalk , Waumandee, SD 97192",
-    "destination": "8974 Cyrus Avenue, Joes, SD 96915",
-    "departureDate": "2019-03-14T05:00:00.000Z",
-    "departureTime": "03:55",
-    "roundTrip": true,
-    "isDriving": false,
-    "nonSmoking": true
 
-  },
   {
     "_id": {
       "$oid": "5c832bec4f173391643a16f2"
@@ -138,19 +122,19 @@
 
   {
     "_id": {
-      "$oid": "5c832bec4f173391643a16f9"
+      "$oid": "5c832bec3f173391643a15f1"
     },
     "user": "Duran Mcgowan",
     "userId": "537114095323778200000",
     "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
-    "seatsAvailable": 2,
+    "seatsAvailable": 0,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
-    "departureDate": "2019-09-14T05:00:00.000Z",
+    "departureDate": "2019-03-14T05:00:00.000Z",
     "departureTime": "03:55",
-    "isDriving": true,
+    "isDriving": false,
     "roundTrip": true,
-    "nonSmoking": false
+    "nonSmoking": true
 
   }
 

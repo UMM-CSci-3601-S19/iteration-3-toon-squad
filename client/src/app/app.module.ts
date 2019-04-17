@@ -13,6 +13,7 @@ import {RideListComponent} from "./rides/ride-list.component";
 import {RideListService} from './rides/ride-list.service';
 import {UserService} from "./users/user.service";
 import {AppService} from "./app.service";
+import {ValidatorService} from "./validator.service";
 import {AppAuthGuard} from "./app.authGuard";
 
 import {Routing} from './app.routes';
@@ -21,6 +22,8 @@ import {APP_BASE_HREF} from '@angular/common';
 import {CustomModule} from './custom.module';
 
 import {AddRideComponent} from './rides/add-ride.component';
+import {EditRideComponent} from './rides/edit-ride.component';
+import {DeleteRideComponent} from "./rides/delete-ride.component";
 
 import {MatCardModule} from '@angular/material/card';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -45,14 +48,16 @@ import {ProfileComponent} from "./users/profile.component";
     HomeComponent,
     RideListComponent,
     AddRideComponent,
+    EditRideComponent,
+    DeleteRideComponent,
     ProfileComponent,
   ],
   providers: [
-    RideListService, AppService, AppAuthGuard, UserService,
+    RideListService, AppService, AppAuthGuard, UserService, ValidatorService,
     {provide: APP_BASE_HREF, useValue: '/'},
   ],
   entryComponents: [
-    AddRideComponent
+    AddRideComponent, EditRideComponent, DeleteRideComponent
   ],
   bootstrap: [AppComponent]
 })

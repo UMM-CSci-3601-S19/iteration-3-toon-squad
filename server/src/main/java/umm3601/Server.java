@@ -76,6 +76,8 @@ public class Server {
     get("api/rides", rideRequestHandler::getRides);
     get("api/myRides", rideRequestHandler::getMyRides);
     post("api/rides/new", rideRequestHandler::addNewRide);
+    post("api/rides/remove", rideRequestHandler::deleteRide);
+    post("api/rides/update", rideRequestHandler::editRide);
 
     // USER ENDPOINTS
     get("api/user/:id",userRequestHandler::getUserJSON);
