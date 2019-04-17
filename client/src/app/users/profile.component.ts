@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit{
   public profile: User;
   public profileId: string;
   public userRides: Ride[];
+  public userPhone: string;
   // private sub: any;
 
 

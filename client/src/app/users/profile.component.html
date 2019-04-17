@@ -17,8 +17,9 @@
             <br><br>
             <form class="example-form">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Phone">
-              </mat-form-field>
+                <input matInput placeholder="Phone" [(ngModel)]="userPhone">
+              </mat-form-field> &nbsp;
+              <button mat-flat-button  color="primary"> Add Phone </button>
             </form>
           </div>
         <div>
