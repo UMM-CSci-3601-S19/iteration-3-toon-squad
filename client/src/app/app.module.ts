@@ -25,6 +25,8 @@ import {CustomModule} from './custom.module';
 
 import {AddUserComponent} from './users/add-user.component';
 import {AddRideComponent} from './rides/add-ride.component';
+import {EditRideComponent} from './rides/edit-ride.component';
+import {DeleteRideComponent} from "./rides/delete-ride.component";
 
 import {MatCardModule} from '@angular/material/card';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -51,13 +53,15 @@ import {MatCheckboxModule}  from "@angular/material/checkbox";
     UserComponent,
     AddUserComponent,
     AddRideComponent,
+    EditRideComponent,
+    DeleteRideComponent,
   ],
   providers: [
     UserListService, RideListService, AppService, AppAuthGuard, ValidatorService,
     {provide: APP_BASE_HREF, useValue: '/'},
   ],
   entryComponents: [
-    AddUserComponent, AddRideComponent
+    AddUserComponent, AddRideComponent, EditRideComponent, DeleteRideComponent
   ],
   bootstrap: [AppComponent]
 })

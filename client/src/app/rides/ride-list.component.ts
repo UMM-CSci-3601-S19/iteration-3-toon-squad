@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {RideListService} from './ride-list.service';
 import {Ride} from './ride';
 import {Observable} from 'rxjs/Observable';
+import {MatDialog} from "@angular/material";
+import {EditRideComponent} from "./edit-ride.component";
+import {DeleteRideComponent} from "./delete-ride.component";
 
 @Component({
   selector: 'ride-list-component',
@@ -20,9 +23,10 @@ export class RideListComponent implements OnInit {
   public rideOrigin: string;
   public rideDriving: boolean;
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
+  private highlightedDestination: string = '';
 
   // Inject the RideListService into this component.
-  constructor(public rideListService: RideListService) {
+  constructor(public rideListService: RideListService, public dialog: MatDialog) {
  //   rideListService.addListener(this);
   }
 
@@ -42,7 +46,7 @@ export class RideListComponent implements OnInit {
   }
 
   public checkImpossibleTime(ride: Ride) {
-    return (ride.departureTime.includes("99"))
+    return (ride.departureTime.includes("99") || ride.departureTime === "")
   }
 
   public filterRides(searchDestination: string, searchOrigin: string,
@@ -100,7 +104,6 @@ export class RideListComponent implements OnInit {
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
-        console.log("These are the rides getRides got " + JSON.stringify(rides));
         this.rides = rides;
         this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving, this.rideNonSmoking);
       },
@@ -113,7 +116,6 @@ export class RideListComponent implements OnInit {
   loadService(): void {
     this.rideListService.getRides().subscribe(
       rides => {
-        console.log("Here are the rides:" + JSON.stringify(rides) );
         this.rides = rides;
       },
       err => {
@@ -171,6 +173,46 @@ export class RideListComponent implements OnInit {
       hours = (hours.length < 10) ? '0' + hours:hours;
       return hours + ':' + min + ' PM';
     }
+  }
+
+  giveRideToService(ride: Ride){
+
+    // Since unspecified times are still being given an 'impossible' date, we need to change that back
+    // before we send the ride to edit-ride component. NOTE: This is not necessary with impossible times,
+    // since the form handles those appropriately by leaving the time field empty.
+    if (ride.departureDate === "3000-01-01T05:00:00.000Z") {
+      ride.departureDate = null;
+    }
+
+    this.rideListService.grabRide(ride);
+  }
+
+  openDeleteDialog(currentId: object): void {
+    console.log("openDeleteDialog");
+    const dialogRef = this.dialog.open(DeleteRideComponent, {
+      width: '500px',
+      data: {id: currentId}
+    });
+    dialogRef.afterClosed().subscribe(deletedRideId => {
+      if (deletedRideId != null) {
+        this.rideListService.deleteRide(deletedRideId).subscribe(
+          result => {
+            console.log("openDeleteDialog has gotten a result!");
+            this.highlightedDestination = result;
+            console.log("The result is " + result);
+            this.refreshRides();
+          },
+          err => {
+            console.log('There was an error deleting the ride.');
+            console.log('The id we attempted to delete was  ' + deletedRideId);
+            console.log('The error was ' + JSON.stringify(err));
+          });
+      }
+    });
+  }
+
+  printCurrRide(ride : Ride) : void {
+    console.log((ride));
   }
 
 }
