@@ -116,7 +116,7 @@ export class EditRideComponent implements OnInit {
   //   Before adding the ride to the DB, the value gets set to 0 (by the ride controller).
   //   Also, ride-list component HTML won't display this number unless it is indeed a User that is driving.
   setRideSeats() {
-    this.rideSeats = 1;
+    this.rideSeatsAvailable = 1;
   }
 
   ngOnInit() {
