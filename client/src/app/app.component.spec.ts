@@ -13,10 +13,7 @@ describe('AppComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CustomModule,
-        AppModule
-      ],
+      imports: [CustomModule, AppModule],
     });
 
     appFixture = TestBed.createComponent(AppComponent);
