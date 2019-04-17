@@ -15,12 +15,8 @@
           <div>
             Email: {{profile.email}}
             <br><br>
-            <form class="example-form">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Phone" [(ngModel)]="userPhone">
-              </mat-form-field> &nbsp;
-              <button mat-flat-button  color="primary"> Add Phone </button>
-            </form>
+            <input matInput placeholder="Phone" [(ngModel)]="userPhone"> &nbsp;
+            <button mat-flat-button  color="primary"> Add Phone </button>
           </div>
         <div>
         <img src="{{profile.pictureUrl}}">
