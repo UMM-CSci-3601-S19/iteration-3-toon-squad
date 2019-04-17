@@ -111,6 +111,14 @@ export class EditRideComponent implements OnInit {
     this.rideNonSmoking = this.rideListService.singleRide.nonSmoking
   }
 
+  // IMPORTANT! This function gets called whenever the user selects 'looking for a ride'.
+  //   This is so that form validator doesn't get mad for having an invalid 'rideSeats' value.
+  //   Before adding the ride to the DB, the value gets set to 0 (by the ride controller).
+  //   Also, ride-list component HTML won't display this number unless it is indeed a User that is driving.
+  setRideSeats() {
+    this.rideSeatsAvailable = 1;
+  }
+
   ngOnInit() {
     this.validatorService.createForm();
     this.setRideFields();

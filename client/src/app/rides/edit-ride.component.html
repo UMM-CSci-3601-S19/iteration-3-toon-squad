@@ -17,7 +17,7 @@
             <br>
             <br>
             <mat-radio-button id="isDrivingButton" [value] = true > driving</mat-radio-button>
-            <mat-radio-button id="isNotDrivingButton" [value] = false> looking for a ride</mat-radio-button>
+            <mat-radio-button id="isNotDrivingButton" [value] = false (click)="setRideSeats()"> looking for a ride </mat-radio-button>
             <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.driving">
               <mat-error class="error-message" id="driving-error"
                          *ngIf="validatorService.rideForm.get('driving').hasError(validation.type) &&
@@ -126,7 +126,7 @@
 
           <button class="editRideButton" mat-raised-button id="confirmEditRideButton"  type="button" color="primary"
                   (click)="editRide()" routerLink="/rides" [disabled]="!validatorService.rideForm.valid">
-            Edit Ride
+            Update Ride
           </button>
           <button class="cancelRideButton" mat-button id="exitWithoutEditingButton" routerLink="/rides"  type="button">Cancel</button>
 
