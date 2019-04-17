@@ -81,6 +81,7 @@ export class AppService {
       this.googleAuth.signOut();
       localStorage.setItem('isSignedIn', 'false');
       localStorage.setItem("userId", "");
+      window.location.reload();
     })
   }
 
