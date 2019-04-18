@@ -60,6 +60,10 @@ export class RidePage {
     return element(by.id(idOfElement)).isPresent();
   }
 
+  elementDoesNotExistWithId(idOfElement: string): promise.Promise<boolean> {
+    return element(by.id(idOfElement)).isPresent();
+  }
+
   elementExistsWithCss(cssOfElement: string): promise.Promise<boolean> {
     return element(by.css(cssOfElement)).isPresent();
   }
