@@ -1,28 +1,40 @@
 <title>MoRide - Upcoming Rides</title>
-<div layout-gt-sm="row">
 
+<div layout-gt-sm="row">
   <div flex-gt-sm="50" flex-offset-gt-sm="25">
+
+    <!--==================================================================================================-->
+
     <input type="image"
            src="assets/img/moridelogoFull.png"
            routerLink="/"
            class="morideFulllogo"
     />
     <h1 id="ride-list-title">Upcoming Rides</h1>
+
+
     <button mat-raised-button
             id="add-ride-button"
             routerLink="/addride"
             color="primary"
             type="button"
             style="width: 100%">
+
       <mat-icon>add_circle_outline</mat-icon>
       Create a Ride
+
     </button>
+
+    <!--===========================================================================================================-->
 
     <mat-divider></mat-divider>
 
     <br>
 
     <mat-card-content class="filterBox">
+
+      <!--==============================================================================================-->
+
       <mat-form-field>
 
         <input matInput id="rideDestination" #input placeholder="Filter by destination"
@@ -36,6 +48,8 @@
 
       <br>
 
+      <!--===================================================================================================-->
+
       <mat-radio-group class="radioGroup" [(ngModel)] = "rideDriving">
         I am looking for...
         <mat-radio-button id="isDrivingButton" [value] = true (click)="rideDriving = $event.target.value">
@@ -46,6 +60,8 @@
           <mat-icon style="color: blue"> transfer_within_a_station </mat-icon> riders
         </mat-radio-button>
       </mat-radio-group>
+
+      <!--===========================================================================================-->
 
       <br/>
       <br>
@@ -61,7 +77,7 @@
 
     </mat-card-content>
 
-
+    <!--=======================================================================================================-->
 
     <div *ngIf="rides; else ridesError">
       <mat-card #elem class="rides"
@@ -70,6 +86,8 @@
 
         <button (click)="printCurrRide(ride)"> print ride </button>
 
+        <!--======================================================================================================-->
+
 
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
 
@@ -77,18 +95,15 @@
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
+          <!--=========================================-->
+
           <mat-menu #menu="matMenu">
             /// This button should show edit/delete ride  IF the ride belongs to you ///
             <div *ngIf="getLocalUserId() === ride.userId">
 
-              <button mat-menu-item (click)="openEditDialog(ride._id, ride.user, ride.userId,
-              ride.notes, ride.seatsAvailable,
-              ride.origin, ride.destination,
-              ride.departureDate, ride.departureTime,
-              ride.isDriving, ride.roundTrip, ride.nonSmoking)" >
-
+              <button mat-menu-item (click) = "giveRideToService(ride)"
+                      routerLink="/editride">
                 <span>Edit Ride</span>
-
               </button>
 
               <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
@@ -98,31 +113,23 @@
             </div>
           </mat-menu>
 
+          <!--==============================================-->
+
           <mat-card-title>
+
             <div class="departure-time">
 
               <mat-icon style="color:green"> drive_eta</mat-icon>
 
-              <span *ngIf="ride.departureDate">
-                <span *ngIf="!checkImpossibleDate(ride)">
-                  {{this.dateParse(ride.departureDate)}}
-                </span>
+              <div *ngIf="!checkImpossibleDate(ride); then possible_date else impossible_date"> </div>
+              <ng-template #possible_date > {{this.dateParse(ride.departureDate)}} </ng-template>
+              <ng-template #impossible_date> Unspecified date </ng-template>
 
-                <span *ngIf="checkImpossibleDate(ride)">
-                  Unspecified date
-                </span>
-              </span>
+              at
 
-              <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
-
-              <span *ngIf="ride.departureTime">
-                <span *ngIf="!checkImpossibleTime(ride)">
-                 {{this.hourParse(ride.departureTime)}}
-                </span>
-                <span *ngIf="checkImpossibleTime(ride)">
-                  unspecified time
-                </span>
-              </span>
+              <div *ngIf="!checkImpossibleTime(ride); then possible_time else impossible_time"> </div>
+              <ng-template #possible_time > {{this.hourParse(ride.departureTime)}} </ng-template>
+              <ng-template #impossible_time> unspecified time </ng-template>
 
             </div>
 
@@ -134,16 +141,22 @@
           </mat-card-title>
         </mat-card-header>
 
+        <!--============================================================================================-->
+
         <mat-card-header *ngIf="!ride.isDriving" class="ride-title-isNotDriving" [id]="ride._id.$oid">
 
           <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsNotDriving" class="card-top-right-button">
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
+          <!--======================================-->
+
           <mat-menu #menu="matMenu">
             /// This button should show edit/delete ride  IF the ride belongs to you ///
             <div *ngIf="getLocalUserId() === ride.userId">
 
+              <button mat-menu-item (click) = "giveRideToService(ride)"
+                      routerLink="/editride">
               <button mat-menu-item (click)="openEditDialog(ride._id, ride.driver, ride.destination,
               ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)"
                       id="editDialogOpen">
@@ -159,35 +172,28 @@
             </div>
           </mat-menu>
 
+          <!--=============================================-->
+
           <mat-card-title>
             <div class="departure-time">
 
               <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
 
-              <span *ngIf="ride.departureDate">
-                <span *ngIf="!checkImpossibleDate(ride)">
-                  {{this.dateParse(ride.departureDate)}}
-                </span>
+              <div *ngIf="!checkImpossibleDate(ride); then possible_date else impossible_date"> </div>
+              <ng-template #possible_date > {{this.dateParse(ride.departureDate)}} </ng-template>
+              <ng-template #impossible_date> Unspecified date </ng-template>
 
-                <span *ngIf="checkImpossibleDate(ride)">
-                  Unspecified date
-                </span>
-              </span>
+               at
 
-              <span *ngIf="ride.departureDate && ride.departureTime"> at </span>
-
-              <span *ngIf="ride.departureTime">
-                <span *ngIf="!checkImpossibleTime(ride)">
-                 {{this.hourParse(ride.departureTime)}}
-                </span>
-                <span *ngIf="checkImpossibleTime(ride)">
-                 unspecified time
-                </span>
-              </span>
+              <div *ngIf="!checkImpossibleTime(ride); then possible_time else impossible_time"> </div>
+              <ng-template #possible_time > {{this.hourParse(ride.departureTime)}} </ng-template>
+              <ng-template #impossible_time> unspecified time </ng-template>
 
             </div>
           </mat-card-title>
         </mat-card-header>
+
+        <!--=========================================================================================-->
 
         <mat-card-content>
 
@@ -203,10 +209,6 @@
 
           <div id="ride-info-driver-id" class="ride-info driver" *ngIf="!ride.isDriving">
             {{ride.user}} is requesting this ride
-          </div>
-
-          <div *ngIf="getLocalUserId() === ride.userId">
-            This is your ride (can you tell?)
           </div>
 
           <div id="ride-info-tags" class="ride-info driver" >
@@ -225,6 +227,8 @@
 
         </mat-card-content>
 
+        <!--======================================================================================-->
+
       </mat-card>
     </div>
 
@@ -234,5 +238,6 @@
         issues.
       </mat-error>
     </ng-template>
+
   </div>
 </div>

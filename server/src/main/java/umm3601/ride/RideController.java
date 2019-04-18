@@ -5,6 +5,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -150,6 +151,50 @@ public class RideController {
       //Returns true if at least 1 document was deleted
       return out.getDeletedCount() != 0;
     }
+    catch(MongoException e){
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  Boolean editRide(String id, String notes, Number seatsAvailable, String origin, String destination,
+                   String departureDate, String departureTime, Boolean isDriving, Boolean roundTrip, Boolean nonSmoking)
+  {
+
+    if (!isDriving) {
+      seatsAvailable = 0;
+    }
+
+    if (departureDate == null || departureDate == "") {
+      departureDate = "3000-01-01T05:00:00.000Z";
+    }
+
+    if (departureTime == null || departureTime == "") {
+      departureTime = "99:99";
+    }
+
+    ObjectId objId = new ObjectId(id);
+    Document filter = new Document("_id", objId);
+
+    Document updateFields = new Document();
+    updateFields.append("notes", notes);
+    updateFields.append("seatsAvailable", seatsAvailable);
+    updateFields.append("origin", origin);
+    updateFields.append("destination", destination);
+    updateFields.append("departureDate", departureDate);
+    updateFields.append("departureTime", departureTime);
+    updateFields.append("isDriving", isDriving);
+    updateFields.append("roundTrip", roundTrip);
+    updateFields.append("nonSmoking", nonSmoking);
+
+    Document updateDoc = new Document("$set", updateFields);
+
+    try{
+      UpdateResult out = rideCollection.updateOne(filter, updateDoc);
+      //returns false if no documents were modified, true otherwise
+      return out.getModifiedCount() != 0;
+    }
+
     catch(MongoException e){
       e.printStackTrace();
       return false;

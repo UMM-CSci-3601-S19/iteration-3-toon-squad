@@ -35,7 +35,7 @@ export class AppService {
     this.http.post(environment.API_URL + "login", {code: code}, httpOptions)
       .subscribe(onSuccess => {
         console.log("Code sent to server");
-
+        console.log(onSuccess);
         localStorage.setItem("_id", onSuccess["_id"]);
         localStorage.setItem("userId", onSuccess["userId"]);
         localStorage.setItem("oid", onSuccess["_id"]["$oid"]);
@@ -45,14 +45,15 @@ export class AppService {
         localStorage.setItem("userFirstName", onSuccess["firstName"]);
         localStorage.setItem("pictureUrl", onSuccess["pictureUrl"]);
 
-        // console.log(localStorage.getItem("_id"));
-        // console.log(localStorage.getItem("userId"));
-        // console.log(localStorage.getItem("oid"));
-        // console.log(localStorage.getItem("email"));
-        // console.log(localStorage.getItem("userFullName"));
-        // console.log(localStorage.getItem("userLastName"));
-        // console.log(localStorage.getItem("userFirstName"));
-        // console.log(localStorage.getItem("pictureUrl"));
+
+        console.log(localStorage.getItem("_id"));
+        console.log(localStorage.getItem("userId"));
+        console.log(localStorage.getItem("oid"));
+        console.log(localStorage.getItem("email"));
+        console.log(localStorage.getItem("userFullName"));
+        console.log(localStorage.getItem("userLastName"));
+        console.log(localStorage.getItem("userFirstName"));
+        console.log(localStorage.getItem("pictureUrl"));
 
       }, onFail => {
         console.log("ERROR: Code couldn't be sent to the server");

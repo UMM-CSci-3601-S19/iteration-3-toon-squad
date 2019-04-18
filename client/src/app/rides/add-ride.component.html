@@ -33,7 +33,7 @@
           <mat-form-field *ngIf="rideDriving">
               <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
                      placeholder="Seats Available"
-                     [(ngModel)]="rideSeats" formControlName="seatsAvailable" required>
+                     [(ngModel)]="rideSeats" formControlName="seatsAvailable">
                 <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.seatsAvailable">
                   <mat-error class="error-message"
                              *ngIf="validatorService.rideForm.get('seatsAvailable').hasError(validation.type) &&
@@ -113,9 +113,6 @@
 
           <mat-checkbox class="checkboxNonSmoking" id="checkboxNonSmoking" [(ngModel)]="rideNonSmoking"
                         [ngModelOptions]="{standalone: true}">Non-smoking</mat-checkbox>
-
-          <!--=================================================================================================-->
-
         </mat-card-content>
 
         <mat-card-actions layout="row">
