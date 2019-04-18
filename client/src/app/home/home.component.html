@@ -31,9 +31,16 @@
       </div>
       <mat-divider></mat-divider>
       <mat-card-content>
+
         <div
           id="signIn" *ngIf="!appService.isSignedIn()" class="g-signin2" (click)="appService.signIn()">
         </div>
+
+        <input type="image"
+               src="assets/img/addridesbutton.png"
+               *ngIf="appService.isSignedIn()"
+               (click)="appService.signOut()"
+        />
 
         <div id="signOut"  *ngIf="appService.isSignedIn()" (click)="appService.signOut()">
           <mat-icon>exit_to_app</mat-icon>
