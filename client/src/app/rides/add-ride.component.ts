@@ -3,6 +3,7 @@ import {Ride} from './ride';
 import {RideListService} from "./ride-list.service";
 import {Observable} from "rxjs/Observable";
 import {ValidatorService} from "../validator.service";
+import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
 
 @Component({
   selector: 'add-ride.component',
@@ -36,8 +37,8 @@ export class AddRideComponent implements OnInit {
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService,
-              public validatorService: ValidatorService) {
-
+              public validatorService: ValidatorService,
+              public snackBar: MatSnackBar) {
   }
 
   addRide(): void {
@@ -70,6 +71,9 @@ export class AddRideComponent implements OnInit {
           console.log('The newRide or dialogResult was ' + newRide);
           console.log('The error was ' + JSON.stringify(err));
         });
+
+      this.snackBar.open("Successfully added a Ride",'' , <MatSnackBarConfig>{duration: 5000,});
+
 
       this.refreshRides();
       this.refreshRides();
