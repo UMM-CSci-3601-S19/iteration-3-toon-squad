@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {RideListService} from './ride-list.service';
 import {Ride} from './ride';
 import {Observable} from 'rxjs/Observable';
-import {MatDialog} from "@angular/material";
+import {MatDialog, MatDialogConfig} from "@angular/material";
 import {EditRideComponent} from "./edit-ride.component";
 import {DeleteRideComponent} from "./delete-ride.component";
 import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
@@ -126,11 +126,6 @@ export class RideListComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.refreshRides();
-    this.loadService();
-  }
-
   /**
    * Parses ISO dates for human readable month/day, adds ordinal suffixes
    * @param {string} selectedDate The date to be parsed, an ISO string like "2019-04-10T05:00:00.000Z"
@@ -191,10 +186,10 @@ export class RideListComponent implements OnInit {
 
   openDeleteDialog(currentId: object): void {
     console.log("openDeleteDialog");
-    const dialogRef = this.dialog.open(DeleteRideComponent, {
+    const dialogRef = this.dialog.open(DeleteRideComponent, <MatDialogConfig>{
       width: '500px',
       data: {id: currentId}
-    })
+    });
 
     dialogRef.afterClosed().subscribe(deletedRideId => {
       if (deletedRideId != null) {
@@ -221,4 +216,8 @@ export class RideListComponent implements OnInit {
     console.log((ride));
   }
 
+  ngOnInit(): void {
+    this.refreshRides();
+    this.loadService();
+  }
 }

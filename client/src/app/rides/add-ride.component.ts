@@ -60,10 +60,12 @@ export class AddRideComponent implements OnInit {
     console.log("COMPONENT: The new Ride in addRide() is " + JSON.stringify(newRide));
 
     if (newRide != null) {
+      console.log("Is the subscribe the problem??");
       this.rideListService.addNewRide(newRide).subscribe(
         result => {
           console.log("here it is:" + result);
           this.highlightedID = result;
+          console.log("COMPONENT: The RESULT in addRide() is " + JSON.stringify(result));
         },
         err => {
           // This should probably be turned into some sort of meaningful response.
@@ -73,15 +75,6 @@ export class AddRideComponent implements OnInit {
         });
 
       this.snackBar.open("Successfully Added A Ride",'' , <MatSnackBarConfig>{duration: 5000,});
-
-
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
       this.refreshRides();
     }
   };
@@ -96,6 +89,7 @@ export class AddRideComponent implements OnInit {
     rides.subscribe(
       rides => {
         this.rides = rides;
+        console.log(" These are the rides getRides got back after addRide called Refresh Ride " + JSON.stringify(this.rides));
       },
       err => {
         console.log(err);
@@ -114,7 +108,6 @@ export class AddRideComponent implements OnInit {
 
   ngOnInit() {
     this.validatorService.createForm();
-
   }
 
 
