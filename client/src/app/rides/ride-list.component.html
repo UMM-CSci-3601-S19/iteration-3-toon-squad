@@ -114,10 +114,10 @@
             <button mat-raised-button
                     class="join-ride-button"
                     id="join-ride-button"
-                    routerLink="/joinride"
                     color="primary"
                     type="button"
-                    style="width: 100%">
+                    style="width: 100%"
+                    (click) = "joinRide(ride._id, ride.seatsAvailable, ride.passengers, ride.names)">
               <mat-icon>add_circle_outline</mat-icon>
               Join This Ride
             </button>

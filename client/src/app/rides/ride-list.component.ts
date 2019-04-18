@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {MatDialog} from "@angular/material";
 import {EditRideComponent} from "./edit-ride.component";
 import {DeleteRideComponent} from "./delete-ride.component";
+import {joinRideObject} from "./joinRideObject";
 
 @Component({
   selector: 'ride-list-component',
@@ -24,6 +25,9 @@ export class RideListComponent implements OnInit {
   public rideDriving: boolean;
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
   private highlightedDestination: string = '';
+  public currUserId = localStorage.getItem("userId");
+  public currUserFullName = localStorage.getItem("userFullName");
+  private highlightedID: string = '';
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService, public dialog: MatDialog) {
@@ -199,9 +203,9 @@ export class RideListComponent implements OnInit {
         this.rideListService.deleteRide(deletedRideId).subscribe(
 
           result => {
-            console.log("openDeleteDialog has gotten a result!");
+            console.log('openDeleteDialog has gotten a result!');
             this.highlightedDestination = result;
-            console.log("The result is " + result);
+            console.log('The result is ' + result);
             this.refreshRides();
           },
 
@@ -214,32 +218,78 @@ export class RideListComponent implements OnInit {
     });
   }
 
-  printCurrRide(ride : Ride) : void {
+  printCurrRide(ride: Ride): void {
     console.log((ride));
   }
-  openEditDialog(currentId: string): void{
-    const currentRide: Ride = {
-      _id: currentId
+
+
+  joinRide(_id: string, seatsAvailable: number, passengers: string[], names: string[]): void {
+
+    passengers.push(this.currUserId);
+    names.push(this.currUserFullName);
+    seatsAvailable = (seatsAvailable - 1);
+
+    console.log(passengers);
+    console.log(names);
+    console.log(seatsAvailable);
+
+    const joinedRide: joinRideObject = {
+      _id: _id,
+      seatsAvailable: seatsAvailable,
+      passengers: passengers,
+      names: names,
     };
-    // Constructs dialog box
-    const dialogRef = this.dialog.open(EditRideComponent, {
-      width: '500px',
-      data: {ride: currentRide}
-    });
-    dialogRef.afterClosed().subscribe(currentRide => {
-      if (currentRide != null) {
-        this.rideListService.editRide(currentRide).subscribe(
-          result => {
-            this.highlightedDestination = result;
-            this.refreshRides();
-            console.log('The currentRide or dialogResult was ' + JSON.stringify(currentRide));
-          },
-          err => {
-            console.log('There was an error editing the ride.');
-            console.log('The currentRide or dialogResult was error ' + JSON.stringify(currentRide));
-            console.log('The error was ' + JSON.stringify(err));
-          });
-      }
-    });
-  }
+
+    this.rideListService.joinRide(joinedRide).subscribe(
+
+        result => {
+          console.log("here it is:" + result);
+          this.highlightedID = result;
+        },
+        err => {
+          // This should probably be turned into some sort of meaningful response.
+          console.log('There was an error adding the ride.');
+          console.log('The newRide or dialogResult was ' );
+          console.log('The error was ' + JSON.stringify(err));
+        });
+
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+
+  };
+
+
+
+
+  // openJoinDialog(currentId: string): void{
+  //   const currentRide: Ride = {
+  //     _id: currentId
+  //   };
+  //   // Constructs dialog box
+  //   const dialogRef = this.dialog.open(EditRideComponent, {
+  //     width: '500px',
+  //     data: {ride: currentRide}
+  //   });
+  //   dialogRef.afterClosed().subscribe(currentRide => {
+  //     if (currentRide != null) {
+  //       this.rideListService.editRide(currentRide).subscribe(
+  //         result => {
+  //           this.highlightedDestination = result;
+  //           this.refreshRides();
+  //           console.log('The currentRide or dialogResult was ' + JSON.stringify(currentRide));
+  //         },
+  //         err => {
+  //           console.log('There was an error editing the ride.');
+  //           console.log('The currentRide or dialogResult was error ' + JSON.stringify(currentRide));
+  //           console.log('The error was ' + JSON.stringify(err));
+  //         });
+  //     }
+  //   });
+  // }
 }

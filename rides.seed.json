@@ -13,7 +13,9 @@
     "departureTime": "16:21",
     "isDriving": true,
     "roundTrip": true,
-    "nonSmoking": false
+    "nonSmoking": false,
+    "passengers": [],
+    "names": []
   },
   {
     "_id": {

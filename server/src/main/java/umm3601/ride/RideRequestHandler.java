@@ -139,4 +139,23 @@ public class RideRequestHandler {
       departureDate, departureTime, isDriving, roundTrip, nonSmoking);
   }
 
+  public Boolean joinRide(Request req, Response res) {
+
+    System.err.println(req.body());
+
+    res.type("application/json");
+
+    // Turn the request into a Document
+    Document joinRide = Document.parse(req.body());
+    System.out.println(joinRide);
+
+    String _id = joinRide.getObjectId("_id").toHexString();
+    Number seatsAvailable = joinRide.getInteger("seatsAvailable");
+    Object passengers = joinRide.values().toArray()[2];
+    Object names = joinRide.values().toArray()[3];
+
+    return rideController.joinRide(_id, seatsAvailable, passengers, names);
+  }
+
+
 }
