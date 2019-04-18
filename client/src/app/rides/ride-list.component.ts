@@ -5,6 +5,8 @@ import {Observable} from 'rxjs/Observable';
 import {MatDialog} from "@angular/material";
 import {EditRideComponent} from "./edit-ride.component";
 import {DeleteRideComponent} from "./delete-ride.component";
+import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
+
 
 @Component({
   selector: 'ride-list-component',
@@ -26,8 +28,8 @@ export class RideListComponent implements OnInit {
   private highlightedDestination: string = '';
 
   // Inject the RideListService into this component.
-  constructor(public rideListService: RideListService, public dialog: MatDialog) {
- //   rideListService.addListener(this);
+  constructor(public rideListService: RideListService, public dialog: MatDialog,
+              public snackBar: MatSnackBar) {
   }
 
   // This method is used in the HTML instead of ngModel, since it solves a problem where
@@ -202,6 +204,7 @@ export class RideListComponent implements OnInit {
             console.log("openDeleteDialog has gotten a result!");
             this.highlightedDestination = result;
             console.log("The result is " + result);
+            this.snackBar.open("Successfully Deleted Ride",'' , <MatSnackBarConfig>{duration: 5000,});
             this.refreshRides();
           },
 

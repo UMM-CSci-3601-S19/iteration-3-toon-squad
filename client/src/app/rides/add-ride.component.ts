@@ -72,7 +72,7 @@ export class AddRideComponent implements OnInit {
           console.log('The error was ' + JSON.stringify(err));
         });
 
-      this.snackBar.open("Successfully added a Ride",'' , <MatSnackBarConfig>{duration: 5000,});
+      this.snackBar.open("Successfully Added A Ride",'' , <MatSnackBarConfig>{duration: 5000,});
 
 
       this.refreshRides();
