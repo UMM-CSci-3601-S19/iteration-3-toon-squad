@@ -1,26 +1,27 @@
-<title>MoRide - Add Rides</title>
+<title>MoRide - Edit a ride</title>
 <div layout-gt-sm="row">
   <div flex-gt-sm="40" flex-offset-gt-sm="30">
     <form [formGroup]="validatorService.rideForm">
-      <mat-card class="addARide">
+      <mat-card class="editARide">
 
         <!--=====================================================================================-->
 
-        <mat-card-title id="ride-add-title" class="rideAddTitle">Add a Ride</mat-card-title>
-        <mat-card-content class="addARideContent">
+        <mat-card-title id="ride-edit-title" class="rideEditTitle">Edit a Ride</mat-card-title>
+        <mat-card-content class="editARideContent">
 
           <!--==========================================================================================-->
 
-          <mat-radio-group flex [(ngModel)]="rideDriving" formControlName="driving" required>
+          <mat-radio-group flex [(ngModel)]="rideIsDriving" formControlName="driving" required>
             <br>
-            {{this.rideUser}} is...
+            {{rideUser}} is...
             <br>
             <br>
             <mat-radio-button id="isDrivingButton" [value] = true > driving</mat-radio-button>
-            <mat-radio-button id="isNotDrivingButton" [value] = false (click)="setRideSeats()"> looking for a ride</mat-radio-button>
+            <mat-radio-button id="isNotDrivingButton" [value] = false (click)="setRideSeats()"> looking for a ride </mat-radio-button>
             <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.driving">
               <mat-error class="error-message" id="driving-error"
-                         *ngIf="validatorService.rideForm.get('driving').hasError(validation.type) && (validatorService.rideForm.get('driving').dirty || validatorService.rideForm.get('driving').touched)">
+                         *ngIf="validatorService.rideForm.get('driving').hasError(validation.type) &&
+                         (validatorService.rideForm.get('driving').dirty || validatorService.rideForm.get('driving').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>
@@ -30,17 +31,19 @@
 
           <!--==============================================================================================-->
 
-          <mat-form-field *ngIf="rideDriving">
-              <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
-                     placeholder="Seats Available"
-                     [(ngModel)]="rideSeats" formControlName="seatsAvailable">
-                <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.seatsAvailable">
-                  <mat-error class="error-message"
-                             *ngIf="validatorService.rideForm.get('seatsAvailable').hasError(validation.type) &&
+          <mat-form-field *ngIf="rideIsDriving">
+            <input type="number" class="inputRideInfo" matInput #input id="seatsAvailableField"
+                   placeholder="Seats Available"
+                   [(ngModel)]="rideSeatsAvailable" formControlName="seatsAvailable">
+            <mat-error *ngIf="rideIsDriving">
+              <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.seatsAvailable">
+                <mat-error class="error-message"
+                           *ngIf="validatorService.rideForm.get('seatsAvailable').hasError(validation.type) &&
                            (validatorService.rideForm.get('seatsAvailable').dirty || validatorService.rideForm.get('seatsAvailable').touched)">
-                    {{validation.message}}
-                  </mat-error>
+                  {{validation.message}}
                 </mat-error>
+              </mat-error>
+            </mat-error>
 
           </mat-form-field>
 
@@ -80,7 +83,8 @@
 
           <mat-form-field>
             <input matInput class="inputRideInfo" id="departureDateField" [min]="minDate" [matDatepicker]="picker"
-                   placeholder="Choose Departure Date" [(ngModel)]="rideDepartureDate" formControlName="departureDate">
+                   placeholder="Choose Departure Date" [(ngModel)]="rideDepartureDate"
+                   formControlName="departureDate">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -113,16 +117,25 @@
 
           <mat-checkbox class="checkboxNonSmoking" id="checkboxNonSmoking" [(ngModel)]="rideNonSmoking"
                         [ngModelOptions]="{standalone: true}">Non-smoking</mat-checkbox>
+
+          <!--=================================================================================================-->
+
         </mat-card-content>
 
         <mat-card-actions layout="row">
-          <button class="addRideButton" mat-raised-button id="confirmAddRideButton"  type="button" color="primary"
-                  (click)="addRide()" routerLink="/rides" [disabled]="!validatorService.rideForm.valid">Add Ride
+
+          <button class="editRideButton" mat-raised-button id="confirmEditRideButton"  type="button" color="primary"
+                  (click)="editRide()" routerLink="/rides" [disabled]="!validatorService.rideForm.valid">
+            Update Ride
           </button>
-          <button class="cancelRideButton" mat-button id="exitWithoutAddingButton" routerLink="/rides"  type="button">Cancel</button>
+          <button class="cancelRideButton" mat-button id="exitWithoutEditingButton" routerLink="/rides"  type="button">Cancel</button>
+
         </mat-card-actions>
 
       </mat-card>
     </form>
   </div>
 </div>
+
+
+

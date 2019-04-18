@@ -1,8 +1,26 @@
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
     <mat-card>
-      <mat-card-title id="hello-world">{{ this.text }}</mat-card-title>
-      <mat-card-subtitle>this is a card</mat-card-subtitle>
+      <mat-card-title id="hello-world">MoRide Home</mat-card-title>
+      <mat-card-subtitle>
+        Welcome to MoRide! You can look for and post rides for the Morris Community.
+      </mat-card-subtitle>
+      <div>
+        <button id="rideslistbutton" mat-raised-button
+                routerLink="/rides"
+                color="primary"
+                type="button">
+          <mat-icon>directions_car</mat-icon>
+          View Rides
+        </button>
+
+        <button mat-raised-button
+                routerLink="/addride"
+                type="button">
+          <mat-icon>add_circle_outline</mat-icon>
+          Add Rides
+        </button>
+      </div>
       <mat-divider></mat-divider>
       <mat-card-content>
         <div
@@ -13,7 +31,6 @@
           <mat-icon>exit_to_app</mat-icon>
           Sign Out
         </div>
-
       </mat-card-content>
     </mat-card>
   </div>

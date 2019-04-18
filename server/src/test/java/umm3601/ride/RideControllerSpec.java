@@ -36,6 +36,7 @@ import static umm3601.DatabaseHelper.parseJsonArray;
 public class RideControllerSpec {
   private RideController rideController;
   private ObjectId ellisRideId;
+  public String ellisRideIdToString;
 
   @Before
   public void clearAndPopulateDB() {
@@ -80,6 +81,8 @@ public class RideControllerSpec {
 
     ellisRideId = new ObjectId();
     BasicDBObject ellisRide = new BasicDBObject("_id", ellisRideId);
+    ellisRideIdToString = ellisRide.getString("_id");
+
     ellisRide = ellisRide.append("user", "Ellis")
       .append("userId", "004")
       .append("seatsAvailable", 0)
@@ -104,6 +107,11 @@ public class RideControllerSpec {
   private static int getSeatsAvailable(BsonValue val) {
     BsonDocument ride = val.asDocument();
     return ((BsonInt32) ride.get("seatsAvailable")).getValue();
+  }
+
+  private static String getOrigin(BsonValue val) {
+    BsonDocument ride = val.asDocument();
+    return ((BsonString) ride.get("origin")).getValue();
   }
 
   @Test
@@ -226,6 +234,50 @@ public class RideControllerSpec {
     assertNull("No user name should match", noJsonResult);
   }
 
+  @Test
+  public void editRide(){
+
+    // Since rideController.editRide() returns true when a ride was modified, we should store the boolean
+    // and test it later. First we store it...
+    Boolean someRideWasModified = rideController.editRide(ellisRideIdToString, "", 1,
+      "Pizza Hut", "Perkin's", "","", false, false, false);
+
+    // ...and now we test it.
+    assertTrue(someRideWasModified);
+
+    // In the entry above, we've changed the ride belonging to Ellis. Notes and destination were left unchanged.
+    // Of particular importance are the fields seatsAvailable, departureDate, and departureTime. The editRide method
+    // is supposed to handle these in a certain way, but only under certain circumstances (see the Ride Controller code).
+
+    // We will check each field regardless if it was intended to be changed. Unlike the previous tests,
+    // since we are only dealing with one ride, using stream/map isn't necessary. We will represent the ride as a string
+    // and check if it contains the appropriate fields.
+
+    String ride = rideController.getRide(ellisRideIdToString);
+
+    // Even though seatsAvailable was changed to 1, since isDriving was false, the Ride Controller should set it to 0.
+    assertTrue(ride.toString().contains("\"seatsAvailable\": 0"));
+
+    // Passing in an empty time should tell the ride controller to turn it to an 'impossible time'
+    assertTrue(ride.toString().contains("\"departureTime\": \"99:99\""));
+
+    // Likewise, passing an empty date results in a (contextually) impossible date
+    assertTrue(ride.toString().contains("\"departureDate\": " + "\"3000-01-01T05:00:00.000Z\""));
+
+    // The rest are self-explanatory and should be exactly what we passed into editRide().
+    assertTrue(ride.toString().contains("\"origin\": \"Pizza Hut\""));   // Should contain the new origin
+    assertTrue(ride.toString().contains("\"isDriving\": false"));   // Should contain the new isDriving
+    assertTrue(ride.toString().contains("\"nonSmoking\": false"));   // Should contain the new nonSmoking
+    assertTrue(ride.toString().contains("\"roundTrip\": false"));   // Should contain the new roundTrip
+
+    // We should check the old values as well, since they should not be changed
+    assertTrue(ride.toString().contains("\"notes\": \"\""));   // Should contain the old notes
+    assertTrue(ride.toString().contains("\"destination\": \"Perkin's\""));   // Should contain old destination
+
+  }
+
+}
+
 
   //TODO: See top comment
 //  @Test
@@ -249,4 +301,4 @@ public class RideControllerSpec {
 //    assertEquals("Should be 4 rides", 4, docs.size());
 //  }
 
-}
+

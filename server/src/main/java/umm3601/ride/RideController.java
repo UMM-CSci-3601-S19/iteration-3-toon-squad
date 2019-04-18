@@ -4,6 +4,8 @@ import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -11,17 +13,13 @@ import umm3601.DatabaseHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.ascending;
-import static com.mongodb.client.model.Sorts.descending;
 import static com.mongodb.client.model.Sorts.orderBy;
 
 public class RideController {
@@ -83,7 +81,7 @@ public class RideController {
     Bson sortDate = ascending("departureDate");
     Bson sortTime = ascending("departureTime");
 
-    //filters out dates that aren't grecomater than or equal to today's date
+    //filters out dates that aren't greater than or equal to today's date
     Bson pastDate = gte("departureDate", nowAsISO.substring(0,10)+"T05:00:00.000Z");
     //filters out times that aren't greater than or equal to the current time
     Bson pastTime = gte("departureTime", nowAsISO.substring(11,16));
@@ -143,6 +141,63 @@ public class RideController {
     } catch (MongoException me) {
       me.printStackTrace();
       return null;
+    }
+  }
+
+  Boolean deleteRide(String id){
+    ObjectId objId = new ObjectId(id);
+    try{
+      DeleteResult out = rideCollection.deleteOne(new Document("_id", objId));
+      //Returns true if at least 1 document was deleted
+      return out.getDeletedCount() != 0;
+    }
+    catch(MongoException e){
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  Boolean editRide(String id, String notes, Number seatsAvailable, String origin, String destination,
+                   String departureDate, String departureTime, Boolean isDriving, Boolean roundTrip, Boolean nonSmoking)
+  {
+
+    if (!isDriving) {
+      seatsAvailable = 0;
+    }
+
+    if (departureDate == null || departureDate == "") {
+      departureDate = "3000-01-01T05:00:00.000Z";
+    }
+
+    if (departureTime == null || departureTime == "") {
+      departureTime = "99:99";
+    }
+
+    ObjectId objId = new ObjectId(id);
+    Document filter = new Document("_id", objId);
+
+    Document updateFields = new Document();
+    updateFields.append("notes", notes);
+    updateFields.append("seatsAvailable", seatsAvailable);
+    updateFields.append("origin", origin);
+    updateFields.append("destination", destination);
+    updateFields.append("departureDate", departureDate);
+    updateFields.append("departureTime", departureTime);
+    updateFields.append("isDriving", isDriving);
+    updateFields.append("roundTrip", roundTrip);
+    updateFields.append("nonSmoking", nonSmoking);
+
+    Document updateDoc = new Document("$set", updateFields);
+
+    try{
+      UpdateResult out = rideCollection.updateOne(filter, updateDoc);
+      //returns false if no documents were modified, true otherwise
+      return out.getModifiedCount() != 0;
+    }
+
+    catch(MongoException e){
+      e.printStackTrace();
+      return false;
     }
   }
 }

@@ -131,4 +131,42 @@ describe('Ride list service: ', () => {
     req.flush(newRide._id);
   });
 
-});
+  it("should successfully edit an existing ride", () => {
+    const editedRide: Ride = {
+      _id: 'ride_id',
+      user: 'Jesse',
+      userId: "004",
+      seatsAvailable: 10,
+      origin: 'UMM',
+      destination: 'North Pole',
+      departureDate: '',
+      departureTime: '',
+      notes: 'I hope you brought warm clothes',
+      isDriving: true,
+      nonSmoking: true,
+    };
+
+    editedRide.origin = 'South Pole';
+
+    rideListService.editRide(editedRide).subscribe(
+      result => {
+        expect(result).toEqual("South Pole");
+      },
+      err => {
+        expect(err).toBe(false);
+      }
+    );
+
+    // Specify that (exactly) one request will be made to the specified URL.
+    const req = httpTestingController.expectOne(rideListService.baseUrl + '/update');
+    // Check that the request made to that URL was a POST request.
+    expect(req.request.method).toEqual('POST');
+    // Specify the content of the response to that request. This
+    // triggers the subscribe above, which leads to that check
+    // actually being performed.
+    req.flush(editedRide.origin);
+  });
+
+})
+
+
