@@ -20,6 +20,13 @@
                class="morideViewRidelogo"
         />
 
+        <input type="image"
+               src="assets/img/addridesbutton.png"
+               *ngIf="appService.isSignedIn()"
+               routerLink="/addride"
+               class="morideAddRidelogo"
+        />
+
 
         <button *ngIf="appService.isSignedIn()"  mat-raised-button
                 routerLink="/addride"
