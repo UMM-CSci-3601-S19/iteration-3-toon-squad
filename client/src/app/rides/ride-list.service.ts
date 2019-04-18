@@ -12,9 +12,11 @@ import {environment} from '../../environments/environment';
 export class RideListService {
   readonly baseUrl: string = environment.API_URL + 'rides';
   private rideUrl: string = this.baseUrl;
+  public singleRide: Ride;
 
   constructor(private http: HttpClient) {
   }
+
 
   getRides(): Observable<Ride[]> {
     return this.http.get<Ride[]>(this.rideUrl);
@@ -36,7 +38,13 @@ export class RideListService {
     return this.http.post<string>(this.rideUrl + '/new', newRide, httpOptions);
   }
 
+  grabRide(ride: Ride){
+    this.singleRide = ride;
+  }
+
   editRide(editedRide: Ride): Observable<string> {
+
+    console.log("SERVICE: Here is the edited ride" + JSON.stringify(editedRide));
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -45,6 +53,7 @@ export class RideListService {
       responseType: 'text' as 'json'
     };
 
+    console.log("Sending the ride to the server " + this.rideUrl);
     return this.http.post<string>(this.rideUrl + '/update', editedRide, httpOptions);
   }
 

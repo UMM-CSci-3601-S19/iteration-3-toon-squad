@@ -46,7 +46,7 @@ export class RideListComponent implements OnInit {
   }
 
   public checkImpossibleTime(ride: Ride) {
-    return (ride.departureTime.includes("99"))
+    return (ride.departureTime.includes("99") || ride.departureTime === "")
   }
 
   public filterRides(searchDestination: string, searchOrigin: string,
@@ -104,7 +104,6 @@ export class RideListComponent implements OnInit {
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
-        console.log("These are the rides getRides got " + JSON.stringify(rides));
         this.rides = rides;
         this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving, this.rideNonSmoking);
       },
@@ -117,7 +116,6 @@ export class RideListComponent implements OnInit {
   loadService(): void {
     this.rideListService.getRides().subscribe(
       rides => {
-        console.log("Here are the rides:" + JSON.stringify(rides) );
         this.rides = rides;
       },
       err => {
@@ -177,51 +175,16 @@ export class RideListComponent implements OnInit {
     }
   }
 
-  openEditDialog(currentId: string, currentUser: string, currentUserId : string,
-                 currentNotes: string, currentSeatsAvailable: number,
-                 currentOrigin: string, currentDestination: string,
-                 currentDepartureDate?: string, currentDepartureTime?: string,
-                 currentIsDriving?: boolean, currentRoundTrip?: boolean, currentNonSmoking?: boolean
-                  ): void {
+  giveRideToService(ride: Ride){
 
-    console.log(currentDestination);
-
-    if (currentDepartureDate === "3000-01-01T05:00:00.000Z") {
-      currentDepartureDate = null;
+    // Since unspecified times are still being given an 'impossible' date, we need to change that back
+    // before we send the ride to edit-ride component. NOTE: This is not necessary with impossible times,
+    // since the form handles those appropriately by leaving the time field empty.
+    if (ride.departureDate === "3000-01-01T05:00:00.000Z") {
+      ride.departureDate = null;
     }
 
-    const currentRide: Ride = {
-      _id: currentId, user: currentUser, userId: currentUserId,
-      notes: currentNotes, seatsAvailable:  currentSeatsAvailable,
-      origin: currentOrigin, destination: currentDestination,
-      departureDate: currentDepartureDate, departureTime: currentDepartureTime,
-      isDriving: currentIsDriving, roundTrip: currentRoundTrip, nonSmoking: currentNonSmoking
-    };
-
-    console.log(currentRide);
-
-    const dialogRef = this.dialog.open(EditRideComponent, {
-      width: '500px',
-      data: {ride: currentRide}
-    });
-
-
-    dialogRef.afterClosed().subscribe(currentRide => {
-      if (currentRide != null) {
-
-        this.rideListService.editRide(currentRide).subscribe(
-          result => {
-            this.highlightedDestination = result;
-            this.refreshRides();
-            console.log('The currentRide or dialogResult was ' + JSON.stringify(currentRide));
-          },
-          err => {
-            console.log('There was an error editing the ride.');
-            console.log('The currentRide or dialogResult was error ' + JSON.stringify(currentRide));
-            console.log('The error was ' + JSON.stringify(err));
-          });
-      }
-    });
+    this.rideListService.grabRide(ride);
   }
 
   openDeleteDialog(currentId: object): void {
@@ -229,16 +192,19 @@ export class RideListComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteRideComponent, {
       width: '500px',
       data: {id: currentId}
-    });
+    })
+
     dialogRef.afterClosed().subscribe(deletedRideId => {
       if (deletedRideId != null) {
         this.rideListService.deleteRide(deletedRideId).subscribe(
+
           result => {
             console.log("openDeleteDialog has gotten a result!");
             this.highlightedDestination = result;
             console.log("The result is " + result);
             this.refreshRides();
           },
+
           err => {
             console.log('There was an error deleting the ride.');
             console.log('The id we attempted to delete was  ' + deletedRideId);
@@ -249,7 +215,7 @@ export class RideListComponent implements OnInit {
   }
 
   printCurrRide(ride : Ride) : void {
-    console.log(ride);
+    console.log((ride));
   }
 
 }
