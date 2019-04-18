@@ -37,15 +37,13 @@
         </div>
 
         <input type="image"
-               src="assets/img/addridesbutton.png"
+               src="assets/img/signoutbutton.png"
                *ngIf="appService.isSignedIn()"
                (click)="appService.signOut()"
+               class="signoutButton"
         />
 
-        <div id="signOut"  *ngIf="appService.isSignedIn()" (click)="appService.signOut()">
-          <mat-icon>exit_to_app</mat-icon>
-          Sign Out
-        </div>
+
       </mat-card-content>
     </mat-card>
 
