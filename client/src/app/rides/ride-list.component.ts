@@ -6,7 +6,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material";
 import {EditRideComponent} from "./edit-ride.component";
 import {DeleteRideComponent} from "./delete-ride.component";
 import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
-
+import {joinRideObject} from "./joinRideObject";
 
 @Component({
   selector: 'ride-list-component',
@@ -26,6 +26,9 @@ export class RideListComponent implements OnInit {
   public rideDriving: boolean;
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
   private highlightedDestination: string = '';
+  public currUserId = localStorage.getItem("userId");
+  public currUserFullName = localStorage.getItem("userFullName");
+  private highlightedID: string = '';
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService, public dialog: MatDialog,
@@ -36,7 +39,7 @@ export class RideListComponent implements OnInit {
   // clicking on the checkbox didn't always 'uncheck' the box. Implementing this method with
   // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
   public toggleNonSmoking() {
-    this.rideNonSmoking = !this.rideNonSmoking
+    this.rideNonSmoking = !this.rideNonSmoking;
   }
 
   public getLocalUserId() {
@@ -196,9 +199,9 @@ export class RideListComponent implements OnInit {
         this.rideListService.deleteRide(deletedRideId).subscribe(
 
           result => {
-            console.log("openDeleteDialog has gotten a result!");
+            console.log('openDeleteDialog has gotten a result!');
             this.highlightedDestination = result;
-            console.log("The result is " + result);
+            console.log('The result is ' + result);
             this.snackBar.open("Successfully Deleted Ride",'' , <MatSnackBarConfig>{duration: 5000,});
             this.refreshRides();
           },
@@ -212,9 +215,51 @@ export class RideListComponent implements OnInit {
     });
   }
 
-  printCurrRide(ride : Ride) : void {
+  printCurrRide(ride: Ride): void {
     console.log((ride));
   }
+
+
+  joinRide(_id: string, seatsAvailable: number, passengers: string[], names: string[]): void {
+
+    passengers.push(this.currUserId);
+    names.push(this.currUserFullName);
+    seatsAvailable = (seatsAvailable - 1);
+
+    console.log(passengers);
+    console.log(names);
+    console.log(seatsAvailable);
+
+    const joinedRide: joinRideObject = {
+      _id: _id,
+      seatsAvailable: seatsAvailable,
+      passengers: passengers,
+      names: names,
+    };
+
+    this.rideListService.joinRide(joinedRide).subscribe(
+
+        result => {
+          console.log("here it is:" + result);
+          this.highlightedID = result;
+        },
+        err => {
+          // This should probably be turned into some sort of meaningful response.
+          console.log('There was an error adding the ride.');
+          console.log('The newRide or dialogResult was ' );
+          console.log('The error was ' + JSON.stringify(err));
+        });
+
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+
+  };
 
   ngOnInit(): void {
     this.refreshRides();

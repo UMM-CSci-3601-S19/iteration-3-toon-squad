@@ -184,6 +184,7 @@ public class RideController {
     }
 
     ObjectId objId = new ObjectId(id);
+
     Document filter = new Document("_id", objId);
 
     Document updateFields = new Document();
@@ -206,6 +207,30 @@ public class RideController {
     }
 
     catch(MongoException e){
+      e.printStackTrace();
+      return false;
+    }
+  }
+  boolean joinRide(String id, Number seatsAvailable, Object passengers, Object names){
+
+    System.out.println("made it to controller");
+
+    ObjectId objId = new ObjectId(id);
+    Document filter = new Document("_id", objId);
+
+    Document updateFields = new Document();
+    updateFields.append("seatsAvailable", seatsAvailable);
+    updateFields.append("passengers", passengers);
+    updateFields.append("names", names);
+
+    Document updateDoc = new Document("$set", updateFields);
+
+    try{
+      UpdateResult output = rideCollection.updateOne(filter, updateDoc);
+      //returns false if no documents were modified, true otherwise
+      return output.getModifiedCount() != 0;
+    }
+    catch(MongoException e) {
       e.printStackTrace();
       return false;
     }

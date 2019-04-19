@@ -40,6 +40,7 @@ export class EditRideComponent implements OnInit {
   }
 
   editRide(): void {
+
     const editedRide: Ride = {
       _id: this.rideId,
       user: this.rideUser,
