@@ -1,9 +1,14 @@
+
+.mat-card mat-card-content{
+  padding: 0px;
+}
+
 .morideFulllogo {
   display: block;
   margin-left:auto;
   margin-right:auto;
   resize: horizontal;
-  box-shadow: 0 0px 0px rgba(0,0,0,0.15);
+  box-shadow: 0 0 0 rgba(0,0,0,0.15);
 
 }
 
@@ -17,6 +22,13 @@
   opacity: 1;
 }
 
+.morideViewRidelogo {
+  box-shadow: 0 0 0 rgba(0,0,0,0.15);
+  max-width: 200px;
+  height: auto;
+  width: 49%;
+}
+
 .morideViewRidelogo:hover{
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   transition: box-shadow 0.3s ease-out;
@@ -25,6 +37,38 @@
 .morideViewRidelogo:hover:after{
   opacity: 1;
 }
+
+.morideAddRidelogo {
+  box-shadow: 0 0 0 rgba(0,0,0,0.15);
+  max-width: 200px;
+  height: auto;
+  width: 49%;
+}
+
+.morideAddRidelogo:hover{
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: box-shadow 0.3s ease-out;
+}
+
+.morideAddRidelogo:hover:after{
+  opacity: 1;
+}
+
+.signoutButton{
+  box-shadow: 0 0 0 rgba(0,0,0,0.15);
+  max-width: 200px;
+  width: 49%;
+}
+
+.signoutButton:hover{
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: box-shadow 0.3s ease-out;
+}
+
+.signoutButton:hover:after{
+  opacity: 1;
+}
+
 
 
 

@@ -20,29 +20,32 @@
                class="morideViewRidelogo"
         />
 
+        <input type="image"
+               src="assets/img/addridesbutton.png"
+               *ngIf="appService.isSignedIn()"
+               routerLink="/addride"
+               class="morideAddRidelogo"
+        />
 
-        <button *ngIf="appService.isSignedIn()"  mat-raised-button
-                routerLink="/addride"
-                type="button">
-          <mat-icon>add_circle_outline</mat-icon>
-          Add Rides
-        </button>
+
       </div>
       <mat-divider></mat-divider>
       <mat-card-content>
-
         <div *ngIf="!appService.isSignedIn(); then notSignedIn else SignedIn"> </div>
 
-          <ng-template #notSignedIn>
-            <div id="signIn" class="g-signin2" (click)="appService.signIn()"></div>
-          </ng-template>
+        <ng-template #SignedIn>
+        <input type="image"
+               src="assets/img/signoutbutton.png"
+               *ngIf="appService.isSignedIn()"
+               (click)="appService.signOut()"
+               class="signoutButton"
+        />
+        </ng-template>
 
-          <ng-template #SignedIn>
-            <div id="signOut" (click)="appService.signOut()">
-              <mat-icon>exit_to_app</mat-icon>
-              Sign Out
-            </div>
-          </ng-template>
+        <ng-template #notSignedIn>
+          <div id="signIn" class="g-signin2" (click)="appService.signIn()"></div>
+        </ng-template>
+
       </mat-card-content>
     </mat-card>
 
