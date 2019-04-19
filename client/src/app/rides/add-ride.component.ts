@@ -75,6 +75,12 @@ export class AddRideComponent implements OnInit {
         });
 
       this.snackBar.open("Successfully Added A Ride",'' , <MatSnackBarConfig>{duration: 5000,});
+
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
+      this.refreshRides();
       this.refreshRides();
     }
   };
