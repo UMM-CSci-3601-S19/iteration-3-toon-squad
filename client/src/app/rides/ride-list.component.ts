@@ -220,21 +220,17 @@ export class RideListComponent implements OnInit {
   }
 
 
-  joinRide(_id: string, seatsAvailable: number, passengers: string[], names: string[]): void {
+  joinRide(_id: string, seatsAvailable: number, passengerIds: string[], passengerNames: string[]): void {
 
-    passengers.push(this.currUserId);
-    names.push(this.currUserFullName);
+    passengerIds.push(this.currUserId);
+    passengerNames.push(this.currUserFullName);
     seatsAvailable = (seatsAvailable - 1);
-
-    console.log(passengers);
-    console.log(names);
-    console.log(seatsAvailable);
 
     const joinedRide: joinRideObject = {
       _id: _id,
       seatsAvailable: seatsAvailable,
-      passengers: passengers,
-      names: names,
+      passengerIds: passengerIds,
+      passengerNames: passengerNames,
     };
 
     this.rideListService.joinRide(joinedRide).subscribe(
