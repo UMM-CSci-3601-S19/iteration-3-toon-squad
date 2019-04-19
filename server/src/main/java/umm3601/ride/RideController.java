@@ -102,18 +102,10 @@ public class RideController {
   public String addNewRide(String user, String userId, String notes, int seatsAvailable, String origin, String destination,
                            String departureDate, String departureTime, boolean isDriving, boolean roundTrip, boolean nonSmoking) {
 
-
-    if (!isDriving) {
-      seatsAvailable = 0;
-    }
-
-    if (departureDate == null) {
-      departureDate = "3000-01-01T05:00:00.000Z";
-    }
-
-    if (departureTime == null) {
-      departureTime = "99:99";
-    }
+    // See methods at bottom of RideController
+    seatsAvailable = setSeatsForRequestedRide(isDriving, seatsAvailable);
+    departureDate = checkUnspecifiedDate(departureDate);
+    departureTime = checkUnspecifiedTime(departureTime);
 
     Document newRide = new Document();
     newRide.append("user", user);
@@ -131,25 +123,25 @@ public class RideController {
     try {
       rideCollection.insertOne(newRide);
       ObjectId id = newRide.getObjectId("_id");
-
-      System.err.println("Successfully added new ride [_id=" + id + ", user=" + user + ", userId=" +
-        userId + ", notes=" + notes + ", seatsAvailable=" + seatsAvailable + ", origin=" + origin +
-        ", destination=" + destination + ", departureDate=" + departureDate + ", departureTime=" + departureTime +
-        ", isDriving=" + isDriving + ", roundTrip=" + roundTrip + ", nonSmoking=" + nonSmoking + ']');
-
       return id.toHexString();
-    } catch (MongoException me) {
+    }
+    catch (MongoException me) {
       me.printStackTrace();
       return null;
     }
   }
 
   Boolean deleteRide(String id){
-    ObjectId objId = new ObjectId(id);
+
+    // First format the id so Mongo can handle it correctly.
+    ObjectId objId = new ObjectId(id); // _id must be formatted like this for the match to work
+    Document filter = new Document("_id", objId); // Here is the actual document we match against
+
     try{
-      DeleteResult out = rideCollection.deleteOne(new Document("_id", objId));
-      //Returns true if at least 1 document was deleted
-      return out.getDeletedCount() != 0;
+      // Call deleteOne(the document to match against)
+      DeleteResult out = rideCollection.deleteOne(filter);
+      //Returns true if 1 document was deleted
+      return out.getDeletedCount() == 1;
     }
     catch(MongoException e){
       e.printStackTrace();
@@ -157,26 +149,20 @@ public class RideController {
     }
   }
 
-  Boolean editRide(String id, String notes, Number seatsAvailable, String origin, String destination,
+  Boolean editRide(String id, String notes, int seatsAvailable, String origin, String destination,
                    String departureDate, String departureTime, Boolean isDriving, Boolean roundTrip, Boolean nonSmoking)
   {
 
-    if (!isDriving) {
-      seatsAvailable = 0;
-    }
+    // See methods at bottom of RideController
+    seatsAvailable = setSeatsForRequestedRide(isDriving, seatsAvailable);
+    departureDate = checkUnspecifiedDate(departureDate);
+    departureTime = checkUnspecifiedTime(departureTime);
 
-    if (departureDate == null || departureDate == "") {
-      departureDate = "3000-01-01T05:00:00.000Z";
-    }
+    // First we create a document for which we can match the document we would like to update
+    ObjectId objId = new ObjectId(id); // _id must be formatted like this for the match to work
+    Document filter = new Document("_id", objId); // Here is the actual document we match against
 
-    if (departureTime == null || departureTime == "") {
-      departureTime = "99:99";
-    }
-
-    ObjectId objId = new ObjectId(id);
-
-    Document filter = new Document("_id", objId);
-
+    // Now we create a document containing the fields that should be updated in the matched ride document
     Document updateFields = new Document();
     updateFields.append("notes", notes);
     updateFields.append("seatsAvailable", seatsAvailable);
@@ -188,41 +174,75 @@ public class RideController {
     updateFields.append("roundTrip", roundTrip);
     updateFields.append("nonSmoking", nonSmoking);
 
+    // A new document with the $set parameter so Mongo can update appropriately, and the values of $set being
+    // the document we just made (which contains the fields we would like to update).
     Document updateDoc = new Document("$set", updateFields);
 
-    try{
-      UpdateResult out = rideCollection.updateOne(filter, updateDoc);
-      //returns false if no documents were modified, true otherwise
-      return out.getModifiedCount() != 0;
-    }
-
-    catch(MongoException e){
-      e.printStackTrace();
-      return false;
-    }
+    // Now the actual updating of seatsAvailable, passengers, and names.
+    return tryUpdateOne(filter, updateDoc);
   }
-  boolean joinRide(String id, Number seatsAvailable, Object passengers, Object names){
 
-    System.out.println("made it to controller");
+  boolean joinRide(String rideId, Number seatsAvailable, Object passengerIds, Object passengerNames) {
 
-    ObjectId objId = new ObjectId(id);
-    Document filter = new Document("_id", objId);
+    // First we create a document for which we can match the document we would like to update
 
+    ObjectId objId = new ObjectId(rideId); // _id must be formatted like this for the match to work
+    Document filter = new Document("_id", objId); // Here is the actual document we match against
+
+    // Now we create a document containing the fields that should be updated in the matched ride document
     Document updateFields = new Document();
     updateFields.append("seatsAvailable", seatsAvailable);
-    updateFields.append("passengers", passengers);
-    updateFields.append("names", names);
+    updateFields.append("passengerIds", passengerIds);
+    updateFields.append("passengerNames", passengerNames);
 
+    // A new document with the $set parameter so Mongo can update appropriately, and the values of $set being
+    // the document we just made (which contains the fields we would like to update).
     Document updateDoc = new Document("$set", updateFields);
 
-    try{
+    // Now the actual updating of seatsAvailable, passengers, and names.
+    return tryUpdateOne(filter, updateDoc);
+  }
+
+  boolean tryUpdateOne(Document filter, Document updateDoc) {
+    try {
+      // Call updateOne(the document to match against, and the $set + updated fields document
       UpdateResult output = rideCollection.updateOne(filter, updateDoc);
-      //returns false if no documents were modified, true otherwise
-      return output.getModifiedCount() != 0;
+      //returns true if 1 document was updated
+      return output.getModifiedCount() == 1;
     }
-    catch(MongoException e) {
+    catch (MongoException e) {
       e.printStackTrace();
       return false;
     }
   }
+
+  // We check for unspecified times, and set them way ahead into the future. This is necessary for how the date
+  // sorting works. Null dates get excluded from sorting, so we can't have that. Choosing a date far in the future
+  // puts this ride entry at the bottom of the sorted ride list.
+  String checkUnspecifiedDate(String departureDate) {
+    if (departureDate == null || departureDate == "") {
+      departureDate = "3000-01-01T05:00:00.000Z";
+    }
+    return departureDate;
+  }
+
+  // Same idea for time. Unspecified times get excluded from sorting, and a time like "99:99" puts it at the bottom of
+  // the ride list (after sorting for date).
+  String checkUnspecifiedTime(String departureTime) {
+    if (departureTime == null || departureTime == "") {
+      departureTime = "99:99";
+    }
+    return departureTime;
+  }
+
+  // We should set seatsAvailable to 0 for rides requested (this is to make it less confusing for people
+  // browsing the database directly.)
+  int setSeatsForRequestedRide(boolean isDriving, int seatsAvailable) {
+    if (!isDriving) {
+      seatsAvailable = 0;
+    }
+    return seatsAvailable;
+  }
+
+
 }

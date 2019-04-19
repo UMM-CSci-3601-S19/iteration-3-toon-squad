@@ -4,6 +4,8 @@ import org.bson.Document;
 import spark.Request;
 import spark.Response;
 
+import java.util.List;
+
 public class RideRequestHandler {
 
   private final RideController rideController;
@@ -84,13 +86,6 @@ public class RideRequestHandler {
     boolean roundTrip = newRide.getBoolean("roundTrip");
     boolean nonSmoking = newRide.getBoolean("nonSmoking");
 
-
-    System.out.println("Adding new ride [user=" + user + ", userId=" + userId + ", driving=" + isDriving +
-      ", notes=" + notes + ", seatsAvailable=" + seatsAvailable +
-      ", origin=" + origin + ", destination=" + destination +
-       ", departureDate=" + departureDate + ", departureTime=" + departureTime +
-      ", isDriving=" + isDriving + ", roundTrip=" + roundTrip +", nonSmoking=" + nonSmoking + ']');
-
     return rideController.addNewRide(user, userId, notes, seatsAvailable, origin, destination,
       departureDate, departureTime, isDriving, roundTrip, nonSmoking);
 
@@ -120,7 +115,7 @@ public class RideRequestHandler {
 //    String user = editRide.getString("user");
 //    String userId = editRide.getString("userId");
     String notes = editRide.getString("notes");
-    Number seatsAvailable = editRide.getInteger("seatsAvailable");
+    int seatsAvailable = editRide.getInteger("seatsAvailable");
     String origin = editRide.getString("origin");
     String destination = editRide.getString("destination");
     String departureDate = editRide.getString("departureDate");
@@ -129,32 +124,24 @@ public class RideRequestHandler {
     Boolean roundTrip = editRide.getBoolean("roundTrip");
     Boolean nonSmoking = editRide.getBoolean("nonSmoking");
 
-
-    System.out.println("Editing ride [id=" + id + " notes=" + notes +" seatsAvailable=" + seatsAvailable
-      + " origin=" + origin + " destination=" + destination + " departureDate=" + departureDate
-      + " departureTime=" + departureTime + " isDriving=" + isDriving + " roundTrip=" + roundTrip
-      + " nonSmoking=" + nonSmoking);
-
     return rideController.editRide(id, notes, seatsAvailable, origin, destination,
       departureDate, departureTime, isDriving, roundTrip, nonSmoking);
   }
 
   public Boolean joinRide(Request req, Response res) {
 
-    System.err.println(req.body());
-
     res.type("application/json");
 
     // Turn the request into a Document
     Document joinRide = Document.parse(req.body());
-    System.out.println(joinRide);
 
     String _id = joinRide.getObjectId("_id").toHexString();
     Number seatsAvailable = joinRide.getInteger("seatsAvailable");
-    Object passengers = joinRide.values().toArray()[2];
-    Object names = joinRide.values().toArray()[3];
 
-    return rideController.joinRide(_id, seatsAvailable, passengers, names);
+    Object passengerIds = joinRide.values().toArray()[2];
+    Object passengerNames = joinRide.values().toArray()[3];
+
+    return rideController.joinRide(_id, seatsAvailable, passengerIds, passengerNames);
   }
 
 
