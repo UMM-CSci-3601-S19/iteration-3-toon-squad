@@ -101,7 +101,7 @@ public class UserController {
   }
 
   // We never need a getUser because our product doesn't require a page where all users need to be shown together, but
-  // getUsers is required so we can check if addRide and deleteRide is adding to the list of users that exist in the database.
+  // getUsers is nice to have so we can check if addUser is adding to the list of users that exist in the database.
   public String getUsers(Map<String, String[]> queryParams) {
 
     Document filterDoc = new Document();
