@@ -166,13 +166,7 @@
 
               <button mat-menu-item (click) = "giveRideToService(ride)"
                       routerLink="/editride">
-              </button>
-              <button mat-menu-item (click)="openEditDialog(ride._id, ride.driver, ride.destination,
-              ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)"
-                      id="editDialogOpen">
-
                 <span>Edit Ride</span>
-
               </button>
 
               <button mat-menu-item (click)="openDeleteDialog(ride._id)" id="deleteDialogOpen">
@@ -221,24 +215,12 @@
             {{ride.user}} is requesting this ride
           </div>
 
-
-          <div *ngIf="getLocalUserId() === ride.userId">
-            This is your ride (can you tell?)
-          </div>
-
           <div id="ride-info-tags" class="ride-info driver" >
             <mat-icon aria-hidden="false" *ngIf="ride.nonSmoking">smoke_free</mat-icon>
             <b *ngIf="ride.nonSmoking">Non-Smoking &nbsp; &nbsp;</b>
             <mat-icon  aria-hidden="false" *ngIf="ride.roundTrip">repeat</mat-icon>
             <b *ngIf="ride.roundTrip">Round Trip</b>
           </div>
-
-
-
-
-
-
-
 
           <mat-divider [inset]="true" *ngIf="ride.notes"></mat-divider>
 

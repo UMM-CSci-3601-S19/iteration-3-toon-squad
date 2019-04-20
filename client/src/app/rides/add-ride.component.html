@@ -20,7 +20,8 @@
             <mat-radio-button id="isNotDrivingButton" [value] = false (click)="setRideSeats()"> looking for a ride</mat-radio-button>
             <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.driving">
               <mat-error class="error-message" id="driving-error"
-                         *ngIf="validatorService.rideForm.get('driving').hasError(validation.type) && (validatorService.rideForm.get('driving').dirty || validatorService.rideForm.get('driving').touched)">
+                         *ngIf="validatorService.rideForm.get('driving').hasError(validation.type) &&
+                         (validatorService.rideForm.get('driving').dirty || validatorService.rideForm.get('driving').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>

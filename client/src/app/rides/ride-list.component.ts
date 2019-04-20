@@ -256,31 +256,4 @@ export class RideListComponent implements OnInit {
   };
 
 
-
-
-  // openJoinDialog(currentId: string): void{
-  //   const currentRide: Ride = {
-  //     _id: currentId
-  //   };
-  //   // Constructs dialog box
-  //   const dialogRef = this.dialog.open(EditRideComponent, {
-  //     width: '500px',
-  //     data: {ride: currentRide}
-  //   });
-  //   dialogRef.afterClosed().subscribe(currentRide => {
-  //     if (currentRide != null) {
-  //       this.rideListService.editRide(currentRide).subscribe(
-  //         result => {
-  //           this.highlightedDestination = result;
-  //           this.refreshRides();
-  //           console.log('The currentRide or dialogResult was ' + JSON.stringify(currentRide));
-  //         },
-  //         err => {
-  //           console.log('There was an error editing the ride.');
-  //           console.log('The currentRide or dialogResult was error ' + JSON.stringify(currentRide));
-  //           console.log('The error was ' + JSON.stringify(err));
-  //         });
-  //     }
-  //   });
-  // }
 }
