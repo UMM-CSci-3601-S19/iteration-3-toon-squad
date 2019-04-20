@@ -9,6 +9,7 @@ declare let gapi: any;
 export class AppService {
   constructor(private http: HttpClient) {
   }
+  public userId: string;
 
   googleAuth;
 
@@ -44,6 +45,7 @@ export class AppService {
         localStorage.setItem("userLastName", onSuccess["lastName"]);
         localStorage.setItem("userFirstName", onSuccess["firstName"]);
         localStorage.setItem("pictureUrl", onSuccess["pictureUrl"]);
+        this.userId = localStorage.getItem("userId")
 
 
         console.log(localStorage.getItem("_id"));

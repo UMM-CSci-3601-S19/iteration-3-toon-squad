@@ -5,9 +5,11 @@ import {RideListService} from './ride-list.service';
 import {Observable} from 'rxjs/Observable';
 import {FormsModule} from '@angular/forms';
 import {CustomModule} from '../custom.module';
+import {RouterLinkDirectiveStub} from "./router-link-directive-stub";
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
+import {By} from "@angular/platform-browser";
 
 describe('Ride list', () => {
 
@@ -17,6 +19,9 @@ describe('Ride list', () => {
   let rideListServiceStub: {
     getRides: () => Observable<Ride[]>
   };
+
+  let linkDes;
+  let routerLinks;
 
   beforeEach(() => {
     // stub RideService for test purposes
@@ -69,7 +74,7 @@ describe('Ride list', () => {
 
     TestBed.configureTestingModule({
       imports: [CustomModule],
-      declarations: [RideListComponent],
+      declarations: [RideListComponent,RouterLinkDirectiveStub],
       providers: [{provide: RideListService, useValue: rideListServiceStub}]
     });
   });
@@ -79,6 +84,14 @@ describe('Ride list', () => {
       fixture = TestBed.createComponent(RideListComponent);
       rideList = fixture.componentInstance;
       fixture.detectChanges();
+
+      // find DebugElements with an attached RouterLinkStubDirective
+      linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));
+
+      // get attached link directive instances
+      // using each DebugElement's injector
+      routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
+
     });
   }));
 
@@ -357,6 +370,8 @@ describe('Misbehaving Ride List', () => {
   let rideListServiceStub: {
     getRides: () => Observable<Ride[]>
   };
+  let linkDes;
+  let routerLinks;
 
   beforeEach(() => {
     // stub RideService for test purposes
@@ -368,7 +383,7 @@ describe('Misbehaving Ride List', () => {
 
     TestBed.configureTestingModule({
       imports: [FormsModule, CustomModule],
-      declarations: [RideListComponent],
+      declarations: [RideListComponent,RouterLinkDirectiveStub],
       providers: [{provide: RideListService, useValue: rideListServiceStub}]
     });
   });
@@ -378,6 +393,13 @@ describe('Misbehaving Ride List', () => {
       fixture = TestBed.createComponent(RideListComponent);
       rideList = fixture.componentInstance;
       fixture.detectChanges();
+
+      // find DebugElements with an attached RouterLinkStubDirective
+      linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));
+
+      // get attached link directive instances
+      // using each DebugElement's injector
+      routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
     });
   }));
 

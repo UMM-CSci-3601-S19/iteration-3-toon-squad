@@ -13,5 +13,6 @@ export interface Ride {
   isDriving: boolean;
   roundTrip?: boolean;
   nonSmoking: boolean;
-  passengers?: User[];
+  passengerIds?: string[];
+  passengerNames?: string[];
 }

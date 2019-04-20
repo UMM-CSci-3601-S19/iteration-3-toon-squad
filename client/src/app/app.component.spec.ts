@@ -13,10 +13,7 @@ describe('AppComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CustomModule,
-        AppModule
-      ],
+      imports: [CustomModule, AppModule],
     });
 
     appFixture = TestBed.createComponent(AppComponent);
@@ -31,12 +28,12 @@ describe('AppComponent', () => {
   });
 
   it(`should have as title 'app'`, () => {
-    expect(appInstance.title).toEqual('Mongo-Angular-Spark lab');
+    expect(appInstance.title).toEqual('Mo-Ride App');
   });
 
-  /*it('should render title in the navbar', () => {
+  it('should render title in the navbar', () => {
     appFixture.detectChanges();
     const navbar: HTMLElement = debugElement.query(By.css('td-layout-nav')).nativeElement;
-    expect(navbar.textContent).toContain('menu');
-  });*/
+    expect(navbar.textContent).toContain('MoRide');
+  });
 });

@@ -33,8 +33,9 @@ public class Server {
     MongoDatabase database = mongoClient.getDatabase(databaseName);
 
     UserController userController = new UserController(database);
-    UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
     RideController rideController = new RideController(database);
+
+    UserRequestHandler userRequestHandler = new UserRequestHandler(userController);
     RideRequestHandler rideRequestHandler = new RideRequestHandler(rideController);
 
     //Configure Spark
@@ -71,21 +72,16 @@ public class Server {
 
     get("/", clientRoute);
 
-    /// User Endpoints ///////////////////////////
-    /////////////////////////////////////////////
-
-    //List users, filtered using query parameters
-
-   /* get("api/users", userRequestHandler::getUsers);
-    get("api/users/:id", userRequestHandler::getUserJSON);
-    post("api/users/new", userRequestHandler::addNewUser);*/
-
     // RIDE ENDPOINTS'
     get("api/rides", rideRequestHandler::getRides);
-    get("api/rides/:id", rideRequestHandler::getRideJSON);
+    get("api/myRides", rideRequestHandler::getMyRides);
     post("api/rides/new", rideRequestHandler::addNewRide);
     post("api/rides/remove", rideRequestHandler::deleteRide);
     post("api/rides/update", rideRequestHandler::editRide);
+    post("api/rides/join", rideRequestHandler::joinRide);
+
+    // USER ENDPOINTS
+    get("api/user/:id",userRequestHandler::getUserJSON);
 
     // An example of throwing an unhandled exception so you can see how the
     // Java Spark debugger displays errors like this.

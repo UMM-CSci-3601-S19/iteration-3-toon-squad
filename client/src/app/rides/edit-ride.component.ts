@@ -5,6 +5,7 @@ import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
 import {RideListService} from "./ride-list.service";
 import {Observable} from "rxjs/Observable";
 import {ValidatorService} from "../validator.service";
+import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
 
 
 @Component({
@@ -34,10 +35,12 @@ export class EditRideComponent implements OnInit {
   public rideNonSmoking: boolean = false;
 
   constructor(
-    public rideListService : RideListService, private fb: FormBuilder, public validatorService : ValidatorService) {
+    public rideListService : RideListService, private fb: FormBuilder,
+    public validatorService : ValidatorService, public snackBar: MatSnackBar) {
   }
 
   editRide(): void {
+
     const editedRide: Ride = {
       _id: this.rideId,
       user: this.rideUser,
@@ -67,6 +70,8 @@ export class EditRideComponent implements OnInit {
           console.log('The newRide or dialogResult was ' + editedRide);
           console.log('The error was ' + JSON.stringify(err));
         });
+
+      this.snackBar.open("Successfully Edited A Ride",'' , <MatSnackBarConfig>{duration: 5000,});
 
       this.refreshRides();
       this.refreshRides();

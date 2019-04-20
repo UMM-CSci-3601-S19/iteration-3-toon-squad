@@ -8,7 +8,7 @@ import {AppService} from "./app.service";
   providers: [AppService]
 })
 export class AppComponent {
-  title = 'Mongo-Angular-Spark lab';
+  title = 'Mo-Ride App';
 
   constructor(public appService: AppService) {}
 }
