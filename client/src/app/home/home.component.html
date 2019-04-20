@@ -1,37 +1,52 @@
+
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
+    <input type="image"
+           src="assets/img/moridelogoFull.png"
+           routerLink="/"
+           class="morideFulllogo"
+    />
+
     <mat-card>
       <mat-card-title id="hello-world">MoRide Home</mat-card-title>
       <mat-card-subtitle>
         Welcome to MoRide! You can look for and post rides for the Morris Community.
       </mat-card-subtitle>
       <div>
-        <button id="rideslistbutton" mat-raised-button
-                routerLink="/rides"
-                color="primary"
-                type="button">
-          <mat-icon>directions_car</mat-icon>
-          View Rides
-        </button>
+        <input type="image"
+               src="assets/img/viewridesbutton.png"
+               *ngIf="appService.isSignedIn()"
+               routerLink="/rides"
+               class="morideViewRidelogo"
+        />
 
-        <button mat-raised-button
-                routerLink="/addride"
-                type="button">
-          <mat-icon>add_circle_outline</mat-icon>
-          Add Rides
-        </button>
+        <input type="image"
+               src="assets/img/addridesbutton.png"
+               *ngIf="appService.isSignedIn()"
+               routerLink="/addride"
+               class="morideAddRidelogo"
+        />
+
+
       </div>
       <mat-divider></mat-divider>
       <mat-card-content>
+
         <div
           id="signIn" *ngIf="!appService.isSignedIn()" class="g-signin2" (click)="appService.signIn()">
         </div>
 
-        <div id="signOut"  *ngIf="appService.isSignedIn()" (click)="appService.signOut()">
-          <mat-icon>exit_to_app</mat-icon>
-          Sign Out
-        </div>
+        <input type="image"
+               src="assets/img/signoutbutton.png"
+               *ngIf="appService.isSignedIn()"
+               (click)="appService.signOut()"
+               class="signoutButton"
+        />
+
+
       </mat-card-content>
     </mat-card>
+
   </div>
 </div>
+

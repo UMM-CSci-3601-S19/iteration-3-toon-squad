@@ -96,3 +96,22 @@
 
 /* Title */
 #ride-list-title {  text-align: center;  }
+
+.morideFulllogo {
+  display: block;
+  margin-left:auto;
+  margin-right:auto;
+  resize: horizontal;
+  box-shadow: 0 0px 0px rgba(0,0,0,0.15);
+
+}
+
+
+.morideFulllogo:hover{
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: box-shadow 0.3s ease-out;
+}
+
+.morideFulllogo:hover:after{
+  opacity: 1;
+}

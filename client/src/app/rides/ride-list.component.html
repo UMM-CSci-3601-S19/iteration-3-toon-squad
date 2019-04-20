@@ -5,6 +5,11 @@
 
     <!--==================================================================================================-->
 
+    <input type="image"
+           src="assets/img/moridelogoFull.png"
+           routerLink="/"
+           class="morideFulllogo"
+    />
     <h1 id="ride-list-title">Upcoming Rides</h1>
 
 
@@ -161,12 +166,16 @@
 
               <button mat-menu-item (click) = "giveRideToService(ride)"
                       routerLink="/editride">
+              </button>
+              <button mat-menu-item (click)="openEditDialog(ride._id, ride.driver, ride.destination,
+              ride.origin, ride.roundTrip, ride.driving, ride.departureDate, ride.departureTime, ride.notes)"
+                      id="editDialogOpen">
 
                 <span>Edit Ride</span>
 
               </button>
 
-              <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+              <button mat-menu-item (click)="openDeleteDialog(ride._id)" id="deleteDialogOpen">
                 <span>Delete Ride</span>
               </button>
 
