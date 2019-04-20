@@ -123,7 +123,8 @@ export class RideListComponent implements OnInit {
     rides.subscribe(
       rides => {
         this.rides = rides;
-        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving, this.rideNonSmoking);
+        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving,
+          this.rideNonSmoking, this.rideRoundTrip);
       },
       err => {
         console.log(err);

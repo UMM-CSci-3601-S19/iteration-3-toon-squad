@@ -81,11 +81,11 @@
 
     <div *ngIf="rides; else ridesError">
       <mat-card #elem class="rides"
-                *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving, rideNonSmoking)"
+                *ngFor="let ride of this.filterRides(rideDestination, rideOrigin, rideDriving,
+                rideNonSmoking, rideRoundTrip)"
                 [id] = "ride.user">
 
         <button (click)="printCurrRide(ride)"> print ride </button>
-
         <!--======================================================================================================-->
 
 
