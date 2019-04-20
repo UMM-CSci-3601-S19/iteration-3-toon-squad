@@ -2,6 +2,7 @@ package umm3601.ride;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.*;
@@ -120,11 +121,18 @@ public class UserControllerSpec {
     String afterResult = userController.getUsers(emptyMap);
     BsonArray afterDocs = parseJsonArray(afterResult);
 
-    assertEquals("Should have 5 users after addNewUser is called",5,afterDocs.size());
+
 
     List<String> firstNames = afterDocs.stream().map(UserControllerSpec::getFirstName).collect(Collectors.toList());
     assertTrue("Should contain newly added firstName", firstNames.contains("Suzette"));
+  }
 
+  @Test
+  public  void getUser(){
+    String desiredUser = userController.getUser("655477182929676100000");
+
+    BsonDocument afterDocs = BsonDocument.parse(desiredUser);
+    assertEquals("Should return 8 fields associated with that user", 8, afterDocs.size());
   }
 
 }
