@@ -18,11 +18,15 @@ export class RideListComponent implements OnInit {
   public rides: Ride[];
   public filteredRides: Ride[];
 
-  // target values used in filtering
+  // text input values used in filtering
   public rideDestination: string;
   public rideOrigin: string;
   public rideDriving: boolean;
+
+  // checkbox values for tag filtering
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
+  public rideRoundTrip: boolean = false; // this defaults the box to be unchecked
+
   private highlightedDestination: string = '';
 
   // Inject the RideListService into this component.
@@ -35,6 +39,10 @@ export class RideListComponent implements OnInit {
   // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
   public toggleNonSmoking() {
     this.rideNonSmoking = !this.rideNonSmoking
+  }
+
+  public toggleRoundTrip() {
+    this.rideRoundTrip = !this.rideRoundTrip
   }
 
   public getLocalUserId() {
@@ -50,7 +58,8 @@ export class RideListComponent implements OnInit {
   }
 
   public filterRides(searchDestination: string, searchOrigin: string,
-                     searchIsDriving: boolean, searchNonSmoking): Ride[] {
+                     searchIsDriving: boolean, searchNonSmoking: boolean,
+                     searchRoundTrip: boolean): Ride[] {
 
     this.filteredRides = this.rides;
 
@@ -79,11 +88,20 @@ export class RideListComponent implements OnInit {
       });
     }
 
-    // We only check for true, so that an unchecked box allows all rides to come through.
+    // For the tags, we only check for true, so that an unchecked box allows all rides to come through.
+    // nonSmoking Tag
     if (searchNonSmoking === true) {
 
       this.filteredRides = this.filteredRides.filter(ride => {
         return ride.nonSmoking === searchNonSmoking;
+      });
+    }
+
+    // roundTrip tag
+    if (searchRoundTrip === true) {
+
+      this.filteredRides = this.filteredRides.filter(ride => {
+        return ride.roundTrip === searchRoundTrip;
       });
     }
 
