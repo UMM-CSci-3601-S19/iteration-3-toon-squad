@@ -1,6 +1,6 @@
-#Google OAUTH: Deploying on Droplet
+# Google OAUTH: Deploying on Droplet
 
-##The Problem
+## The Problem
 Setting up Google OATH to work on localhost is already one big learning process, but using documentation from previous classes ("Assumptions/Prerequisites") makes it viable. That said, that documentation is missing key steps to make Google OAUTH work on a Droplet. This guide builds upon the previous documentation and supplements it. 
 
 That said, there are two major issues with deploying to a Droplet. 
@@ -10,18 +10,18 @@ That said, there are two major issues with deploying to a Droplet.
 
 The following documentation is straight to the point what you should add or change. The end of the documentation had a section as to WHY these changes matter and how they relate to the problem. Additionally, some misc things that may or may not be relevant to OAUTH are clarified at the end. 
 
-##Assumptions/Prerequisites
+## Assumptions/Prerequisites
 *  [Megabittron's Google OATH tutorial](https://github.com/UMM-CSci-3601-S18/iteration-4-megabittron/blob/master/Documentation/Secure%20Google%20Login/DocumentationForGoogleLogin.md)
 * [Megabittron's HTTPS Tutorial](https://github.com/UMM-CSci-3601-S18/iteration-4-megabittron/blob/master/Documentation/HTTPS.md)
 * [UMM-CSci-3601's Droplet Setup Instructions](https://github.com/UMM-CSci-3601/droplet-setup-and-build)
 
-##Modifying `Server.java`
+## Modifying `Server.java`
 >cd ~     
 >cd iteration-3-toon-squad/server/src/main/java/umm3601/    
 >nano Server.java
 
-###`Server.java`
-####Replace the first part of the 'try' with
+### `Server.java`
+#### Replace the first part of the 'try' with
 ```java
   try {
           File file = new File("./iteration-3-toon-squad/server/src/main/java/umm3601/server_files/credentials.json");
@@ -48,7 +48,7 @@ The following documentation is straight to the point what you should add or chan
               "https://moridemorris.site") 
               
 ```
-##Adding (or editing) `credentials.json`
+## Adding (or editing) `credentials.json`
 You shouldn't have credentials.json in a freshly cloned Droplet because it should hopefully be declared as hidden in the .gitignore at the root of your project. 
 
 Add a server_files folder under umm3601 if one does not exist. This can be done using the command "mkdir" on command. Then in that folder you can create and edit credentials.json using the nano command.
@@ -65,7 +65,7 @@ A client_secret field will need to be added to the credentials. The client_secre
 
 It should look something like this, just maybe not as formatted:
 
-###`credentials.json`
+### `credentials.json`
 ```json
 {"web":
         {"client_id":     "filled_in_by_json_download",
@@ -83,10 +83,10 @@ It should look something like this, just maybe not as formatted:
 }
 ```
 
-##WHY these changes fix the problems
+## WHY these changes fix the problems
 (I'll add these later when I feel like it) 
 
-##Misc things from other documentation we might as well clear up while you're here
+## Misc things from other documentation we might as well clear up while you're here
 (I'll add these later when I feel like it) 
 
 
