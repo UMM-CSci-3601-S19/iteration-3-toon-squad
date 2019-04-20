@@ -14,8 +14,8 @@
     "isDriving": true,
     "roundTrip": true,
     "nonSmoking": false,
-    "passengers": [],
-    "names": []
+    "passengerIds": [],
+    "passengerNames": []
   },
   {
     "_id": {
@@ -31,7 +31,9 @@
     "departureTime": "16:19",
     "isDriving": true,
     "roundTrip": false,
-    "nonSmoking": true
+    "nonSmoking": true,
+    "passengerIds": [],
+    "passengerNames": []
 
   },
 
@@ -49,7 +51,9 @@
     "departureTime": "13:01",
     "isDriving": false,
     "roundTrip": false,
-    "nonSmoking": true
+    "nonSmoking": true,
+    "passengerIds": [],
+    "passengerNames": []
 
   },
 
@@ -67,7 +71,9 @@
     "departureTime": "16:20",
     "isDriving": true,
     "roundTrip": false,
-    "nonSmoking": true
+    "nonSmoking": true,
+    "passengerIds": [],
+    "passengerNames": []
 
   },
 
@@ -85,7 +91,9 @@
     "departureTime": "03:55",
     "isDriving": false,
     "roundTrip": true,
-    "nonSmoking": true
+    "nonSmoking": true,
+    "passengerIds": [],
+    "passengerNames": []
   },
   {
     "_id": {
@@ -100,7 +108,9 @@
     "departureTime": "03:55",
     "isDriving": true,
     "roundTrip": true,
-    "nonSmoking": false
+    "nonSmoking": false,
+    "passengerIds": [],
+    "passengerNames": []
   },
 
   {
@@ -116,7 +126,9 @@
     "departureTime": "03:55",
     "isDriving": true,
     "roundTrip": false,
-    "nonSmoking": true
+    "nonSmoking": true,
+    "passengerIds": [],
+    "passengerNames": []
 
   },
 
@@ -134,7 +146,9 @@
     "departureTime": "03:55",
     "isDriving": false,
     "roundTrip": true,
-    "nonSmoking": true
+    "nonSmoking": true,
+    "passengerIds": [],
+    "passengerNames": []
 
   }
 
