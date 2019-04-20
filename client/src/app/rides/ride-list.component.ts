@@ -20,11 +20,15 @@ export class RideListComponent implements OnInit {
   public rides: Ride[];
   public filteredRides: Ride[];
 
-  // target values used in filtering
+  // text input values used in filtering
   public rideDestination: string;
   public rideOrigin: string;
   public rideDriving: boolean;
+
+  // checkbox values for tag filtering
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
+  public rideRoundTrip: boolean = false; // this defaults the box to be unchecked
+
   private highlightedDestination: string = '';
   public currUserId = localStorage.getItem("userId");
   public currUserFullName = localStorage.getItem("userFullName");
@@ -42,6 +46,10 @@ export class RideListComponent implements OnInit {
     this.rideNonSmoking = !this.rideNonSmoking;
   }
 
+  public toggleRoundTrip() {
+    this.rideRoundTrip = !this.rideRoundTrip
+  }
+
   public getLocalUserId() {
     return localStorage.getItem("userId");
   }
@@ -55,7 +63,8 @@ export class RideListComponent implements OnInit {
   }
 
   public filterRides(searchDestination: string, searchOrigin: string,
-                     searchIsDriving: boolean, searchNonSmoking): Ride[] {
+                     searchIsDriving: boolean, searchNonSmoking: boolean,
+                     searchRoundTrip: boolean): Ride[] {
 
     this.filteredRides = this.rides;
 
@@ -84,11 +93,23 @@ export class RideListComponent implements OnInit {
       });
     }
 
-    // We only check for true, so that an unchecked box allows all rides to come through.
-    if (searchNonSmoking === true) {
+    // Tag filtering works like this: if you check the nonSmoking checkbox,
+    // ride-list only displays rides with nonSmoking specified. However, unchecking the box
+    // displays rides with AND without the nonSmoking tag. The same is true for roundTrip tag.
 
-      this.filteredRides = this.filteredRides.filter(ride => {
-        return ride.nonSmoking === searchNonSmoking;
+    // nonSmoking Tag
+    if (searchNonSmoking === true) {  // the search parameter for nonSmoking tag is TRUE
+
+      this.filteredRides = this.filteredRides.filter(ride => {   // filter the ridelist...
+        return ride.nonSmoking === searchNonSmoking;    // and return only rides with nonSmoking tag
+      });
+    }
+
+    // roundTrip tag
+    if (searchRoundTrip === true) { // the search parameter for roundTrip tag is TRUE
+
+      this.filteredRides = this.filteredRides.filter(ride => {   // filter the ridelist...
+        return ride.roundTrip === searchRoundTrip;   // and return only rides with roundTrip tag
       });
     }
 
@@ -110,7 +131,8 @@ export class RideListComponent implements OnInit {
     rides.subscribe(
       rides => {
         this.rides = rides;
-        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving, this.rideNonSmoking);
+        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving,
+          this.rideNonSmoking, this.rideRoundTrip);
       },
       err => {
         console.log(err);
