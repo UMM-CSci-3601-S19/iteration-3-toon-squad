@@ -101,7 +101,7 @@ public class RideRequestHandler {
     return rideController.deleteRide(id);
   }
 
-  public Boolean editRide(Request req, Response res) {
+  public boolean editRide(Request req, Response res) {
 
     System.err.println("Print something!");
 
@@ -128,7 +128,7 @@ public class RideRequestHandler {
       departureDate, departureTime, isDriving, roundTrip, nonSmoking);
   }
 
-  public Boolean joinRide(Request req, Response res) {
+  public boolean joinRide(Request req, Response res) {
 
     res.type("application/json");
 
