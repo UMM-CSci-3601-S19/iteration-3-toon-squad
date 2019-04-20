@@ -1,0 +1,34 @@
+Website:
+https://next.json-generator.com
+
+Link to User Generator Code:
+https://next.json-generator.com/4J1WRAtKL
+
+
+CODE
+--------------------------------------------------------------------------------------------
+[
+  {
+    'repeat(5)': {
+      userId: "{{integer([100000000000000000000], [999999999999999999999])}}",
+      email: '{{company()}}{{integer(0,99)}}@{{random("gmail.com", "morris.umn.edu")}}',
+      fullName: '{{firstName()}} {{surname()}}',
+      pictureUrl: 'https://picsum.photos/200/300/?random',
+      lastName()
+      {
+
+        return `${this.fullName.split(' ')[1]}`;
+      },
+      firstName()
+      {
+
+        return `${this.fullName.split(' ')[0]}`;
+      },
+      phone: '{{phone("(xxx) xxx-xxxx")}}',
+    }
+  }
+]
+---------------------------------------------------------------------------------------------
+
+Note: The reason _id field si not generated through this code is because, MongoDB by default creates
+       _id field and value for every item in the database.

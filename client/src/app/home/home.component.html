@@ -31,18 +31,20 @@
       </div>
       <mat-divider></mat-divider>
       <mat-card-content>
+        <div *ngIf="!appService.isSignedIn(); then notSignedIn else SignedIn"> </div>
 
-        <div
-          id="signIn" *ngIf="!appService.isSignedIn()" class="g-signin2" (click)="appService.signIn()">
-        </div>
-
+        <ng-template #SignedIn>
         <input type="image"
                src="assets/img/signoutbutton.png"
                *ngIf="appService.isSignedIn()"
                (click)="appService.signOut()"
                class="signoutButton"
         />
+        </ng-template>
 
+        <ng-template #notSignedIn>
+          <div id="signIn" class="g-signin2" (click)="appService.signIn()"></div>
+        </ng-template>
 
       </mat-card-content>
     </mat-card>

@@ -4,6 +4,8 @@ import org.bson.Document;
 import spark.Request;
 import spark.Response;
 
+import java.util.List;
+
 public class RideRequestHandler {
 
   private final RideController rideController;
@@ -11,39 +13,6 @@ public class RideRequestHandler {
   public RideRequestHandler(RideController rideController) {
     this.rideController = rideController;
   }
-
-  /**
-   * Method called from Server when the 'api/rides/:id' endpoint is received.
-   * Get a JSON response with a list of all the rides in the database.
-   *
-   * @param req the HTTP request
-   * @param res the HTTP response
-   * @return one ride in JSON formatted string and if it fails it will return text with a different HTTP status code
-   */
-  public String getRideJSON(Request req, Response res) {
-    res.type("application/json");
-    String id = req.params("id");
-    String ride;
-    try {
-      ride = rideController.getRide(id);
-    } catch (IllegalArgumentException e) {
-      // This is thrown if the ID doesn't have the appropriate
-      // form for a Mongo Object ID.
-      // https://docs.mongodb.com/manual/reference/method/ObjectId/
-      res.status(400);
-      res.body("The requested ride id " + id + " wasn't a legal Mongo Object ID.\n" +
-        "See 'https://docs.mongodb.com/manual/reference/method/ObjectId/' for more info.");
-      return "";
-    }
-    if (ride != null) {
-      return ride;
-    } else {
-      res.status(404);
-      res.body("The requested ride with id " + id + " was not found");
-      return "";
-    }
-  }
-
 
   /**
    * Method called from Server when the 'api/rides' endpoint is received.
@@ -56,6 +25,13 @@ public class RideRequestHandler {
   public String getRides(Request req, Response res) {
     res.type("application/json");
     return rideController.getRides(req.queryMap().toMap());
+  }
+
+
+
+  public String getMyRides(Request req, Response res) {
+    res.type("application/json");
+    return rideController.getMyRides(req.queryMap().toMap());
   }
 
   /**
@@ -83,13 +59,6 @@ public class RideRequestHandler {
     boolean isDriving = newRide.getBoolean("isDriving");
     boolean roundTrip = newRide.getBoolean("roundTrip");
     boolean nonSmoking = newRide.getBoolean("nonSmoking");
-
-
-    System.out.println("Adding new ride [user=" + user + ", userId=" + userId + ", driving=" + isDriving +
-      ", notes=" + notes + ", seatsAvailable=" + seatsAvailable +
-      ", origin=" + origin + ", destination=" + destination +
-       ", departureDate=" + departureDate + ", departureTime=" + departureTime +
-      ", isDriving=" + isDriving + ", roundTrip=" + roundTrip +", nonSmoking=" + nonSmoking + ']');
 
     return rideController.addNewRide(user, userId, notes, seatsAvailable, origin, destination,
       departureDate, departureTime, isDriving, roundTrip, nonSmoking);
@@ -120,7 +89,7 @@ public class RideRequestHandler {
 //    String user = editRide.getString("user");
 //    String userId = editRide.getString("userId");
     String notes = editRide.getString("notes");
-    Number seatsAvailable = editRide.getInteger("seatsAvailable");
+    int seatsAvailable = editRide.getInteger("seatsAvailable");
     String origin = editRide.getString("origin");
     String destination = editRide.getString("destination");
     String departureDate = editRide.getString("departureDate");
@@ -129,14 +98,25 @@ public class RideRequestHandler {
     Boolean roundTrip = editRide.getBoolean("roundTrip");
     Boolean nonSmoking = editRide.getBoolean("nonSmoking");
 
-
-    System.out.println("Editing ride [id=" + id + " notes=" + notes +" seatsAvailable=" + seatsAvailable
-      + " origin=" + origin + " destination=" + destination + " departureDate=" + departureDate
-      + " departureTime=" + departureTime + " isDriving=" + isDriving + " roundTrip=" + roundTrip
-      + " nonSmoking=" + nonSmoking);
-
     return rideController.editRide(id, notes, seatsAvailable, origin, destination,
       departureDate, departureTime, isDriving, roundTrip, nonSmoking);
   }
+
+  public Boolean joinRide(Request req, Response res) {
+
+    res.type("application/json");
+
+    // Turn the request into a Document
+    Document joinRide = Document.parse(req.body());
+
+    String _id = joinRide.getObjectId("_id").toHexString();
+    Number seatsAvailable = joinRide.getInteger("seatsAvailable");
+
+    Object passengerIds = joinRide.values().toArray()[2];
+    Object passengerNames = joinRide.values().toArray()[3];
+
+    return rideController.joinRide(_id, seatsAvailable, passengerIds, passengerNames);
+  }
+
 
 }
