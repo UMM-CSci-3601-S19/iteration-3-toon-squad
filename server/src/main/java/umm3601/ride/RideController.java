@@ -1,12 +1,12 @@
 package umm3601.ride;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -14,10 +14,7 @@ import umm3601.DatabaseHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.ascending;
@@ -108,6 +105,11 @@ public class RideController {
     departureDate = checkUnspecifiedDate(departureDate);
     departureTime = checkUnspecifiedTime(departureTime);
 
+    // Since adding a new ride comes with no passengers, we'll create some empty arrays to add to the ride,
+    // that way they can be filled later when if someone wants to join
+    List<BasicDBObject> passengerIds = new ArrayList<>();
+    List<BasicDBObject> passengerNames = new ArrayList<>();
+
     Document newRide = new Document();
     newRide.append("user", user);
     newRide.append("userId", userId);
@@ -120,6 +122,8 @@ public class RideController {
     newRide.append("isDriving", isDriving);
     newRide.append("roundTrip", roundTrip);
     newRide.append("nonSmoking", nonSmoking);
+    newRide.append("passengerIds", passengerIds);
+    newRide.append("passengerNames", passengerNames);
 
     try {
       rideCollection.insertOne(newRide);
@@ -150,7 +154,7 @@ public class RideController {
     }
   }
 
-  Boolean editRide(String id, String notes, int seatsAvailable, String origin, String destination,
+  boolean editRide(String id, String notes, int seatsAvailable, String origin, String destination,
                    String departureDate, String departureTime, Boolean isDriving, Boolean roundTrip, Boolean nonSmoking)
   {
 
