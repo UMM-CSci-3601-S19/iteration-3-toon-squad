@@ -98,6 +98,16 @@ public class UserController {
 
       return JSON.serialize(userInfo);
     }
-
   }
+
+  // We never need a getUser because our product doesn't require a page where all users need to be shown together, but
+  // getUsers is required so we can check if addRide and deleteRide is adding to the list of users that exist in the database.
+  public String getUsers(Map<String, String[]> queryParams) {
+
+    Document filterDoc = new Document();
+    FindIterable<Document> matchingUser = userCollection.find(filterDoc);
+    return JSON.serialize(matchingUser);
+  }
+
+
 }
