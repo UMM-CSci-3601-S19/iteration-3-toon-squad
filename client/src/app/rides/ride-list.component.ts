@@ -88,20 +88,23 @@ export class RideListComponent implements OnInit {
       });
     }
 
-    // For the tags, we only check for true, so that an unchecked box allows all rides to come through.
-    // nonSmoking Tag
-    if (searchNonSmoking === true) {
+    // Tag filtering works like this: if you check the nonSmoking checkbox,
+    // ride-list only displays rides with nonSmoking specified. However, unchecking the box
+    // displays rides with AND without the nonSmoking tag. The same is true for roundTrip tag.
 
-      this.filteredRides = this.filteredRides.filter(ride => {
-        return ride.nonSmoking === searchNonSmoking;
+    // nonSmoking Tag
+    if (searchNonSmoking === true) {  // the search parameter for nonSmoking tag is TRUE
+
+      this.filteredRides = this.filteredRides.filter(ride => {   // filter the ridelist...
+        return ride.nonSmoking === searchNonSmoking;    // and return only rides with nonSmoking tag
       });
     }
 
     // roundTrip tag
-    if (searchRoundTrip === true) {
+    if (searchRoundTrip === true) { // the search parameter for roundTrip tag is TRUE
 
-      this.filteredRides = this.filteredRides.filter(ride => {
-        return ride.roundTrip === searchRoundTrip;
+      this.filteredRides = this.filteredRides.filter(ride => {   // filter the ridelist...
+        return ride.roundTrip === searchRoundTrip;   // and return only rides with roundTrip tag
       });
     }
 
