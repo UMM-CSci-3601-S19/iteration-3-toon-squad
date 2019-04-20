@@ -23,14 +23,21 @@ export class RideListComponent implements OnInit {
   public rideOrigin: string;
   public rideDriving: boolean;
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
+
   private highlightedDestination: string = '';
+  private highlightedID: string = '';
+
   public currUserId = localStorage.getItem("userId");
   public currUserFullName = localStorage.getItem("userFullName");
-  private highlightedID: string = '';
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService, public dialog: MatDialog) {
  //   rideListService.addListener(this);
+  }
+
+  ngOnInit(): void {
+    this.refreshRides();
+    this.loadService();
   }
 
   // This method is used in the HTML instead of ngModel, since it solves a problem where
@@ -127,11 +134,6 @@ export class RideListComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.refreshRides();
-    this.loadService();
-  }
-
   /**
    * Parses ISO dates for human readable month/day, adds ordinal suffixes
    * @param {string} selectedDate The date to be parsed, an ISO string like "2019-04-10T05:00:00.000Z"
@@ -221,18 +223,12 @@ export class RideListComponent implements OnInit {
     console.log((ride));
   }
 
-
-  joinRide(_id: string, seatsAvailable: number, passengerIds: string[], passengerNames: string[]): void {
-
-    passengerIds.push(this.currUserId);
-    passengerNames.push(this.currUserFullName);
-    seatsAvailable = (seatsAvailable - 1);
+  joinRide(rideId: string, passengerId: string, passengerName: string): void {
 
     const joinedRide: joinRideObject = {
-      _id: _id,
-      seatsAvailable: seatsAvailable,
-      passengerIds: passengerIds,
-      passengerNames: passengerNames,
+      rideId: rideId,
+      passengerId: passengerId,
+      passengerName: passengerName,
     };
 
     this.rideListService.joinRide(joinedRide).subscribe(

@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -182,25 +183,29 @@ public class RideController {
     return tryUpdateOne(filter, updateDoc);
   }
 
-  boolean joinRide(String rideId, Number seatsAvailable, Object passengerIds, Object passengerNames) {
-
-    // First we create a document for which we can match the document we would like to update
+  boolean joinRide(String rideId, String passengerId, String passengerName) {
 
     ObjectId objId = new ObjectId(rideId); // _id must be formatted like this for the match to work
     Document filter = new Document("_id", objId); // Here is the actual document we match against
 
-    // Now we create a document containing the fields that should be updated in the matched ride document
-    Document updateFields = new Document();
-    updateFields.append("seatsAvailable", seatsAvailable);
-    updateFields.append("passengerIds", passengerIds);
-    updateFields.append("passengerNames", passengerNames);
+    // Create an empty document that will contain our full update
+    Document fullUpdate = new Document();
 
-    // A new document with the $set parameter so Mongo can update appropriately, and the values of $set being
-    // the document we just made (which contains the fields we would like to update).
-    Document updateDoc = new Document("$set", updateFields);
+    // This line creates: {"seatsAvailable":-1}
+    Document incrementFields = new Document("seatsAvailable", -1);
 
-    // Now the actual updating of seatsAvailable, passengers, and names.
-    return tryUpdateOne(filter, updateDoc);
+    // These two lines create: {"passengerIds": passengerId, "passengerNames": passengerName}
+    Document pushFields = new Document("passengerIds", passengerId);
+    pushFields.append("passengerNames", passengerName);
+
+    // Appending the previous document gives us
+    // {$inc: {seatsAvailable=-1}, $push: {"passengerIds":passengerId, "passengerNames":passengerName}}}
+    fullUpdate.append("$inc", incrementFields);
+    fullUpdate.append("$push", pushFields);
+
+    // Now pass the full update in with the filter and update the record it matches.
+    return tryUpdateOne(filter, fullUpdate);
+
   }
 
   boolean tryUpdateOne(Document filter, Document updateDoc) {
