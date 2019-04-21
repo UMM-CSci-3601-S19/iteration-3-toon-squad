@@ -15,7 +15,7 @@
           <div>
             Email: {{profile.email}}
             <br><br>
-            Phone: {{userPhone}}
+            Phone: {{profile.phone}}
             <br><br>
             <form [formGroup]="userForm" novalidate>
               <div class="form-group">
@@ -24,7 +24,7 @@
                        [ngClass]="(userForm.controls['phone'].invalid)? 'errmsg' : 'validmsg'">
                 {{userForm.get('phone').status | json}}
               </div>
-              <button [disabled]="userForm.status == 'INVALID'" class="btn btn-success" (click)="savePhone(userForm.value.phone)">Save</button>
+              <button [disabled]="userForm.status == 'INVALID'" class="btn btn-success" (click)="saveProfileInfo(profile.userId,userForm.value.phone)">Save</button>
             </form>
           </div>
         <div>
