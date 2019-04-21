@@ -5,6 +5,7 @@ import {UserService} from "./user.service";
 import {ActivatedRoute} from "@angular/router";
 import {Ride} from "../rides/ride";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {profileInfoObject} from "./profileInfoObject";
 
 @Component({
   selector: 'profile-component',
@@ -18,7 +19,6 @@ export class ProfileComponent implements OnInit{
   public profileId: string;
   public userRides: Ride[];
   userForm: FormGroup;
-  userPhone: string;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private fb:FormBuilder) {
     this.createForm();
@@ -48,9 +48,23 @@ export class ProfileComponent implements OnInit{
     });
   }
 
-  savePhone(phoneString: string){
-    this.userPhone = phoneString;
-  }
+  saveProfileInfo(userId: string, phoneInfo: string): void {
+
+    const profileInfo: profileInfoObject = {
+      userId: userId,
+      phone: phoneInfo
+    };
+
+    this.userService.saveProfileInfo(profileInfo).subscribe(
+      result => {
+        console.log("here is the result from SaveProfileInfo:" + result);
+      },
+      err => {
+        // This should probably be turned into some sort of meaningful response.
+        console.log('There was an error adding the ride.');
+        console.log('The error was ' + JSON.stringify(err));
+      });
+  };
 
 
   ngOnInit(): void {
