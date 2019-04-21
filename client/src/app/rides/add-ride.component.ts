@@ -75,33 +75,8 @@ export class AddRideComponent implements OnInit {
         });
 
       this.snackBar.open("Successfully Added A Ride",'' , <MatSnackBarConfig>{duration: 5000,});
-
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
     }
   };
-
-  refreshRides(): Observable<Ride[]> {
-    // Get Rides returns an Observable, basically a "promise" that
-    // we will get the data from the server.
-    //
-    // Subscribe waits until the data is fully downloaded, then
-    // performs an action on it (the first lambda)
-    const rides: Observable<Ride[]> = this.rideListService.getRides();
-    rides.subscribe(
-      rides => {
-        this.rides = rides;
-        console.log(" These are the rides getRides got back after addRide called Refresh Ride " + JSON.stringify(this.rides));
-      },
-      err => {
-        console.log(err);
-      });
-    return rides;
-  }
 
   // IMPORTANT! This function gets called whenever the user selects 'looking for a ride'.
   //   This is so that form validator doesn't get mad for having an invalid 'rideSeats' value.
