@@ -6,6 +6,8 @@ import {Observable} from 'rxjs/Observable';
 import {Ride} from './ride';
 import {environment} from '../../environments/environment';
 import {joinRideObject} from "./joinRideObject";
+import {Subject} from "rxjs/Subject";
+import {tap} from "rxjs/operators";
 
 
 
@@ -18,11 +20,12 @@ export class RideListService {
   constructor(private http: HttpClient) {
   }
 
+  //Thanks to ChariotSolutions @ https://youtu.be/DvnzeCfYg0s?t=113
+  private _refreshNeeded$ = new Subject<void>();
 
-  getRides(): Observable<Ride[]> {
-    return this.http.get<Ride[]>(this.rideUrl);
+  get refreshNeeded$() {
+    return this._refreshNeeded$;
   }
-
   addNewRide(newRide: Ride): Observable<string> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -36,12 +39,17 @@ export class RideListService {
     };
 
     // Send post request to add a new user with the user data as the body with specified headers.
-    return this.http.post<string>(this.rideUrl + '/new', newRide, httpOptions);
+    return this.http.post<string>(this.rideUrl + '/new', newRide, httpOptions)
+      .pipe( //Thanks to ChariotSolutions @ https://youtu.be/DvnzeCfYg0s?t=227
+        tap(()=> {
+          this._refreshNeeded$.next();
+        })
+      );
   }
 
-
-
-
+  getRides(): Observable<Ride[]> {
+    return this.http.get<Ride[]>(this.rideUrl);
+  }
 
   joinRide(editedRide: joinRideObject) {
 
