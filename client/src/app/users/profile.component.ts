@@ -24,6 +24,10 @@ export class ProfileComponent implements OnInit{
     this.createForm();
   }
 
+  public getLocalUserId() {
+    return localStorage.getItem("userId");
+  }
+
   getProfile(): void{
     const id = this.route.snapshot.paramMap.get('id');
     this.profileId= id;
@@ -65,7 +69,6 @@ export class ProfileComponent implements OnInit{
         console.log('The error was ' + JSON.stringify(err));
       });
   };
-
 
   ngOnInit(): void {
     this.getProfile();

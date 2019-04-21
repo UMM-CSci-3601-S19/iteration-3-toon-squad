@@ -17,6 +17,7 @@
             <br><br>
             Phone: {{profile.phone}}
             <br><br>
+            <div *ngIf="profile.userId === getLocalUserId() ">
             <form [formGroup]="userForm" novalidate>
               <div class="form-group">
                 <label for="tel">Phone: </label>
@@ -26,6 +27,7 @@
               </div>
               <button [disabled]="userForm.status == 'INVALID'" class="btn btn-success" (click)="saveProfileInfo(profile.userId,userForm.value.phone)">Save</button>
             </form>
+            </div>
           </div>
         <div>
         <img src="{{profile.pictureUrl}}">
