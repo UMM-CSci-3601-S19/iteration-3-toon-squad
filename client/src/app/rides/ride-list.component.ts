@@ -116,30 +116,6 @@ export class RideListComponent implements OnInit {
     return this.filteredRides;
   }
 
-  /**
-   * Starts an asynchronous operation to update the rides list
-   *
-   */
-  refreshRides(): Observable<Ride[]> {
-    // Get Rides returns an Observable, basically a "promise" that
-    // we will get the data from the server.
-    //
-    // Subscribe waits until the data is fully downloaded, then
-    // performs an action on it (the first lambda)
-
-    const rides: Observable<Ride[]> = this.rideListService.getRides();
-    rides.subscribe(
-      rides => {
-        this.rides = rides;
-        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving,
-          this.rideNonSmoking, this.rideRoundTrip);
-      },
-      err => {
-        console.log(err);
-      });
-    return rides;
-  }
-
   loadService(): void {
     this.rideListService.getRides().subscribe(
       rides => {
@@ -269,18 +245,38 @@ export class RideListComponent implements OnInit {
         });
 
       this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-
   };
 
+  /**
+   * Starts an asynchronous operation to update the rides list
+   *
+   */
+  refreshRides(): Observable<Ride[]> {
+    // Get Rides returns an Observable, basically a "promise" that
+    // we will get the data from the server.
+    //
+    // Subscribe waits until the data is fully downloaded, then
+    // performs an action on it (the first lambda)
+
+    const rides: Observable<Ride[]> = this.rideListService.getRides();
+    rides.subscribe(
+      rides => {
+        this.rides = rides;
+        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving,
+          this.rideNonSmoking, this.rideRoundTrip);
+      },
+      err => {
+        console.log(err);
+      });
+    return rides;
+  }
+
   ngOnInit(): void {
-    this.refreshRides();
+    this.rideListService.refreshNeeded$
+      .subscribe(() => {
+          this.refreshRides();
+        });
     this.loadService();
   }
+
 }
