@@ -23,7 +23,7 @@ The following documentation is straight to the point what you should add or chan
 ### `Server.java`
 #### Replace the first part of the 'try' with
 ```java
-  try {
+          try {
           File file = new File("./iteration-3-toon-squad/server/src/main/java/umm3601/server_files/credentials.json");
           String path = file.getAbsolutePath();
           System.out.println("The path: "+ path);
@@ -46,8 +46,19 @@ The following documentation is straight to the point what you should add or chan
               clientSecrets.getDetails().getClientSecret(),
               authCode,
               "https://moridemorris.site") 
-              
+
+            //Not sure if we have a redirectUri
+
+            // Specify the same redirect URI that you use with your web
+            // app. If you don't have a web version of your app, you can
+            // specify an empty string.
+            .execute();    
 ```
+**Additionally, import this up top:**
+
+`import java.io.File;`
+
+
 ## Adding (or editing) `credentials.json`
 You shouldn't have credentials.json in a freshly cloned Droplet because it should hopefully be declared as hidden in the .gitignore at the root of your project. 
 
@@ -61,7 +72,10 @@ Add a server_files folder under umm3601 if one does not exist. This can be done 
 
 Copy and paste into credentials.json your Google OAUTH API's JSON that you can get in the Google API Console from "Download JSON."
 
-A client_secret field will need to be added to the credentials. The client_secret can be retrieved from the same page where you downloaded the json and set the authorized javascript origins and authorized redirect uri's. 
+~~A client_secret field will need to be added to the credentials. The client_secret can be retrieved from the same page where you~~
+(We don't know why this was an issue for us before. Redownloading the credentials file had it present the next time. Maybe that was just a freak thing, but most likely a mistake down the line. Keeping it in just in case.)
+~~downloaded the json and set the authorized javascript origins and authorized redirect uri's.~~
+
 
 It should look something like this, just maybe not as formatted:
 
@@ -69,7 +83,7 @@ It should look something like this, just maybe not as formatted:
 ```json
 {"web":
         {"client_id":     "filled_in_by_json_download",
-         "client_secret":   "INSERT_YOUR_CLIENT_SECRET",
+         "client_secret": "filled_in_by_json_download",
          "project_id":    "filled_in_by_json_download",
          "auth_uri":      "filled_in_by_json_download",
          "token_uri":     "filled_in_by_json_download",
