@@ -23,36 +23,37 @@ The following documentation is straight to the point what you should add or chan
 ### `Server.java`
 #### Replace the first part of the 'try' with
 ```java
-          try {
-          File file = new File("./iteration-3-toon-squad/server/src/main/java/umm3601/server_files/credentials.json");
-          String path = file.getAbsolutePath();
-          System.out.println("The path: "+ path);
-          String CLIENT_SECRET_FILE = path;
-  
-          GoogleClientSecrets clientSecrets =
-            GoogleClientSecrets.load(
-              JacksonFactory.getDefaultInstance(), new FileReader(CLIENT_SECRET_FILE));
-  
-  
-          GoogleTokenResponse tokenResponse =
-            new GoogleAuthorizationCodeTokenRequest(
-              new NetHttpTransport(),
-              JacksonFactory.getDefaultInstance(),
-              "https://oauth2.googleapis.com/token",
-              clientSecrets.getDetails().getClientId(),
-  
-              // Replace clientSecret with the localhost one if testing
-              //Your top level domain. Must match "redirect_uris" field in credentials.json. Must be https. No port. 
-              clientSecrets.getDetails().getClientSecret(),
-              authCode,
-              "https://moridemorris.site") 
+try {
+  File file = new File("./iteration-3-toon-squad/server/src/main/java/umm3601/server_files/credentials.json");
+  String path = file.getAbsolutePath();
+  System.out.println("The path: "+ path);
+  String CLIENT_SECRET_FILE = path;
 
-            //Not sure if we have a redirectUri
+  GoogleClientSecrets clientSecrets =
+    GoogleClientSecrets.load(
+      JacksonFactory.getDefaultInstance(), new FileReader(CLIENT_SECRET_FILE));
 
-            // Specify the same redirect URI that you use with your web
-            // app. If you don't have a web version of your app, you can
-            // specify an empty string.
-            .execute();    
+
+  GoogleTokenResponse tokenResponse =
+    new GoogleAuthorizationCodeTokenRequest(
+      new NetHttpTransport(),
+      JacksonFactory.getDefaultInstance(),
+      "https://oauth2.googleapis.com/token",
+      clientSecrets.getDetails().getClientId(),
+
+      // Replace clientSecret with the localhost one if testing
+      //Your top level domain. Must match "redirect_uris" field in credentials.json. Must be https. No port. 
+      clientSecrets.getDetails().getClientSecret(),
+      authCode,
+      "https://moridemorris.site")
+
+    //Not sure if we have a redirectUri
+
+    // Specify the same redirect URI that you use with your web
+    // app. If you don't have a web version of your app, you can
+    // specify an empty string.
+      .execute(); 
+
 ```
 **Additionally, import this up top:**
 
