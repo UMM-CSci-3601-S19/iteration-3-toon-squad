@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit{
   public profileId: string;
   public userRides: Ride[];
   userForm: FormGroup;
+  public showPhoneForm: boolean;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private fb:FormBuilder) {
     this.createForm();
@@ -68,6 +69,7 @@ export class ProfileComponent implements OnInit{
         console.log('There was an error adding the ride.');
         console.log('The error was ' + JSON.stringify(err));
       });
+    window.location.reload();
   };
 
   ngOnInit(): void {

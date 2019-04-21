@@ -18,7 +18,9 @@
             Phone: {{profile.phone}}
             <br><br>
             <div *ngIf="profile.userId === getLocalUserId() ">
-            <form [formGroup]="userForm" novalidate>
+              <button (click)="showPhoneForm = true"> Edit Phone </button>
+              <br><br>
+              <form id="phoneForm" [formGroup]="userForm" novalidate *ngIf="showPhoneForm">
               <div class="form-group">
                 <label for="tel">Phone: </label>
                 <input id="tel" class="form-control" phoneMask [preValue]="userForm.value.phone"  formControlName="phone" maxlength="14"
