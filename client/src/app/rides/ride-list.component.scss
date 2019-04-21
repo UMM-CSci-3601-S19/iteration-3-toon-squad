@@ -29,7 +29,7 @@
   flex-grow: 1;
 }
 .ride-title-isDriving {
-  background: #0D98BA linear-gradient(to right bottom, #006D6F, #B2FFFF);
+  background: #09a809 linear-gradient(to right bottom, #38eb38, #a8ffa0);
   color: #fff;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
@@ -37,7 +37,7 @@
 }
 
 .ride-title-isNotDriving {
-  background: #66023C linear-gradient(to right bottom, #800080,#FAE6FA);
+  background: #29b6f6 linear-gradient(to right bottom, #29b6f6,#73e8ff);
   color: #fff;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
@@ -58,8 +58,19 @@
 }
 
 .join-ride-button{
-  height: auto;
-  width: auto;
+  height: 24px;
+  width: 84.31px;
+  background: #38eb38;
+  color: white;
+}
+
+.join-ride-button-plus{
+  color: white;
+
+}
+
+#seat-button-aligner{
+  display: block;
 }
 
 /* Ride card contents */

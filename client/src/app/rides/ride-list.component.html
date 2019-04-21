@@ -125,6 +125,7 @@
 
           <mat-card-title>
 
+
             <div class="departure-time">
 
               <mat-icon style="color:white"> drive_eta</mat-icon>
@@ -140,15 +141,20 @@
               <ng-template #impossible_time> unspecified time </ng-template>
 
             </div>
-
+            <div class="seat-button-aligner">
             <div class="seats-left">
               <small *ngIf="ride.seatsAvailable === 1"> {{ride.seatsAvailable}} SEAT LEFT </small>
               <small *ngIf="ride.seatsAvailable > 1"> {{ride.seatsAvailable}} SEATS LEFT </small>
             </div>
 
-            <mat-icon> add-circle-outline </mat-icon>
-
-
+            <button mat-raised-button
+                    class="join-ride-button"
+                    id="join-ride-button"
+                    type="button"
+                    (click) = "joinRide(ride._id, ride.seatsAvailable, ride.passengerIds, ride.passengerNames)">
+              <mat-icon class="join-ride-button-plus">add_circle_outline</mat-icon>
+            </button>
+              </div>
 
           </mat-card-title>
         </mat-card-header>
