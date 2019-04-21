@@ -7,6 +7,9 @@ import {FormsModule} from '@angular/forms';
 import {CustomModule} from '../custom.module';
 import {RouterLinkDirectiveStub} from "./router-link-directive-stub";
 
+import {Subject} from "rxjs/Subject";
+import {tap} from "rxjs/operators";
+
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import {By} from "@angular/platform-browser";
@@ -18,6 +21,10 @@ describe('Ride list', () => {
 
   let rideListServiceStub: {
     getRides: () => Observable<Ride[]>
+  };
+
+  let refreshNeeded$Stub: {
+    refreshNeeded$: () => Subject<void>
   };
 
   let linkDes;
@@ -75,7 +82,8 @@ describe('Ride list', () => {
     TestBed.configureTestingModule({
       imports: [CustomModule],
       declarations: [RideListComponent,RouterLinkDirectiveStub],
-      providers: [{provide: RideListService, useValue: rideListServiceStub}]
+      providers: [{provide: RideListService, useValue: rideListServiceStub},
+                  {provide: RideListService, useValue: refreshNeeded$Stub}]
     });
   });
 

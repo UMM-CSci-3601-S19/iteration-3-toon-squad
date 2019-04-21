@@ -20,9 +20,8 @@ export class RideListService {
   constructor(private http: HttpClient) {
   }
 
-  //Thanks to ChariotSolutions @ https://youtu.be/DvnzeCfYg0s?t=113
+  //Thanks to ChariotSolutions @ https://youtu.be/DvnzeCfYg0s?t=227
   private _refreshNeeded$ = new Subject<void>();
-
   get refreshNeeded$() {
     return this._refreshNeeded$;
   }
