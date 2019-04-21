@@ -30,6 +30,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule}  from "@angular/material/checkbox";
 import {ProfileComponent} from "./users/profile.component";
 
+import {RouterLinkDirectiveStub} from "./rides/router-link-directive-stub";
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import {ProfileComponent} from "./users/profile.component";
     EditRideComponent,
     DeleteRideComponent,
     ProfileComponent,
+    RouterLinkDirectiveStub
   ],
   providers: [
     RideListService, AppService, AppAuthGuard, UserService, ValidatorService,
