@@ -22,35 +22,44 @@
   opacity: 1;
 }
 
-.morideViewRidelogo {
+#morideViewRidelogo {
+  display: inline-block;
+  margin-left:auto;
+  margin-right:auto;
+  resize: horizontal;
   box-shadow: 0 0 0 rgba(0,0,0,0.15);
   max-width: 200px;
   height: auto;
   width: 49%;
 }
 
-.morideViewRidelogo:hover{
+#morideViewRidelogo:hover{
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   transition: box-shadow 0.3s ease-out;
 }
 
-.morideViewRidelogo:hover:after{
+#morideViewRidelogo:hover:after{
   opacity: 1;
 }
 
-.morideAddRidelogo {
+#morideAddRidelogo {
+  align-content: center;
+  display: inline-block;
+  margin-left:auto;
+  margin-right:auto;
+  resize: horizontal;
   box-shadow: 0 0 0 rgba(0,0,0,0.15);
   max-width: 200px;
   height: auto;
   width: 49%;
 }
 
-.morideAddRidelogo:hover{
+#morideAddRidelogo:hover{
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   transition: box-shadow 0.3s ease-out;
 }
 
-.morideAddRidelogo:hover:after{
+#morideAddRidelogo:hover:after{
   opacity: 1;
 }
 
@@ -72,7 +81,9 @@
 
 
 
-
+#rideimages{
+ text-align: center;
+}
 
 
 

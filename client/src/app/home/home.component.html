@@ -1,4 +1,5 @@
-
+<!--The font for the designs is Bungee!-->
+<!--The hex color of the blue in the designs is #29b6f6-->
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
     <input type="image"
@@ -17,14 +18,17 @@
                src="assets/img/viewridesbutton.png"
                *ngIf="appService.isSignedIn()"
                routerLink="/rides"
-               class="morideViewRidelogo"
+               class="rideimages"
+               id="morideViewRidelogo"
         />
 
         <input type="image"
                src="assets/img/addridesbutton.png"
                *ngIf="appService.isSignedIn()"
                routerLink="/addride"
-               class="morideAddRidelogo"
+               class="rideimages"
+               id="morideAddRidelogo"
+
         />
 
 
