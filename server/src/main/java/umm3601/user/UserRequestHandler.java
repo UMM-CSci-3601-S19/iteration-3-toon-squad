@@ -1,6 +1,7 @@
 package umm3601.user;
 
 
+import org.bson.Document;
 import spark.Request;
 import spark.Response;
 
@@ -37,6 +38,18 @@ public class UserRequestHandler {
       res.body("The requested user with userId " + userId + " was not found");
       return "";
     }
+  }
+
+  public Boolean saveProfile(Request req, Response res) {
+
+    res.type("application/json");
+
+    Document profileInfo = Document.parse(req.body());
+
+    String userId = profileInfo.getString("userId");
+    String phone = profileInfo.getString("phone");
+
+    return userController.saveProfile(userId, phone);
   }
 
 

@@ -82,6 +82,7 @@ public class Server {
 
     // USER ENDPOINTS
     get("api/user/:id",userRequestHandler::getUserJSON);
+    post("api/user/saveProfile", userRequestHandler:: saveProfile);
 
     // An example of throwing an unhandled exception so you can see how the
     // Java Spark debugger displays errors like this.
