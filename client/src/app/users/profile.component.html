@@ -15,10 +15,16 @@
           <div>
             Email: {{profile.email}}
             <br><br>
+            <div *ngIf="profile.phone; else noPhoneMsg">
             Phone: {{profile.phone}}
+            </div>
+            <ng-template #noPhoneMsg>
+              No Phone Added
+              <button *ngIf="profile.userId === getLocalUserId()" (click)="showPhoneForm = true"> Add Phone </button>
+            </ng-template>
             <br><br>
-            <div *ngIf="profile.userId === getLocalUserId() ">
-              <button (click)="showPhoneForm = true"> Edit Phone </button>
+            <div *ngIf="profile.userId === getLocalUserId()">
+              <button *ngIf=profile.phone (click)="showPhoneForm = true"> Edit Phone </button>
               <br><br>
               <form id="phoneForm" [formGroup]="userForm" novalidate *ngIf="showPhoneForm">
               <div class="form-group">
