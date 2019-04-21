@@ -15,6 +15,17 @@
           <div>
             Email: {{profile.email}}
             <br><br>
+            Phone: {{userPhone}}
+            <br><br>
+            <form [formGroup]="userForm" novalidate>
+              <div class="form-group">
+                <label for="tel">Phone: </label>
+                <input id="tel" class="form-control" phoneMask [preValue]="userForm.value.phone"  formControlName="phone" maxlength="14"
+                       [ngClass]="(userForm.controls['phone'].invalid)? 'errmsg' : 'validmsg'">
+                {{userForm.get('phone').status | json}}
+              </div>
+              <button [disabled]="userForm.status == 'INVALID'" class="btn btn-success" (click)="savePhone(userForm.value.phone)">Save</button>
+            </form>
           </div>
         <div>
         <img src="{{profile.pictureUrl}}">
