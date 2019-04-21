@@ -22,7 +22,9 @@ export class RideListComponent implements OnInit {
   public rideDestination: string;
   public rideOrigin: string;
   public rideDriving: boolean;
+
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
+  public rideRoundTrip: boolean = false;
 
   private highlightedDestination: string = '';
   private highlightedID: string = '';
@@ -43,8 +45,32 @@ export class RideListComponent implements OnInit {
   // This method is used in the HTML instead of ngModel, since it solves a problem where
   // clicking on the checkbox didn't always 'uncheck' the box. Implementing this method with
   // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
+
+
+
+  public userCanJoinRide(ride: Ride): boolean {
+    return (
+      (ride.seatsAvailable > 0)
+      && !this.userOwnsThisRide(ride)
+      && !this.userIsAPassenger(ride)
+    )
+  }
+
+  public userOwnsThisRide(ride: Ride): boolean {
+    return (ride.userId === this.currUserId);
+  }
+
+  public userIsAPassenger(ride: Ride): boolean {
+    return (ride.passengerIds.indexOf(this.currUserId) !== -1)
+  }
+
+
   public toggleNonSmoking() {
     this.rideNonSmoking = !this.rideNonSmoking;
+  }
+
+  public toggleRoundTrip() {
+    this.rideRoundTrip = !this.rideRoundTrip;
   }
 
   public getLocalUserId() {
@@ -60,7 +86,8 @@ export class RideListComponent implements OnInit {
   }
 
   public filterRides(searchDestination: string, searchOrigin: string,
-                     searchIsDriving: boolean, searchNonSmoking): Ride[] {
+                     searchIsDriving: boolean, searchNonSmoking: boolean,
+                     searchRoundTrip): Ride[] {
 
     this.filteredRides = this.rides;
 
@@ -97,6 +124,13 @@ export class RideListComponent implements OnInit {
       });
     }
 
+    if (searchRoundTrip === true) {
+
+      this.filteredRides = this.filteredRides.filter(ride => {
+        return ride.roundTrip === searchRoundTrip;
+      });
+    }
+
     return this.filteredRides;
   }
 
@@ -115,7 +149,8 @@ export class RideListComponent implements OnInit {
     rides.subscribe(
       rides => {
         this.rides = rides;
-        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving, this.rideNonSmoking);
+        this.filterRides(this.rideDestination, this.rideOrigin, this.rideDriving,
+          this.rideNonSmoking, this.rideRoundTrip);
       },
       err => {
         console.log(err);
@@ -219,10 +254,6 @@ export class RideListComponent implements OnInit {
     });
   }
 
-  printCurrRide(ride: Ride): void {
-    console.log((ride));
-  }
-
   joinRide(rideId: string, passengerId: string, passengerName: string): void {
 
     const joinedRide: joinRideObject = {
@@ -255,5 +286,20 @@ export class RideListComponent implements OnInit {
 
   };
 
+  printCurrRide(ride: Ride): void {
+    console.log((ride));
+    console.log(ride.passengerNames);
+    console.log(this.listRidePassengers(ride.passengerNames));
+  }
+
+  listRidePassengers(passengerNames: string[]): string {
+    if (passengerNames.length <= 0) {
+      return ("There are currently no passengers on this ride.");
+    }
+    else if (passengerNames.length > 0) {
+      var passenger = passengerNames[0];
+      return "Passengers: " + passengerNames;
+    }
+  }
 
 }
