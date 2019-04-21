@@ -44,7 +44,7 @@ export class AppService {
         localStorage.setItem("userLastName", onSuccess["lastName"]);
         localStorage.setItem("userFirstName", onSuccess["firstName"]);
         localStorage.setItem("pictureUrl", onSuccess["pictureUrl"]);
-
+        window.location.reload();
 
         console.log(localStorage.getItem("_id"));
         console.log(localStorage.getItem("userId"));
@@ -78,7 +78,14 @@ export class AppService {
     this.googleAuth.then(() => {
       this.googleAuth.signOut();
       localStorage.setItem('isSignedIn', 'false');
+      localStorage.setItem("_id", "");
       localStorage.setItem("userId", "");
+      localStorage.setItem("oid", "");
+      localStorage.setItem("email", "");
+      localStorage.setItem("userFullName", "");
+      localStorage.setItem("userLastName", "");
+      localStorage.setItem("userFirstName", "");
+      localStorage.setItem("pictureUrl", "");
       window.location.reload();
     })
   }

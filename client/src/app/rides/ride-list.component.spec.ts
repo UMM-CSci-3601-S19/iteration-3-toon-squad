@@ -5,9 +5,11 @@ import {RideListService} from './ride-list.service';
 import {Observable} from 'rxjs/Observable';
 import {FormsModule} from '@angular/forms';
 import {CustomModule} from '../custom.module';
+import {RouterLinkDirectiveStub} from "./router-link-directive-stub";
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
+import {By} from "@angular/platform-browser";
 
 describe('Ride list', () => {
 
@@ -17,6 +19,9 @@ describe('Ride list', () => {
   let rideListServiceStub: {
     getRides: () => Observable<Ride[]>
   };
+
+  let linkDes;
+  let routerLinks;
 
   beforeEach(() => {
     // stub RideService for test purposes
@@ -69,7 +74,7 @@ describe('Ride list', () => {
 
     TestBed.configureTestingModule({
       imports: [CustomModule],
-      declarations: [RideListComponent],
+      declarations: [RideListComponent,RouterLinkDirectiveStub],
       providers: [{provide: RideListService, useValue: rideListServiceStub}]
     });
   });
@@ -79,6 +84,14 @@ describe('Ride list', () => {
       fixture = TestBed.createComponent(RideListComponent);
       rideList = fixture.componentInstance;
       fixture.detectChanges();
+
+      // find DebugElements with an attached RouterLinkStubDirective
+      linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));
+
+      // get attached link directive instances
+      // using each DebugElement's injector
+      routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
+
     });
   }));
 
@@ -263,12 +276,11 @@ describe('Ride list', () => {
   it('doesn\'t have a requested ride with zero or more seats available', () => {
     expect(rideList.rides.some((ride: Ride) => !ride.isDriving && ride.seatsAvailable > 0)).toBe(false);
   });
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-  /////////////////////////////////////
-  //////   Filtering Tests   //////////
-  /////////////////////////////////////
-
+  ///////////////////////////////////////////
+  //////   Basic Filtering Tests   //////////
+  ///////////////////////////////////////////
 
   it('filters by origin', () => {
     expect(rideList.filteredRides.length).toBe(3);
@@ -301,22 +313,46 @@ describe('Ride list', () => {
       expect(rideList.filteredRides.length).toBe(1);
     });
   });
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  it('filters by nonSmoking TRUE', () => {
+  ////////////////////////////////////
+  ////  Tag Filtering Tests   ////////
+  ////////////////////////////////////
+
+  // Tag filtering works like this: if you check the nonSmoking checkbox,
+  // ride-list only displays rides with nonSmoking specified. However, unchecking the box
+  // displays rides with AND without the nonSmoking tag. The same is true for roundTrip tag.
+
+  // Therefore, without the nonSmoking checked, we SHOULD get all the rides (given that all other filters are
+  // their original values.
+
+  // Since the rideNonSmoking parameter is false be default, we should have all rides at first.
+  it('filters by nonSmoking tag', () => {
     expect(rideList.filteredRides.length).toBe(3);
+
+    // Now, we set rideNonSmoking to true and should see a change in the ride-list.
     rideList.rideNonSmoking = true;
     rideList.refreshRides().subscribe(() => {
       expect(rideList.filteredRides.length).toBe(2);
     });
   });
 
-  it('filters by nonSmoking FALSE (should return a full list)', () => {
+  // As explained earlier, roundTrip works the same way.
+  it('filters by roundTrip tag', () => {
+    // roundTrip is false by default.
     expect(rideList.filteredRides.length).toBe(3);
-    rideList.rideNonSmoking = false;
+
+    // Now we set roundTrip to true and test.
+    rideList.rideRoundTrip = true;
     rideList.refreshRides().subscribe(() => {
-      expect(rideList.filteredRides.length).toBe(3);
+      expect(rideList.filteredRides.length).toBe(2);
     });
   });
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////
+  /////  Combining filters   /////////////
+  ////////////////////////////////////////
 
   it('filters by origin and destination', () => {
     expect(rideList.filteredRides.length).toBe(3);
@@ -336,19 +372,39 @@ describe('Ride list', () => {
     });
   });
 
-  it('filters by origin, destination, isDriving, and nonSmoking', () => {
+  it('filters by isDriving and roundTrip', () => {
     expect(rideList.filteredRides.length).toBe(3);
-    rideList.rideOrigin = 'UMM';
-    rideList.rideDestination = 'w';
     rideList.rideDriving = true;
-    rideList.rideNonSmoking = true;
+    rideList.rideRoundTrip = true;
     rideList.refreshRides().subscribe(() => {
       expect(rideList.filteredRides.length).toBe(1);
     });
   });
 
+  it('filters by nonSmoking and roundTrip', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideNonSmoking = true;
+    rideList.rideRoundTrip = true;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(2);
+    });
+  });
 
+  it('filters by origin, destination, isDriving, nonSmoking, and roundTrip', () => {
+    expect(rideList.filteredRides.length).toBe(3);
+    rideList.rideOrigin = 'UMM';
+    rideList.rideDestination = 'w';
+    rideList.rideDriving = true;
+    rideList.rideNonSmoking = true;
+    rideList.rideRoundTrip = true;
+    rideList.refreshRides().subscribe(() => {
+      expect(rideList.filteredRides.length).toBe(1);
+    });
+  });
 });
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 describe('Misbehaving Ride List', () => {
   let rideList: RideListComponent;
@@ -357,6 +413,8 @@ describe('Misbehaving Ride List', () => {
   let rideListServiceStub: {
     getRides: () => Observable<Ride[]>
   };
+  let linkDes;
+  let routerLinks;
 
   beforeEach(() => {
     // stub RideService for test purposes
@@ -368,7 +426,7 @@ describe('Misbehaving Ride List', () => {
 
     TestBed.configureTestingModule({
       imports: [FormsModule, CustomModule],
-      declarations: [RideListComponent],
+      declarations: [RideListComponent,RouterLinkDirectiveStub],
       providers: [{provide: RideListService, useValue: rideListServiceStub}]
     });
   });
@@ -378,6 +436,13 @@ describe('Misbehaving Ride List', () => {
       fixture = TestBed.createComponent(RideListComponent);
       rideList = fixture.componentInstance;
       fixture.detectChanges();
+
+      // find DebugElements with an attached RouterLinkStubDirective
+      linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));
+
+      // get attached link directive instances
+      // using each DebugElement's injector
+      routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
     });
   }));
 

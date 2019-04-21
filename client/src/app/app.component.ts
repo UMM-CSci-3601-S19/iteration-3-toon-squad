@@ -8,7 +8,8 @@ import {AppService} from "./app.service";
   providers: [AppService]
 })
 export class AppComponent {
-  title = 'Mongo-Angular-Spark lab';
+  title = 'Mo-Ride App';
+  public profileId = localStorage.getItem("userId");
 
   constructor(public appService: AppService) {}
 }

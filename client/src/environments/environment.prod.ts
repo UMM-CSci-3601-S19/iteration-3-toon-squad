@@ -7,5 +7,5 @@ export const environment = {
   // keep the port number (`:4567`) unless you
   // reconfigure the Java Spark server to use a
   // different port.
-  API_URL: 'http://142.93.244.191:4567/api/'
+  API_URL: 'https://moridemorris.site/api/'
 };

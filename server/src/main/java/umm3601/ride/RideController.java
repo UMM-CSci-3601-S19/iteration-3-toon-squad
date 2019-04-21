@@ -33,14 +33,6 @@ public class RideController {
     rideCollection = database.getCollection("rides");
   }
 
-  /**
-   * Helper method that gets a single ride specified by the `id`
-   * parameter in the request.
-   *
-   * @param id the Mongo ID of the desired ride
-   * @return the desired ride as a JSON object if the ride with that ID is found,
-   * and `null` if no ride with that ID is found
-   */
   public String getRide(String id) {
     FindIterable<Document> jsonRides
       = rideCollection
@@ -54,6 +46,24 @@ public class RideController {
       // We didn't find the desired ride
       return null;
     }
+  }
+
+
+  public String getMyRides(Map<String, String[]> queryParams) {
+
+    Document filterDoc = new Document();
+
+    if (queryParams.containsKey("userId")) {
+      String targetContent = (queryParams.get("userId")[0]);
+      Document contentRegQuery = new Document();
+      contentRegQuery.append("$regex", targetContent);
+      contentRegQuery.append("$options", "i");
+      filterDoc = filterDoc.append("userId", contentRegQuery);
+    }
+
+    FindIterable<Document> matchingRides = rideCollection.find(filterDoc);
+
+    return DatabaseHelper.serializeIterable(matchingRides);
   }
 
   /**

@@ -1,9 +1,0 @@
-cd server/src/main/java/umm3601
-
-cd server/src/main/java/umm3601/build_info
-nano credentials.json
-OR
-nano Server.java
-
-
-

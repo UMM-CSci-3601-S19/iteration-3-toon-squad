@@ -3,6 +3,7 @@ import {Ride} from './ride';
 import {RideListService} from "./ride-list.service";
 import {Observable} from "rxjs/Observable";
 import {ValidatorService} from "../validator.service";
+import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
 
 @Component({
   selector: 'add-ride.component',
@@ -36,8 +37,8 @@ export class AddRideComponent implements OnInit {
 
   // Inject the RideListService into this component.
   constructor(public rideListService: RideListService,
-              public validatorService: ValidatorService) {
-
+              public validatorService: ValidatorService,
+              public snackBar: MatSnackBar) {
   }
 
   addRide(): void {
@@ -51,18 +52,20 @@ export class AddRideComponent implements OnInit {
       destination: this.rideDestination,
       departureDate: this.rideDepartureDate,
       departureTime: this.rideDepartureTime,
-      isDriving: this.rideDriving,
       roundTrip: this.rideRoundTrip,
-      nonSmoking: this.rideNonSmoking
+      isDriving: this.rideDriving,
+      nonSmoking: this.rideNonSmoking,
     };
 
     console.log("COMPONENT: The new Ride in addRide() is " + JSON.stringify(newRide));
 
     if (newRide != null) {
+      console.log("Is the subscribe the problem??");
       this.rideListService.addNewRide(newRide).subscribe(
         result => {
           console.log("here it is:" + result);
           this.highlightedID = result;
+          console.log("COMPONENT: The RESULT in addRide() is " + JSON.stringify(result));
         },
         err => {
           // This should probably be turned into some sort of meaningful response.
@@ -71,8 +74,8 @@ export class AddRideComponent implements OnInit {
           console.log('The error was ' + JSON.stringify(err));
         });
 
-      this.refreshRides();
-      this.refreshRides();
+      this.snackBar.open("Successfully Added A Ride",'' , <MatSnackBarConfig>{duration: 5000,});
+
       this.refreshRides();
       this.refreshRides();
       this.refreshRides();
@@ -91,8 +94,8 @@ export class AddRideComponent implements OnInit {
     const rides: Observable<Ride[]> = this.rideListService.getRides();
     rides.subscribe(
       rides => {
-        console.log("THESE ARE THE RIDES addRide Refresh got " + JSON.stringify(rides));
         this.rides = rides;
+        console.log(" These are the rides getRides got back after addRide called Refresh Ride " + JSON.stringify(this.rides));
       },
       err => {
         console.log(err);
@@ -111,7 +114,6 @@ export class AddRideComponent implements OnInit {
 
   ngOnInit() {
     this.validatorService.createForm();
-
   }
 
 

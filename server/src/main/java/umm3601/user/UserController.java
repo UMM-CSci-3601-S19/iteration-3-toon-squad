@@ -22,29 +22,14 @@ public class UserController {
 
   private final MongoCollection<Document> userCollection;
 
-  /**
-   * Construct a controller for users.
-   *
-   * @param database the database containing user data
-   */
   public UserController(MongoDatabase database) {
     userCollection = database.getCollection("users");
   }
 
-  /**
-   * Helper method that gets a single user specified by the `id`
-   * parameter in the request.
-   *
-   * @param id the Mongo ID of the desired user
-   * @return the desired user as a JSON object if the user with that ID is found,
-   * and `null` if no user with that ID is found
-   */
-  public String getUser(String id) {
-    FindIterable<Document> jsonUsers
-      = userCollection
-      .find(eq("_id", new ObjectId(id)));
+  public String getUser(String userId) {
+    FindIterable<Document> jsonUser = userCollection.find(eq("userId", userId));
 
-    Iterator<Document> iterator = jsonUsers.iterator();
+    Iterator<Document> iterator = jsonUser.iterator();
     if (iterator.hasNext()) {
       Document user = iterator.next();
       return user.toJson();
@@ -53,52 +38,6 @@ public class UserController {
       return null;
     }
   }
-
-
-  /**
-   * Helper method which iterates through the collection, receiving all
-   * documents if no query parameter is specified. If the age query parameter
-   * is specified, then the collection is filtered so only documents of that
-   * specified age are found.
-   *
-   * @param queryParams the query parameters from the request
-   * @return an array of Users in a JSON formatted string
-   */
-  public String getUsers(Map<String, String[]> queryParams) {
-
-    Document filterDoc = new Document();
-
-    if (queryParams.containsKey("age")) {
-      int targetAge = Integer.parseInt(queryParams.get("age")[0]);
-      filterDoc = filterDoc.append("age", targetAge);
-    }
-
-    if (queryParams.containsKey("company")) {
-      String targetContent = (queryParams.get("company")[0]);
-      Document contentRegQuery = new Document();
-      contentRegQuery.append("$regex", targetContent);
-      contentRegQuery.append("$options", "i");
-      filterDoc = filterDoc.append("company", contentRegQuery);
-    }
-
-    //FindIterable comes from mongo, Document comes from Gson
-    FindIterable<Document> matchingUsers = userCollection.find(filterDoc);
-
-    return serializeIterable(matchingUsers);
-  }
-
-  /*
-   * Take an iterable collection of documents, turn each into JSON string
-   * using `document.toJson`, and then join those strings into a single
-   * string representing an array of JSON objects.
-   */
-  private String serializeIterable(Iterable<Document> documents) {
-    return StreamSupport.stream(documents.spliterator(), false)
-      .map(Document::toJson)
-      .collect(Collectors.joining(", ", "[", "]"));
-  }
-
-
 
   public String addNewUser(String userId, String email, String fullName, String pictureUrl, String lastName, String firstName) {
 
@@ -159,6 +98,16 @@ public class UserController {
 
       return JSON.serialize(userInfo);
     }
-
   }
+
+  // We never need a getUser because our product doesn't require a page where all users need to be shown together, but
+  // getUsers is nice to have so we can check if addUser is adding to the list of users that exist in the database.
+  public String getUsers(Map<String, String[]> queryParams) {
+
+    Document filterDoc = new Document();
+    FindIterable<Document> matchingUser = userCollection.find(filterDoc);
+    return JSON.serialize(matchingUser);
+  }
+
+
 }
