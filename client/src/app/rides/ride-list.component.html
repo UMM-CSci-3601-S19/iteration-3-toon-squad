@@ -97,6 +97,8 @@
 
         <mat-card-header *ngIf="ride.isDriving" class="ride-title-isDriving" [id]="ride._id.$oid">
 
+          <div class="menu_spacer"> </div>
+
           <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsDriving" class="card-top-right-button">
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
@@ -160,11 +162,13 @@
 
         <mat-card-header *ngIf="!ride.isDriving" class="ride-title-isNotDriving" [id]="ride._id.$oid">
 
-          <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsNotDriving" class="card-top-right-button">
+          <div class = "menu_spacer"> </div>
+
+          <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsDriving" class="card-top-right-button">
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
-          <!--======================================-->
+          <!--=========================================-->
 
           <mat-menu #menu="matMenu">
             /// This button should show edit/delete ride  IF the ride belongs to you ///
@@ -172,9 +176,7 @@
 
               <button mat-menu-item (click) = "giveRideToService(ride)"
                       routerLink="/editride">
-
                 <span>Edit Ride</span>
-
               </button>
 
               <button mat-menu-item (click)="openDeleteDialog(ride._id)" >

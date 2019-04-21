@@ -24,11 +24,16 @@
 }
 
 /* Ride card title */
+
+.menu_spacer {
+  flex-grow: 1;
+}
 .ride-title-isDriving {
   background: #09a809 linear-gradient(to right bottom, #38eb38, #a8ffa0);
   color: #fff;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
+  flex-grow: 1
 }
 
 .ride-title-isNotDriving {
