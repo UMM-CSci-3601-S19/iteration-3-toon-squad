@@ -124,19 +124,10 @@
           <!--==============================================-->
 
           <mat-card-title>
-            <button mat-raised-button
-                    class="join-ride-button"
-                    id="join-ride-button"
-                    color="primary"
-                    type="button"
-                    style="width: 100%"
-                    (click) = "joinRide(ride._id, ride.seatsAvailable, ride.passengerIds, ride.passengerNames)">
-              <mat-icon>add_circle_outline</mat-icon>
-              Join This Ride
-            </button>
+
             <div class="departure-time">
 
-              <mat-icon style="color:green"> drive_eta</mat-icon>
+              <mat-icon style="color:white"> drive_eta</mat-icon>
 
               <div *ngIf="!checkImpossibleDate(ride); then possible_date else impossible_date"> </div>
               <ng-template #possible_date > {{this.dateParse(ride.departureDate)}} </ng-template>
@@ -154,6 +145,10 @@
               <small *ngIf="ride.seatsAvailable === 1"> {{ride.seatsAvailable}} SEAT LEFT </small>
               <small *ngIf="ride.seatsAvailable > 1"> {{ride.seatsAvailable}} SEATS LEFT </small>
             </div>
+
+            <mat-icon> add-circle-outline </mat-icon>
+
+
 
           </mat-card-title>
         </mat-card-header>
@@ -191,7 +186,7 @@
           <mat-card-title>
             <div class="departure-time">
 
-              <mat-icon style="color: blue"> transfer_within_a_station </mat-icon>
+              <mat-icon style="color: white"> transfer_within_a_station </mat-icon>
 
               <div *ngIf="!checkImpossibleDate(ride); then possible_date else impossible_date"> </div>
               <ng-template #possible_date > {{this.dateParse(ride.departureDate)}} </ng-template>
