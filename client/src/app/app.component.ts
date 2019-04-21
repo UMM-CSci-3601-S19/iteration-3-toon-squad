@@ -9,6 +9,7 @@ import {AppService} from "./app.service";
 })
 export class AppComponent {
   title = 'Mo-Ride App';
+  public profileId = localStorage.getItem("userId");
 
   constructor(public appService: AppService) {}
 }
