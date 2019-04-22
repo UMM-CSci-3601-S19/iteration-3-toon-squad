@@ -109,7 +109,7 @@
           <mat-menu #menu="matMenu">
             <div *ngIf="userOwnsThisRide(ride)">
 
-              <button mat-menu-item (click) = "giveRideToService(ride)"
+              <button mat-menu-item (click) = "giveRideToService(ride)" id="editDialogOpen"
                       routerLink="/editride">
                 <span>Edit Ride</span>
               </button>
