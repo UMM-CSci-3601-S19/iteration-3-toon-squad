@@ -76,13 +76,6 @@ export class EditRideComponent implements OnInit {
       this.snackBar.open("Successfully Edited A Ride",'' , <MatSnackBarConfig>{duration: 5000,});
 
       this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
     }
   };
 
