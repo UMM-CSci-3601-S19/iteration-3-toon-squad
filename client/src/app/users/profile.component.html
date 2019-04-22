@@ -56,7 +56,20 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-panel-description> Seats Available: {{ride.seatsAvailable}}</mat-panel-description>
-            <mat-panel-description> Leaving On: {{ride.departureDate}} at {{ride.departureTime}}</mat-panel-description>
+            <mat-panel-description>
+              Leaving On:
+
+              <div *ngIf="!checkImpossibleDate(ride); then possible_date else impossible_date"> </div>
+              <ng-template #possible_date > {{this.dateParse(ride.departureDate)}} </ng-template>
+              <ng-template #impossible_date> Unspecified date </ng-template>
+
+              at
+
+              <div *ngIf="!checkImpossibleTime(ride); then possible_time else impossible_time"> </div>
+              <ng-template #possible_time > {{this.hourParse(ride.departureTime)}} </ng-template>
+              <ng-template #impossible_time> unspecified time </ng-template>
+
+            </mat-panel-description>
             <mat-panel-description> Round Trip: {{ride.roundTrip}}</mat-panel-description>
             <mat-panel-description> Smoking Allowed?: {{ride.nonSmoking}}</mat-panel-description>
           </mat-expansion-panel>
