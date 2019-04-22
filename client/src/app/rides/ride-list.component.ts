@@ -288,8 +288,6 @@ export class RideListComponent implements OnInit {
 
   printCurrRide(ride: Ride): void {
     console.log((ride));
-    console.log(ride.passengerNames);
-    console.log(this.listRidePassengers(ride.passengerNames));
   }
 
   listRidePassengers(passengerNames: string[]): string {
