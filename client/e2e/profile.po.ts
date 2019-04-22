@@ -1,9 +1,9 @@
 import {browser, element, by, promise, ElementFinder} from 'protractor';
 import {Key} from 'selenium-webdriver';
 
-export class UserPage {
+export class ProfilePage {
   navigateTo(): promise.Promise<any> {
-    return browser.get('/users');
+    return browser.get('/profile/101526938782951587119');
   }
 
   // http://www.assertselenium.com/protractor/highlight-elements-during-your-protractor-test-run/
