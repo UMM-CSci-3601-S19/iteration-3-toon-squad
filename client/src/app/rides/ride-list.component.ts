@@ -42,12 +42,23 @@ export class RideListComponent implements OnInit {
     this.loadService();
   }
 
-  // This method is used in the HTML instead of ngModel, since it solves a problem where
-  // clicking on the checkbox didn't always 'uncheck' the box. Implementing this method with
-  // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
+  // These methods are used in ngIf statements that deal with displaying dates and times. The thing is that
+  // rides with unspecified dates and times are stored with values that are unlikely to be real, since the sorting
+  // mechanism has trouble dealing with null values for time and date. By add year 3000 to unsepcified dates, and 99:99
+  // to 24-hour time, those entries effectively get sorted to the bottom of list (which is exactly how we want to
+  // sort unspecified dates and times.
+
+  public checkImpossibleDate(ride: Ride) {
+    return (ride.departureDate.includes("3000"))
+  }
+
+  public checkImpossibleTime(ride: Ride) {
+    return (ride.departureTime.includes("99") || ride.departureTime === "")
+  }
 
 
-
+  // These three methods are mainly used for checking if a user is allowed to join a ride, but some are also used in
+  // ngIf statements for displaying certain elements on the ride cards.
   public userCanJoinRide(ride: Ride): boolean {
     return (
       (ride.seatsAvailable > 0)
@@ -64,26 +75,16 @@ export class RideListComponent implements OnInit {
     return (ride.passengerIds.indexOf(this.currUserId) !== -1)
   }
 
-
+  // These two methods are used in the HTML instead of ngModel, since it solves a problem where
+  // clicking on the checkbox didn't always 'uncheck' the box. Implementing this method with
+  // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
   public toggleNonSmoking() {
     this.rideNonSmoking = !this.rideNonSmoking;
   }
-
   public toggleRoundTrip() {
     this.rideRoundTrip = !this.rideRoundTrip;
   }
 
-  public getLocalUserId() {
-    return localStorage.getItem("userId");
-  }
-
-  public checkImpossibleDate(ride: Ride) {
-    return (ride.departureDate.includes("3000"))
-  }
-
-  public checkImpossibleTime(ride: Ride) {
-    return (ride.departureTime.includes("99") || ride.departureTime === "")
-  }
 
   public filterRides(searchDestination: string, searchOrigin: string,
                      searchIsDriving: boolean, searchNonSmoking: boolean,
