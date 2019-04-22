@@ -5,6 +5,7 @@ import {ProfileComponent} from "./profile.component";
 import {CustomModule} from "../custom.module";
 import {Observable} from "rxjs/Observable";
 import {ActivatedRouteStub} from "./activated-route-stub";
+import {PhoneMaskDirective} from "./phone-mask.directive";
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
@@ -14,7 +15,7 @@ describe('Profile Page',() => {
 
     let profileComponent: ProfileComponent;
     let fixture: ComponentFixture<ProfileComponent>;
-    let activatedRoute: ActivatedRouteStub;
+    let activatedRouteStub: ActivatedRouteStub;
     let userServiceStub: {
     getUserById: () => Observable<User>
   };
@@ -37,15 +38,14 @@ describe('Profile Page',() => {
 
     TestBed.configureTestingModule({
       imports: [CustomModule],
-      declarations: [ProfileComponent],
+      declarations: [ProfileComponent, PhoneMaskDirective],
       providers: [{provide: UserService, useValue: userServiceStub}]
-                  // {provide: ActivatedRouteStub, useValue: activatedRoute}]
     });
   });
 
   beforeEach(async(() => {
     TestBed.compileComponents().then(() => {
-      activatedRoute.setParamMap({id: 'id'});
+      activatedRouteStub.setParamMap({id: '655477182929676100000'});
       fixture = TestBed.createComponent(ProfileComponent);
       profileComponent = fixture.componentInstance;
       fixture.detectChanges();
