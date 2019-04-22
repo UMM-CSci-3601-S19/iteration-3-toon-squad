@@ -118,7 +118,7 @@ export class ProfileComponent implements OnInit{
 
     this.userService.saveProfileInfo(profileInfo).subscribe(
       result => {
-        console.log("here is the result from SaveProfileInfo:" + result);
+        console.log("we don't really care about the feedback but here it is: " + result);
       },
       err => {
         // This should probably be turned into some sort of meaningful response.

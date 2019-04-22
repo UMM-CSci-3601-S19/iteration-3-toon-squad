@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {User} from "./user";
 import {Ride} from "../rides/ride";
 import {UserService} from "./user.service";
+import {profileInfoObject} from "./profileInfoObject";
 
 describe ('User Service: ',() =>{
   const testUser: User =
@@ -15,6 +16,7 @@ describe ('User Service: ',() =>{
       pictureUrl: "https://bit.ly/2IyHf4I",
       lastName: "Jenson",
       firstName: "Bindi",
+      phone: "(981) 461-3498"
     };
 
   const testRides: Ride[] = [
@@ -35,6 +37,12 @@ describe ('User Service: ',() =>{
     },
   ];
 
+  const testProfileInfo: profileInfoObject = {
+    userId: "655477182929676100000",
+    phone: "(981) 461-3498"
+  };
+
+  const expectedProfileInfo: string ='{"userId":"655477182929676100000","phone":"(981) 461-3498"}';
 
 
   let userService: UserService;
@@ -78,6 +86,17 @@ describe ('User Service: ',() =>{
      const req = httpTestingController.expectOne('http://localhost:4567/api/myRides?userId=342389477594424000000');
      expect(req.request.method).toEqual('GET');
      req.flush(testRides);
-  })
+  });
+
+  it('saveProfileInfo(profileInfo: profileInfoObject) calls api/user/saveProfile',() => {
+
+    userService.saveProfileInfo(testProfileInfo).subscribe(
+      userProfileInfo => expect(userProfileInfo).toBe(expectedProfileInfo)
+    );
+
+    const req = httpTestingController.expectOne(userService.baseUrl + '/saveProfile');
+    expect(req.request.method).toEqual('POST');
+    req.flush(testProfileInfo);
+  });
 
 });
