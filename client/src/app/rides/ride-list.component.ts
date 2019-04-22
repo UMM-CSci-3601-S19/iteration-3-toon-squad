@@ -38,7 +38,11 @@ export class RideListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.refreshRides();
+    this.rideListService.refreshNeeded$
+      .subscribe(() => {
+        this.refreshRides();
+      });
+    // this.refreshRides();
     this.loadService();
   }
 
@@ -72,7 +76,7 @@ export class RideListComponent implements OnInit {
   }
 
   public userIsAPassenger(ride: Ride): boolean {
-    return (ride.passengerIds.indexOf(this.currUserId) !== -1)
+    return (ride.passengerIds.indexOf(this.currUserId) !== -1);
   }
 
   // These two methods are used in the HTML instead of ngModel, since it solves a problem where
@@ -277,14 +281,6 @@ export class RideListComponent implements OnInit {
         });
 
       this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-      this.refreshRides();
-
   };
 
   printCurrRide(ride: Ride): void {
