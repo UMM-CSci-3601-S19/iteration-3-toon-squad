@@ -15,8 +15,27 @@
           <div>
             Email: {{profile.email}}
             <br><br>
-            <input matInput placeholder="Phone" [(ngModel)]="userPhone"> &nbsp;
-            <button mat-flat-button  color="primary"> Add Phone </button>
+            <div *ngIf="profile.phone; else noPhoneMsg">
+            Phone: {{profile.phone}}
+            </div>
+            <ng-template #noPhoneMsg>
+              No Phone Added
+              <button *ngIf="profile.userId === getLocalUserId()" (click)="showPhoneForm = true"> Add Phone </button>
+            </ng-template>
+            <br><br>
+            <div *ngIf="profile.userId === getLocalUserId()">
+              <button *ngIf=profile.phone (click)="showPhoneForm = true"> Edit Phone </button>
+              <br><br>
+              <form id="phoneForm" [formGroup]="userForm" novalidate *ngIf="showPhoneForm">
+              <div class="form-group">
+                <label for="tel">Phone: </label>
+                <input id="tel" class="form-control" phoneMask [preValue]="userForm.value.phone"  formControlName="phone" maxlength="14"
+                       [ngClass]="(userForm.controls['phone'].invalid)? 'errmsg' : 'validmsg'">
+                {{userForm.get('phone').status | json}}
+              </div>
+              <button [disabled]="userForm.status == 'INVALID'" class="btn btn-success" (click)="saveProfileInfo(profile.userId,userForm.value.phone)">Save</button>
+            </form>
+            </div>
           </div>
         <div>
         <img src="{{profile.pictureUrl}}">
@@ -37,7 +56,20 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-panel-description> Seats Available: {{ride.seatsAvailable}}</mat-panel-description>
-            <mat-panel-description> Leaving On: {{ride.departureDate}} at {{ride.departureTime}}</mat-panel-description>
+            <mat-panel-description>
+              Leaving On:
+
+              <div *ngIf="!checkImpossibleDate(ride); then possible_date else impossible_date"> </div>
+              <ng-template #possible_date > {{this.dateParse(ride.departureDate)}} </ng-template>
+              <ng-template #impossible_date> Unspecified date </ng-template>
+
+              at
+
+              <div *ngIf="!checkImpossibleTime(ride); then possible_time else impossible_time"> </div>
+              <ng-template #possible_time > {{this.hourParse(ride.departureTime)}} </ng-template>
+              <ng-template #impossible_time> unspecified time </ng-template>
+
+            </mat-panel-description>
             <mat-panel-description> Round Trip: {{ride.roundTrip}}</mat-panel-description>
             <mat-panel-description> Smoking Allowed?: {{ride.nonSmoking}}</mat-panel-description>
           </mat-expansion-panel>

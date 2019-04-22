@@ -4,6 +4,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import com.mongodb.util.JSON;
@@ -107,6 +108,20 @@ public class UserController {
     Document filterDoc = new Document();
     FindIterable<Document> matchingUser = userCollection.find(filterDoc);
     return JSON.serialize(matchingUser);
+  }
+
+  boolean saveProfile(String userId, String phone) {
+
+
+    Document filter = new Document("userId", userId);
+
+    // Right now, phone is the only thing we have that gets updated, but there could be other fields user can update in the future
+    Document updateFields = new Document();
+    updateFields.append("phone", phone);
+
+    Document updateDoc = new Document("$set", updateFields);
+    UpdateResult profileValues = userCollection.updateOne(filter, updateDoc);
+    return profileValues.getModifiedCount() == 1;
   }
 
 

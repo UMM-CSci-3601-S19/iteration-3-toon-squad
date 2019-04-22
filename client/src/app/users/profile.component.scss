@@ -2,3 +2,10 @@
   display: flex;
   justify-content: space-between;
 }
+
+.errmsg{
+  border: 1px solid red;
+}
+.validmsg{
+  border: 1px solid #42A948;
+}

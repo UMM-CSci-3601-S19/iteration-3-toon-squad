@@ -31,6 +31,7 @@ import {MatCheckboxModule}  from "@angular/material/checkbox";
 import {ProfileComponent} from "./users/profile.component";
 
 import {RouterLinkDirectiveStub} from "./rides/router-link-directive-stub";
+import {PhoneMaskDirective} from "./users/phone-mask.directive";
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import {RouterLinkDirectiveStub} from "./rides/router-link-directive-stub";
     EditRideComponent,
     DeleteRideComponent,
     ProfileComponent,
-    RouterLinkDirectiveStub
+    RouterLinkDirectiveStub,
+    PhoneMaskDirective
   ],
   providers: [
     RideListService, AppService, AppAuthGuard, UserService, ValidatorService,
