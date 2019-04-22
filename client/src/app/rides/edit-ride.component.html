@@ -11,7 +11,9 @@
 
           <!--==========================================================================================-->
 
+          <div id="rideUserTitle">
             {{rideUser}} is
+          </div>
             <div *ngIf="rideIsDriving; then driving_message else riding_message"> </div>
             <ng-template #driving_message > offering this ride </ng-template>
             <ng-template #riding_message> requesting this ride </ng-template>
