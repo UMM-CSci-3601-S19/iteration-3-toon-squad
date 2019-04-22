@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {AfterContentInit, Component, DoCheck, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {Ride} from './ride';
 import {FormControl, Validators, FormGroup, FormBuilder} from "@angular/forms";
@@ -12,6 +12,7 @@ import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
   selector: 'edit-ride.component',
   templateUrl: 'edit-ride.component.html',
 })
+
 
 export class EditRideComponent implements OnInit {
   minDate = new Date();
@@ -28,6 +29,7 @@ export class EditRideComponent implements OnInit {
   public rideDepartureDate: string;
   public rideDepartureTime: string;
 
+  public tempBool: boolean = false;
 
   // Please leave as true for now, it's important.
   public rideIsDriving: boolean = true;
@@ -125,8 +127,14 @@ export class EditRideComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.validatorService.createForm();
+    this.setRideSeats();
     this.setRideFields();
+    this.validatorService.createForm();
+    if (this.rideIsDriving === false) {
+      this.validatorService.rideForm.removeControl("driving");
+      this.validatorService.rideForm.removeControl("seatsAvailable");
+    }
   }
+
 
 }

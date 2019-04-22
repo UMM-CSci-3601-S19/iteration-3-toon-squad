@@ -40,6 +40,8 @@ describe('Ride list', () => {
           isDriving: true,
           nonSmoking: true,
           roundTrip: true,
+          passengerIds: [],
+          passengerNames: []
         },
         {
           _id: 'dennis_id',
@@ -54,6 +56,8 @@ describe('Ride list', () => {
           isDriving: false,
           nonSmoking: true,
           roundTrip: true,
+          passengerIds: [],
+          passengerNames: []
         },
         {
           _id: 'agatha_id',
@@ -68,6 +72,8 @@ describe('Ride list', () => {
           isDriving: true,
           nonSmoking: false,
           roundTrip: false,
+          passengerIds: [],
+          passengerNames: []
         }
       ])
     };

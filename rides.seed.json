@@ -101,7 +101,7 @@
     "user": "Herminia Ross",
     "userId": "245390728780678040000",
     "notes": "Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.",
-    "seatsAvailable": 2,
+    "seatsAvailable": 0,
     "origin": "881 Boardwalk , Waumandee, SD 97192",
     "destination": "8974 Cyrus Avenue, Joes, SD 96915",
     "departureDate": "2019-09-14T05:00:00.000Z",
@@ -109,8 +109,8 @@
     "isDriving": true,
     "roundTrip": true,
     "nonSmoking": false,
-    "passengerIds": [],
-    "passengerNames": []
+    "passengerIds": ["007"],
+    "passengerNames": ["James Bond"]
   },
 
   {
