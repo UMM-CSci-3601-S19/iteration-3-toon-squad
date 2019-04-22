@@ -6,6 +6,8 @@ import {Observable} from 'rxjs/Observable';
 import {Ride} from './ride';
 import {environment} from '../../environments/environment';
 import {joinRideObject} from "./joinRideObject";
+import {Subject} from "rxjs/Subject";
+import {tap} from "rxjs/operators";
 
 
 
@@ -18,6 +20,11 @@ export class RideListService {
   constructor(private http: HttpClient) {
   }
 
+  private _refreshNeeded$ = new Subject<void>();
+
+  get refreshNeeded$() {
+    return this._refreshNeeded$;
+  }
 
   getRides(): Observable<Ride[]> {
     return this.http.get<Ride[]>(this.rideUrl);
@@ -36,7 +43,12 @@ export class RideListService {
     };
 
     // Send post request to add a new user with the user data as the body with specified headers.
-    return this.http.post<string>(this.rideUrl + '/new', newRide, httpOptions);
+    return this.http.post<string>(this.rideUrl + '/new', newRide, httpOptions)
+      .pipe(
+        tap(() => {
+          this._refreshNeeded$.next();
+          })
+      );
   }
 
 
