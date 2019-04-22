@@ -88,7 +88,11 @@ export class RideListService {
     };
 
     console.log("Sending the ride to the server " + this.rideUrl);
-    return this.http.post<string>(this.rideUrl + '/update', editedRide, httpOptions);
+    return this.http.post<string>(this.rideUrl + '/update', editedRide, httpOptions)
+      .pipe(
+        tap(() => {
+          this._refreshNeeded$.next();
+        }));
   }
 
   deleteRide(deleteId: String): Observable<string> {
