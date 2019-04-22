@@ -69,6 +69,8 @@
 
       I would prefer...
 
+      <br>
+
       <mat-icon aria-hidden="false">smoke_free</mat-icon>
 
       <mat-checkbox id="checkboxNonSmoking"(checked)="rideNonSmoking" (click)="toggleNonSmoking()">
@@ -112,7 +114,7 @@
                 <span>Edit Ride</span>
               </button>
 
-              <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+              <button mat-menu-item (click)="openDeleteDialog(ride._id)" id="deleteDialogOpen" >
                 <span>Delete Ride</span>
               </button>
 
@@ -182,7 +184,7 @@
 
           <div class = "menu_spacer"> </div>
 
-          <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsDriving" class="card-top-right-button">
+          <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsNotDriving" class="card-top-right-button">
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
@@ -196,7 +198,8 @@
                 <span>Edit Ride</span>
               </button>
 
-              <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+
+              <button mat-menu-item (click)="openDeleteDialog(ride._id)" id="deleteDialogOpen">
                 <span>Delete Ride</span>
               </button>
 
