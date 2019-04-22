@@ -10,6 +10,7 @@ import {RouterLinkDirectiveStub} from "./router-link-directive-stub";
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import {By} from "@angular/platform-browser";
+import {Subject} from "rxjs/Subject";
 
 describe('Ride list', () => {
 
@@ -17,7 +18,8 @@ describe('Ride list', () => {
   let fixture: ComponentFixture<RideListComponent>;
 
   let rideListServiceStub: {
-    getRides: () => Observable<Ride[]>
+    getRides: () => Observable<Ride[]>,
+    refreshNeeded$: Subject<void>
   };
 
   let linkDes;
@@ -75,7 +77,8 @@ describe('Ride list', () => {
           passengerIds: [],
           passengerNames: []
         }
-      ])
+      ]),
+      refreshNeeded$: new Subject<void>()
     };
 
     TestBed.configureTestingModule({
@@ -418,7 +421,9 @@ describe('Misbehaving Ride List', () => {
 
   let rideListServiceStub: {
     getRides: () => Observable<Ride[]>
+    refreshNeeded$: Subject<void>
   };
+
   let linkDes;
   let routerLinks;
 
@@ -427,7 +432,8 @@ describe('Misbehaving Ride List', () => {
     rideListServiceStub = {
       getRides: () => Observable.create(observer => {
         observer.error('Error-prone observable');
-      })
+      }),
+      refreshNeeded$: new Subject<void>()
     };
 
     TestBed.configureTestingModule({
