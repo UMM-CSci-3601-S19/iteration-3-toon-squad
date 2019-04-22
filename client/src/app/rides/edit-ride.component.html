@@ -11,21 +11,29 @@
 
           <!--==========================================================================================-->
 
-          <mat-radio-group flex [(ngModel)]="rideIsDriving" formControlName="driving" required>
-            <br>
-            {{rideUser}} is...
-            <br>
-            <br>
-            <mat-radio-button id="isDrivingButton" [value] = true > driving</mat-radio-button>
-            <mat-radio-button id="isNotDrivingButton" [value] = false (click)="setRideSeats()"> looking for a ride </mat-radio-button>
-            <mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.driving">
-              <mat-error class="error-message" id="driving-error"
-                         *ngIf="validatorService.rideForm.get('driving').hasError(validation.type) &&
-                         (validatorService.rideForm.get('driving').dirty || validatorService.rideForm.get('driving').touched)">
-                {{validation.message}}
-              </mat-error>
-            </mat-error>
-          </mat-radio-group>
+          <div id="rideUserTitle">
+            {{rideUser}} is
+          </div>
+            <div *ngIf="rideIsDriving; then driving_message else riding_message"> </div>
+            <ng-template #driving_message > offering this ride </ng-template>
+            <ng-template #riding_message> requesting this ride </ng-template>
+
+          <br>
+
+          <!--<mat-radio-group flex [(ngModel)]="rideIsDriving" formControlName="driving" required>-->
+            <!--<br>-->
+            <!--<br>-->
+            <!--<br>-->
+            <!--<mat-radio-button id="isDrivingButton" [value] = true > driving</mat-radio-button>-->
+            <!--<mat-radio-button id="isNotDrivingButton" [value] = false (click)="setRideSeats()"> looking for a ride </mat-radio-button>-->
+            <!--<mat-error *ngFor="let validation of this.validatorService.ride_validation_messages.driving">-->
+              <!--<mat-error class="error-message" id="driving-error"-->
+                         <!--*ngIf="validatorService.rideForm.get('driving').hasError(validation.type) &&-->
+                         <!--(validatorService.rideForm.get('driving').dirty || validatorService.rideForm.get('driving').touched)">-->
+                <!--{{validation.message}}-->
+              <!--</mat-error>-->
+            <!--</mat-error>-->
+          <!--</mat-radio-group>-->
 
           <br>
 
@@ -125,7 +133,7 @@
         <mat-card-actions layout="row">
 
           <button class="editRideButton" mat-raised-button id="confirmEditRideButton"  type="button" color="primary"
-                  (click)="editRide()" routerLink="/rides" [disabled]="!validatorService.rideForm.valid">
+                  (click)="editRide()" routerLink="/rides" [disabled]="!this.validatorService.rideForm.valid">
             Update Ride
           </button>
           <button class="cancelRideButton" mat-button id="exitWithoutEditingButton" routerLink="/rides"  type="button">Cancel</button>

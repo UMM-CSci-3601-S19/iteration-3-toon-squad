@@ -2,10 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {RideListService} from './ride-list.service';
 import {Ride} from './ride';
 import {Observable} from 'rxjs/Observable';
-import {MatDialog, MatDialogConfig} from "@angular/material";
-import {EditRideComponent} from "./edit-ride.component";
+import {MatDialog} from "@angular/material";
 import {DeleteRideComponent} from "./delete-ride.component";
-import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
 import {joinRideObject} from "./joinRideObject";
 
 @Component({
@@ -20,39 +18,35 @@ export class RideListComponent implements OnInit {
   public rides: Ride[];
   public filteredRides: Ride[];
 
-  // text input values used in filtering
+  // target values used in filtering
   public rideDestination: string;
   public rideOrigin: string;
   public rideDriving: boolean;
 
-  // checkbox values for tag filtering
   public rideNonSmoking: boolean = false; // this defaults the box to be unchecked
-  public rideRoundTrip: boolean = false; // this defaults the box to be unchecked
+  public rideRoundTrip: boolean = false;
 
   private highlightedDestination: string = '';
-  public currUserId = localStorage.getItem("userId");
-  public currUserFullName = localStorage.getItem("userFullName");
   private highlightedID: string = '';
 
+  public currUserId = localStorage.getItem("userId");
+  public currUserFullName = localStorage.getItem("userFullName");
+
   // Inject the RideListService into this component.
-  constructor(public rideListService: RideListService, public dialog: MatDialog,
-              public snackBar: MatSnackBar) {
+  constructor(public rideListService: RideListService, public dialog: MatDialog) {
+ //   rideListService.addListener(this);
   }
 
-  // This method is used in the HTML instead of ngModel, since it solves a problem where
-  // clicking on the checkbox didn't always 'uncheck' the box. Implementing this method with
-  // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
-  public toggleNonSmoking() {
-    this.rideNonSmoking = !this.rideNonSmoking;
+  ngOnInit(): void {
+    this.refreshRides();
+    this.loadService();
   }
 
-  public toggleRoundTrip() {
-    this.rideRoundTrip = !this.rideRoundTrip
-  }
-
-  public getLocalUserId() {
-    return localStorage.getItem("userId");
-  }
+  // These methods are used in ngIf statements that deal with displaying dates and times. The thing is that
+  // rides with unspecified dates and times are stored with values that are unlikely to be real, since the sorting
+  // mechanism has trouble dealing with null values for time and date. By add year 3000 to unsepcified dates, and 99:99
+  // to 24-hour time, those entries effectively get sorted to the bottom of list (which is exactly how we want to
+  // sort unspecified dates and times.
 
   public checkImpossibleDate(ride: Ride) {
     return (ride.departureDate.includes("3000"))
@@ -62,9 +56,39 @@ export class RideListComponent implements OnInit {
     return (ride.departureTime.includes("99") || ride.departureTime === "")
   }
 
+
+  // These three methods are mainly used for checking if a user is allowed to join a ride, but some are also used in
+  // ngIf statements for displaying certain elements on the ride cards.
+  public userCanJoinRide(ride: Ride): boolean {
+    return (
+      (ride.seatsAvailable > 0)
+      && !this.userOwnsThisRide(ride)
+      && !this.userIsAPassenger(ride)
+    )
+  }
+
+  public userOwnsThisRide(ride: Ride): boolean {
+    return (ride.userId === this.currUserId);
+  }
+
+  public userIsAPassenger(ride: Ride): boolean {
+    return (ride.passengerIds.indexOf(this.currUserId) !== -1)
+  }
+
+  // These two methods are used in the HTML instead of ngModel, since it solves a problem where
+  // clicking on the checkbox didn't always 'uncheck' the box. Implementing this method with
+  // (click)=toggleNonSmoking, and checked="rideNonSmoking", fixes that bothersome problem.
+  public toggleNonSmoking() {
+    this.rideNonSmoking = !this.rideNonSmoking;
+  }
+  public toggleRoundTrip() {
+    this.rideRoundTrip = !this.rideRoundTrip;
+  }
+
+
   public filterRides(searchDestination: string, searchOrigin: string,
                      searchIsDriving: boolean, searchNonSmoking: boolean,
-                     searchRoundTrip: boolean): Ride[] {
+                     searchRoundTrip): Ride[] {
 
     this.filteredRides = this.rides;
 
@@ -93,23 +117,18 @@ export class RideListComponent implements OnInit {
       });
     }
 
-    // Tag filtering works like this: if you check the nonSmoking checkbox,
-    // ride-list only displays rides with nonSmoking specified. However, unchecking the box
-    // displays rides with AND without the nonSmoking tag. The same is true for roundTrip tag.
+    // We only check for true, so that an unchecked box allows all rides to come through.
+    if (searchNonSmoking === true) {
 
-    // nonSmoking Tag
-    if (searchNonSmoking === true) {  // the search parameter for nonSmoking tag is TRUE
-
-      this.filteredRides = this.filteredRides.filter(ride => {   // filter the ridelist...
-        return ride.nonSmoking === searchNonSmoking;    // and return only rides with nonSmoking tag
+      this.filteredRides = this.filteredRides.filter(ride => {
+        return ride.nonSmoking === searchNonSmoking;
       });
     }
 
-    // roundTrip tag
-    if (searchRoundTrip === true) { // the search parameter for roundTrip tag is TRUE
+    if (searchRoundTrip === true) {
 
-      this.filteredRides = this.filteredRides.filter(ride => {   // filter the ridelist...
-        return ride.roundTrip === searchRoundTrip;   // and return only rides with roundTrip tag
+      this.filteredRides = this.filteredRides.filter(ride => {
+        return ride.roundTrip === searchRoundTrip;
       });
     }
 
@@ -211,10 +230,10 @@ export class RideListComponent implements OnInit {
 
   openDeleteDialog(currentId: object): void {
     console.log("openDeleteDialog");
-    const dialogRef = this.dialog.open(DeleteRideComponent, <MatDialogConfig>{
+    const dialogRef = this.dialog.open(DeleteRideComponent, {
       width: '500px',
       data: {id: currentId}
-    });
+    })
 
     dialogRef.afterClosed().subscribe(deletedRideId => {
       if (deletedRideId != null) {
@@ -224,7 +243,6 @@ export class RideListComponent implements OnInit {
             console.log('openDeleteDialog has gotten a result!');
             this.highlightedDestination = result;
             console.log('The result is ' + result);
-            this.snackBar.open("Successfully Deleted Ride",'' , <MatSnackBarConfig>{duration: 5000,});
             this.refreshRides();
           },
 
@@ -237,22 +255,12 @@ export class RideListComponent implements OnInit {
     });
   }
 
-  printCurrRide(ride: Ride): void {
-    console.log((ride));
-  }
-
-
-  joinRide(_id: string, seatsAvailable: number, passengerIds: string[], passengerNames: string[]): void {
-
-    passengerIds.push(this.currUserId);
-    passengerNames.push(this.currUserFullName);
-    seatsAvailable = (seatsAvailable - 1);
+  joinRide(rideId: string, passengerId: string, passengerName: string): void {
 
     const joinedRide: joinRideObject = {
-      _id: _id,
-      seatsAvailable: seatsAvailable,
-      passengerIds: passengerIds,
-      passengerNames: passengerNames,
+      rideId: rideId,
+      passengerId: passengerId,
+      passengerName: passengerName,
     };
 
     this.rideListService.joinRide(joinedRide).subscribe(
@@ -279,8 +287,18 @@ export class RideListComponent implements OnInit {
 
   };
 
-  ngOnInit(): void {
-    this.refreshRides();
-    this.loadService();
+  printCurrRide(ride: Ride): void {
+    console.log((ride));
   }
+
+  listRidePassengers(passengerNames: string[]): string {
+    if (passengerNames.length <= 0) {
+      return ("There are currently no passengers on this ride.");
+    }
+    else if (passengerNames.length > 0) {
+      var passenger = passengerNames[0];
+      return "Passengers: " + passengerNames;
+    }
+  }
+
 }

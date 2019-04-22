@@ -54,7 +54,7 @@
       <mat-radio-group class="radioGroup" [(ngModel)] = "rideDriving">
         I am looking for...
         <mat-radio-button id="isDrivingButton" [value] = true (click)="rideDriving = $event.target.value">
-          <mat-icon style="color:green"> drive_eta</mat-icon> drivers
+          <mat-icon style="color:#007900"> drive_eta</mat-icon> drivers
         </mat-radio-button>
 
         <mat-radio-button id="isNotDrivingButton" [value] = false (click)="rideDriving = $event.target.value">
@@ -68,6 +68,8 @@
       <br>
 
       I would prefer...
+
+      <br>
 
       <mat-icon aria-hidden="false">smoke_free</mat-icon>
 
@@ -91,7 +93,6 @@
                 rideNonSmoking, rideRoundTrip)"
                 [id] = "ride.user">
 
-        <button (click)="printCurrRide(ride)"> print ride </button>
         <!--======================================================================================================-->
 
 
@@ -106,15 +107,14 @@
           <!--=========================================-->
 
           <mat-menu #menu="matMenu">
-            /// This button should show edit/delete ride  IF the ride belongs to you ///
-            <div *ngIf="getLocalUserId() === ride.userId">
+            <div *ngIf="userOwnsThisRide(ride)">
 
-              <button mat-menu-item (click) = "giveRideToService(ride)"
+              <button mat-menu-item (click) = "giveRideToService(ride)" id="editDialogOpen"
                       routerLink="/editride">
                 <span>Edit Ride</span>
               </button>
 
-              <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+              <button mat-menu-item (click)="openDeleteDialog(ride._id)" id="deleteDialogOpen" >
                 <span>Delete Ride</span>
               </button>
 
@@ -124,16 +124,36 @@
           <!--==============================================-->
 
           <mat-card-title>
-            <button mat-raised-button
-                    class="join-ride-button"
-                    id="join-ride-button"
-                    color="primary"
-                    type="button"
-                    style="width: 100%"
-                    (click) = "joinRide(ride._id, ride.seatsAvailable, ride.passengerIds, ride.passengerNames)">
-              <mat-icon>add_circle_outline</mat-icon>
-              Join This Ride
-            </button>
+
+            <div>
+              <button mat-raised-button
+                      class="join-ride-button"
+                      id="join-ride-button"
+                      color="primary"
+                      type="button"
+                      style="width: 100%"
+                      [disabled]="!this.userCanJoinRide(ride)"
+                      (click) = "joinRide(ride._id, this.currUserId, this.currUserFullName)">
+                <mat-icon>add_circle_outline</mat-icon>
+                Join This Ride
+              </button>
+
+              <br>
+
+              <div *ngIf="userOwnsThisRide(ride)" style="font-weight: bold; color: rgba(255,0,0,0.75)">
+                This is your ride posting.
+              </div>
+
+              <div *ngIf="userIsAPassenger(ride)" style="font-weight: bold; color: rgba(255,0,0,0.75)">
+                You are already part of this ride.
+              </div>
+
+              <div *ngIf="!userIsAPassenger(ride) && ride.seatsAvailable < 1"
+                   style="font-weight: bold; color: rgba(255,0,0,0.75)">
+                This ride is full.
+              </div>
+            </div>
+
             <div class="departure-time">
 
               <mat-icon style="color:green"> drive_eta</mat-icon>
@@ -152,7 +172,7 @@
 
             <div class="seats-left">
               <small *ngIf="ride.seatsAvailable === 1"> {{ride.seatsAvailable}} SEAT LEFT </small>
-              <small *ngIf="ride.seatsAvailable > 1"> {{ride.seatsAvailable}} SEATS LEFT </small>
+              <small *ngIf="ride.seatsAvailable !== 1"> {{ride.seatsAvailable}} SEATS LEFT </small>
             </div>
 
           </mat-card-title>
@@ -164,22 +184,22 @@
 
           <div class = "menu_spacer"> </div>
 
-          <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsDriving" class="card-top-right-button">
+          <button mat-icon-button [matMenuTriggerFor]="menu" id="settingsNotDriving" class="card-top-right-button">
             <mat-icon class="dots">more_vert</mat-icon>
           </button>
 
           <!--=========================================-->
 
           <mat-menu #menu="matMenu">
-            /// This button should show edit/delete ride  IF the ride belongs to you ///
-            <div *ngIf="getLocalUserId() === ride.userId">
+            <div *ngIf="this.userOwnsThisRide(ride)">
 
               <button mat-menu-item (click) = "giveRideToService(ride)"
                       routerLink="/editride">
                 <span>Edit Ride</span>
               </button>
 
-              <button mat-menu-item (click)="openDeleteDialog(ride._id)" >
+
+              <button mat-menu-item (click)="openDeleteDialog(ride._id)" id="deleteDialogOpen">
                 <span>Delete Ride</span>
               </button>
 
@@ -225,11 +245,6 @@
             <a routerLink="/profile/{{ride.userId}}">{{ride.user}}</a> is requesting this ride
           </div>
 
-
-          <div *ngIf="getLocalUserId() === ride.userId">
-            This is your ride (can you tell?)
-          </div>
-
           <div id="ride-info-tags" class="ride-info driver" >
             <mat-icon aria-hidden="false" *ngIf="ride.nonSmoking">smoke_free</mat-icon>
             <b *ngIf="ride.nonSmoking">Non-Smoking &nbsp; &nbsp;</b>
@@ -237,17 +252,16 @@
             <b *ngIf="ride.roundTrip">Round Trip</b>
           </div>
 
+          <mat-divider [inset]="true" *ngIf="ride.notes"></mat-divider>
 
-
-
-
-
-
+          <div class = "passengers_div "*ngIf="ride.isDriving">
+            {{this.listRidePassengers(ride.passengerNames)}}
+          </div>
 
           <mat-divider [inset]="true" *ngIf="ride.notes"></mat-divider>
 
           <div  *ngIf="ride.notes" class="ride-info notes">
-            <small>DRIVER NOTES:</small>
+            <small>NOTES:</small>
             <div>{{ride.notes}}</div>
           </div>
 

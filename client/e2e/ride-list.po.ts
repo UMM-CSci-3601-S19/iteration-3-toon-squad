@@ -60,6 +60,13 @@ export class RidePage {
     return element(by.id(idOfElement)).isPresent();
   }
 
+  elementExistsWithClass(classOfElement: string): promise.Promise<boolean> {
+    if (element(by.className(classOfElement)).isPresent()) {
+      this.highlightElement(by.className(classOfElement));
+    }
+    return element(by.className(classOfElement)).isPresent();
+  }
+
   elementDoesNotExistWithId(idOfElement: string): promise.Promise<boolean> {
     return element(by.id(idOfElement)).isPresent();
   }
@@ -75,13 +82,19 @@ export class RidePage {
     return ride;
   }
 
+
   getElementById(id: string) {
     return element(by.id(id));
+  }
+
+  getSettingsDriving(id: string) {
+    return element(by.id(id)).element(by.id("settingsDriving"))
   }
 
   getElementsByCss(css: string) {
     return element.all(by.css(css));
   }
+
   click(idOfButton: string): promise.Promise<void> {
     this.highlightElement(by.id(idOfButton));
     return element(by.id(idOfButton)).click();

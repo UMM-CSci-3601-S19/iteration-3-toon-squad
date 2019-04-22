@@ -1,5 +1,3 @@
-import {User} from "../users/user";
-
 export interface Ride {
   _id: string;
   user: string;

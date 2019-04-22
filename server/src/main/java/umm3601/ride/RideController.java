@@ -1,5 +1,6 @@
 package umm3601.ride;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -13,10 +14,7 @@ import umm3601.DatabaseHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Sorts.ascending;
@@ -117,6 +115,11 @@ public class RideController {
     departureDate = checkUnspecifiedDate(departureDate);
     departureTime = checkUnspecifiedTime(departureTime);
 
+    // Since adding a new ride comes with no passengers, we'll create some empty arrays to add to the ride,
+    // that way they can be filled later when if someone wants to join
+    List<BasicDBObject> passengerIds = new ArrayList<>();
+    List<BasicDBObject> passengerNames = new ArrayList<>();
+
     Document newRide = new Document();
     newRide.append("user", user);
     newRide.append("userId", userId);
@@ -129,6 +132,8 @@ public class RideController {
     newRide.append("isDriving", isDriving);
     newRide.append("roundTrip", roundTrip);
     newRide.append("nonSmoking", nonSmoking);
+    newRide.append("passengerIds", passengerIds);
+    newRide.append("passengerNames", passengerNames);
 
     try {
       rideCollection.insertOne(newRide);
@@ -159,7 +164,7 @@ public class RideController {
     }
   }
 
-  Boolean editRide(String id, String notes, int seatsAvailable, String origin, String destination,
+  boolean editRide(String id, String notes, int seatsAvailable, String origin, String destination,
                    String departureDate, String departureTime, Boolean isDriving, Boolean roundTrip, Boolean nonSmoking)
   {
 
@@ -192,25 +197,29 @@ public class RideController {
     return tryUpdateOne(filter, updateDoc);
   }
 
-  boolean joinRide(String rideId, Number seatsAvailable, Object passengerIds, Object passengerNames) {
-
-    // First we create a document for which we can match the document we would like to update
+  boolean joinRide(String rideId, String passengerId, String passengerName) {
 
     ObjectId objId = new ObjectId(rideId); // _id must be formatted like this for the match to work
     Document filter = new Document("_id", objId); // Here is the actual document we match against
 
-    // Now we create a document containing the fields that should be updated in the matched ride document
-    Document updateFields = new Document();
-    updateFields.append("seatsAvailable", seatsAvailable);
-    updateFields.append("passengerIds", passengerIds);
-    updateFields.append("passengerNames", passengerNames);
+    // Create an empty document that will contain our full update
+    Document fullUpdate = new Document();
 
-    // A new document with the $set parameter so Mongo can update appropriately, and the values of $set being
-    // the document we just made (which contains the fields we would like to update).
-    Document updateDoc = new Document("$set", updateFields);
+    // This line creates: {"seatsAvailable":-1}
+    Document incrementFields = new Document("seatsAvailable", -1);
 
-    // Now the actual updating of seatsAvailable, passengers, and names.
-    return tryUpdateOne(filter, updateDoc);
+    // These two lines create: {"passengerIds": passengerId, "passengerNames": passengerName}
+    Document pushFields = new Document("passengerIds", passengerId);
+    pushFields.append("passengerNames", passengerName);
+
+    // Appending the previous document gives us
+    // {$inc: {seatsAvailable=-1}, $push: {"passengerIds":passengerId, "passengerNames":passengerName}}}
+    fullUpdate.append("$inc", incrementFields);
+    fullUpdate.append("$push", pushFields);
+
+    // Now pass the full update in with the filter and update the record it matches.
+    return tryUpdateOne(filter, fullUpdate);
+
   }
 
   boolean tryUpdateOne(Document filter, Document updateDoc) {

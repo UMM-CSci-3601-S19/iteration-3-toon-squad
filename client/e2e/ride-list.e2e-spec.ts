@@ -16,7 +16,7 @@ browser.driver.controlFlow().execute = function () {
   // If you're tired of it taking long you can remove this call or change the delay
   // to something smaller (even 0).
   origFn.call(browser.driver.controlFlow(), () => {
-    return protractor.promise.delayed(100);
+    return protractor.promise.delayed(80);
   });
 
   return origFn.apply(browser.driver.controlFlow(), args);
@@ -198,6 +198,18 @@ describe('Using filters on Ride Page', () => {
     });
   });
 
+  it('should toggle roundTrip checkbox to get rides', () => {
+    page.navigateTo();
+    page.getElementById("checkboxRoundTrip").click(); // toggle roundTrip ON...
+    page.getRides().then( (rides) => {
+      expect(rides.length).toBe(3);
+    });
+    page.getElementById("checkboxRoundTrip").click(); // toggle roundTrip OFF...
+    page.getRides().then( (rides) => {
+      expect(rides.length).toBe(7);
+    });
+  });
+
 
   /////////////////////////////////////////////////////////////////
   //   This test MUST be run with 100 ms delay or less to pass. ////
@@ -229,29 +241,30 @@ describe('Using filters on Ride Page', () => {
       expect(rides.length).toBe(1);
     });
 
-    page.getElementById("rideDestination").sendKeys("8");
-    page.getRides().then( (rides) => {
-      expect(rides.length).toBe(0);
-    });
-
-    page.getElementById("isDrivingButton").click(); // no change (still empty)
+    page.getElementById("checkboxRoundTrip").click(); // toggle roundTrip ON
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(0);
     });
 
     page.getElementById("rideDestination").click();
-    page.backspace(2); // erases input in destination
+    page.backspace(1); // erases input in destination
+    page.getElementById("rideOrigin").click();
+    page.backspace(1); // erases input in origin field
+    page.getRides().then( (rides) => {
+      expect(rides.length).toBe(1);
+    });
+
+    page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking OFF
+    page.getRides().then( (rides) => {
+      expect(rides.length).toBe(1);
+    });
+
+    page.getElementById("isDrivingButton").click();
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(2);
     });
 
-    page.getElementById("checkboxNonSmoking").click(); // toggle non-smoking OFF...
-    page.getRides().then( (rides) => {
-      expect(rides.length).toBe(4);
-    });
-
-    page.getElementById("rideOrigin").click();
-    page.backspace(1); // erases input in origin field.
+    page.getElementById("checkboxRoundTrip").click(); // toggle roundTrip OFF
     page.getRides().then( (rides) => {
       expect(rides.length).toBe(5);
     });
@@ -301,99 +314,13 @@ describe('Ride list', () => {
   });
 });
 
-//TODO: Reimplement when ride refresh is working. Because of the need for the refresh, it breaks most of the time.
-//HOWEVER, even beyond that, the way that the text matching from getUniqueRide works is broken in itself due to factors
-//like debug buttons in the ride's html and how the ride html is structured at the moment.
-
-// describe('Add Ride', () => {
-//   let page: RidePage;
-//
-//   beforeEach(() => {
-//     page = new RidePage();
-//     browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
-//     page.navigateTo();
-//     page.click('add-ride-button');
-//   });
-//
-//   it('Should add the information we put in the fields by keystroke to the database', () => {
-//     page.navigateTo();
-//     page.click('add-ride-button');
-//
-//     browser.executeScript("window.localStorage.setItem('userFullName','JohnDoe')");
-//     page.setIsDriving();
-//     page.field('notesField').sendKeys('Likes to play music. Climate control. Gregarious.');
-//     page.field('seatsAvailableField').sendKeys('2');
-//     page.field('originField').sendKeys('Morris, MN');
-//     page.field('destinationField').sendKeys('Alexandria, MN');
-//     page.field('departureDateField').sendKeys('4/15/2020');
-//     page.field('departureTimeField').sendKeys('6:00PM');
-//     page.setNonSmoking();
-//     page.click('confirmAddRideButton');
-//
-//     page.navigateTo();
-//     expect(page.getRideTitle()).toEqual('Upcoming Rides');
-//     expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe');
-//     expect(page.getUniqueRide('JohnDoe')).toMatch('Likes to play music. Climate control. Gregarious.');
-//     expect(page.getUniqueRide('JohnDoe')).toMatch('2');
-//     expect(page.getUniqueRide('JohnDoe')).toMatch('Morris, MN');
-//     expect(page.getUniqueRide('JohnDoe')).toMatch('Alexandria, MN');
-//     expect(page.getUniqueRide('JohnDoe')).toMatch('Non-smoking');
-//     expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe is offering this ride');
-//   });
-//
-//   it('Should accept a ride with unspecified time and date, and place at the bottom', () => {
-//
-//     let doeFound = false;
-//     let macaroniFound = false;
-//
-//     page.navigateTo();
-//     page.click('add-ride-button');
-//
-//     // We're going to add a ride with no specified data and time
-//     browser.executeScript("window.localStorage.setItem('userFullName','Jefferson Macaroni')");
-//     page.setIsNotDriving();
-//     page.field('originField').sendKeys('Washington, D.C.');
-//     page.field('destinationField').sendKeys('Morris, MN');
-//     page.click('confirmAddRideButton');
-//
-//
-//     page.navigateTo();
-//     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni');
-//     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Washington, D.C.');
-//     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Morris, MN');
-//     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni is requesting this ride');
-//     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Unspecified date');
-//     expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('unspecified time');
-//
-//     // Now we will make sure Jefferson Macaroni (no date provided) is listed after
-//     // JohnDoe (the latest ride with a date provided).
-//     // This test is similar to the "organize rides soonest to latest" tests
-//
-//     element.all(by.className("rides")).each(function(element, index) {
-//       element.getText().then(function(text) {
-//
-//         if (text.toString().includes("JohnDoe")) {
-//           doeFound = true;
-//           expect(macaroniFound).toBe(false);
-//         }
-//         if (text.toString().includes("Jefferson Macaroni")) {
-//           macaroniFound = true;
-//           expect(doeFound).toBe(true);
-//         }
-//       });
-//     });
-//
-//   });
-//
-// });
-
 describe('Interacts with more options button (editing/deleting ride)', () => {
   let page: RidePage;
 
   beforeEach(() => {
     page = new RidePage();
     browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
-    browser.executeScript("window.localStorage.setItem('userId', '001')");
+    browser.executeScript("window.localStorage.setItem('userId', '832471086850197300000')");
     page.navigateTo();
   });
 
@@ -404,30 +331,200 @@ describe('Interacts with more options button (editing/deleting ride)', () => {
   it('can click on the more options button (ride REQUESTED)', () => {
     page.click('settingsNotDriving');
   });
+});
 
-  it('can click "Cancel" from the ride deletion prompt (ride REQUESTED)', () => {
-    page.click('settingsNotDriving');
+
+describe('Can interact correctly with edit ride option', () => {
+  let page: RidePage;
+
+  beforeEach(() => {
+    page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+    browser.executeScript("window.localStorage.setItem('userId', '832471086850197300000')");
+    page.navigateTo();
+  });
+
+
+  it('can click "Edit" and go to the edit ride page', () => {
+    page.getSettingsDriving("Patton Vang").click();
+    page.click('editDialogOpen');
+    expect(page.elementExistsWithClass("editARide"));
+  });
+
+  it('can go to the edit ride page and then edit the ride', () => {
+    page.getSettingsDriving("Patton Vang").click();
+    page.click('editDialogOpen');
+
+    // Check to make sure we have the right values on the page and in the fields
+    expect(page.field("rideUserTitle").toString().includes("Patton Vang is"));
+    expect(page.field("seatsAvailableField").toString().includes("2", 0));
+    expect(page.field("originField").toString().includes("881 Boardwalk , Waumandee, SD 97192"));
+    expect(page.field("destinationField").toString().includes("8974 Cyrus Avenue, Joes, SD 96915"))
+    expect(page.field("departureDateField").toString().includes("8/14/2019"));
+    expect(page.field("departureTime").toString().includes("5:00 AM"));
+    expect(page.field("notesField").toString().includes("Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu."));
+
+    page.getElementById("seatsAvailableField").clear();
+    page.getElementById("seatsAvailableField").sendKeys("5");
+
+    page.getElementById("originField").clear();
+    page.getElementById("originField").sendKeys("here");
+
+    page.getElementById("destinationField").clear();
+    page.getElementById("destinationField").sendKeys("there");
+
+    page.getElementById("departureDateField").clear();
+    page.getElementById("departureDateField").sendKeys("9/20/2019");
+
+    page.getElementById("departureTimeField").clear();
+    page.getElementById("departureTimeField").sendKeys("10:00PM");
+
+    page.getElementById("notesField").clear();
+    page.getElementById("notesField").sendKeys("here are notes");
+
+    page.getElementById("roundTripCheckBox").click();
+
+    page.click("confirmEditRideButton");
+
+    // Now we check the ride list to make sure the ride is updated.
+    page.navigateTo();
+
+    expect(page.getUniqueRide('Patton Vang')).toMatch('Patton Vang');
+    expect(page.getUniqueRide('Patton Vang')).toMatch('here');
+    expect(page.getUniqueRide('Patton Vang')).toMatch('there');
+    expect(page.getUniqueRide('Patton Vang')).toMatch('Patton Vang is offering this ride');
+    expect(page.getUniqueRide('Patton Vang')).toMatch('September 20th at 10:00 PM');
+    expect(page.getUniqueRide('Patton Vang')).toMatch('smoke_free Non-Smoking');
+    expect(page.getUniqueRide('Patton Vang')).toMatch('repeat Round Trip');
+    expect(page.getUniqueRide('Patton Vang')).toMatch('here are notes');
+  });
+});
+
+describe('Can delete a ride', () => {
+  let page: RidePage;
+
+  beforeEach(() => {
+    page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+    browser.executeScript("window.localStorage.setItem('userId', '832471086850197300000')");
+    page.navigateTo();
+  });
+
+
+  it('can click "Cancel" from the ride deletion prompt (ride OFFERED)', () => {
+    page.getSettingsDriving("Patton Vang").click();
     page.click('deleteDialogOpen');
     page.click('exitWithoutDeletingButton');
-    expect(page.getUniqueRide('Kyle Foss')).toMatch('Kyle Foss');
-    page.getRides().then( (rides) => {
+    expect(page.getUniqueRide('Patton Vang')).toMatch('Patton Vang');
+    page.getRides().then((rides) => {
       // expect(rides.length).toBe(9); TODO: Reimplement this when add ride tests work consistently
       expect(rides.length).toBe(7);
     });
   });
 
-  it('can delete ride from the ride deletion prompt (ride REQUESTED)', () => {
-    page.click('settingsNotDriving');
+  it('can delete ride from the ride deletion prompt (ride OFFERED)', () => {
+    page.getSettingsDriving("Patton Vang").click();
     page.click('deleteDialogOpen');
     page.click('confirmDeleteRideButton');
-    expect(page.elementDoesNotExistWithId('Kyle Foss')).toBeFalsy();
-    page.getRides().then( (rides) => {
+    expect(page.elementDoesNotExistWithId('Patton Vang')).toBeFalsy();
+    page.getRides().then((rides) => {
       // expect(rides.length).toBe(8); TODO: Reimplement this when add ride tests work consistently
       expect(rides.length).toBe(6);
     });
   });
+});
+
+
+
+// TODO: Reimplement when ride refresh is working. Because of the need for the refresh, it breaks most of the time.
+// HOWEVER, even beyond that, the way that the text matching from getUniqueRide works is broken in itself due to factors
+// like debug buttons in the ride's html and how the ride html is structured at the moment.
+
+describe('Add Ride', () => {
+  let page: RidePage;
+
+  beforeEach(() => {
+    page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+    page.navigateTo();
+    page.click('add-ride-button');
+  });
+
+  it('Should add the information we put in the fields by keystroke to the database', () => {
+    page.navigateTo();
+    browser.executeScript("window.localStorage.setItem('userFullName','JohnDoe')");
+    page.click('add-ride-button');
+
+    page.setIsDriving();
+    page.field('notesField').sendKeys('Likes to play music. Climate control. Gregarious.');
+    page.field('seatsAvailableField').sendKeys('2');
+    page.field('originField').sendKeys('Morris, MN');
+    page.field('destinationField').sendKeys('Alexandria, MN');
+    page.field('departureDateField').sendKeys('4/15/2020');
+    page.field('departureTimeField').sendKeys('6:00PM');
+    page.setNonSmoking();
+    page.click('confirmAddRideButton');
+
+    page.navigateTo();
+    expect(page.getRideTitle()).toEqual('Upcoming Rides');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('Likes to play music. Climate control. Gregarious.');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('2 SEATS LEFT');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('Morris, MN');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('Alexandria, MN');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('smoke_free Non-Smoking');
+    expect(page.getUniqueRide('JohnDoe')).toMatch('JohnDoe is offering this ride');
+  });
+
+  it('Should accept a ride with unspecified time and date, and place at the bottom', () => {
+
+    let doeFound = false;
+    let macaroniFound = false;
+
+    page.navigateTo();
+    browser.executeScript("window.localStorage.setItem('userFullName','Jefferson Macaroni')");
+    page.click('add-ride-button');
+
+    // We're going to add a ride with no specified data and time
+    page.setIsNotDriving();
+    page.field('originField').sendKeys('Washington, D.C.');
+    page.field('destinationField').sendKeys('Morris, MN');
+    page.click('confirmAddRideButton');
+
+
+    page.navigateTo();
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni');
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Washington, D.C.');
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Morris, MN');
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Jefferson Macaroni is requesting this ride');
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('Unspecified date');
+    expect(page.getUniqueRide('Jefferson Macaroni')).toMatch('unspecified time');
+
+    // Now we will make sure Jefferson Macaroni (no date provided) is listed after
+    // JohnDoe (the latest ride with a date provided).
+    // This test is similar to the "organize rides soonest to latest" tests
+
+    element.all(by.className("rides")).each(function(element, index) {
+      element.getText().then(function(text) {
+
+        if (text.toString().includes("JohnDoe")) {
+          doeFound = true;
+          expect(macaroniFound).toBe(false);
+        }
+        if (text.toString().includes("Jefferson Macaroni")) {
+          macaroniFound = true;
+          expect(doeFound).toBe(true);
+        }
+      });
+    });
+  });
+
 
 });
+
+
+
+
 
 
 
