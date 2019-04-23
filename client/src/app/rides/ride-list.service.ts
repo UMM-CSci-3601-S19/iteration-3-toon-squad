@@ -68,7 +68,12 @@ export class RideListService {
       responseType: 'text' as 'json'
     };
 
-    return this.http.post<string>(this.rideUrl + '/join', editedRide, httpOptions);
+    return this.http.post<string>(this.rideUrl + '/join', editedRide, httpOptions)
+      .pipe(
+        tap(() => {
+          this._refreshNeeded$.next();
+        })
+      );
   }
 
 
