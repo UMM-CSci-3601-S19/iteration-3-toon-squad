@@ -43,5 +43,14 @@
     "lastName": "Vang",
     "firstName": "Patton",
     "phone": "(810) 497-2006"
+  },
+  {
+    "userId": "832471086850197399999",
+    "email": "nulldesign54@morris.umn.edu",
+    "fullName": "Harry Potter",
+    "pictureUrl": "https://picsum.photos/200/300/?random",
+    "lastName": "Harry",
+    "firstName": "Potter",
+    "phone": "(810) 497-2006"
   }
 ]

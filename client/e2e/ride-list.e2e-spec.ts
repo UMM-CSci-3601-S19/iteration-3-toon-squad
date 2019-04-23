@@ -17,7 +17,7 @@ browser.driver.controlFlow().execute = function () {
   // If you're tired of it taking long you can remove this call or change the delay
   // to something smaller (even 0).
   origFn.call(browser.driver.controlFlow(), () => {
-    return protractor.promise.delayed(80);
+    return protractor.promise.delayed(100);
   });
 
   return origFn.apply(browser.driver.controlFlow(), args);
@@ -315,6 +315,75 @@ describe('Ride list', () => {
   });
 });
 
+describe("Joining rides", () => {
+
+  let page: RidePage;
+
+  beforeEach(() => {
+    page = new RidePage();
+    browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+    browser.executeScript("window.localStorage.setItem('userId', '832471086850197300000')");
+    browser.executeScript("window.localStorage.setItem('userFullName', 'Patton Vang')");
+    page.navigateTo();
+  });
+
+  // We are signed in as Patton Vang, and will attempt to join Shelby Present's ride.
+  it("should be able to join a ride by clicking Join Ride Button", () => {
+
+    // Let's check the relevant fields in Shelby's ride...
+
+    // First check her name and that she's offering it.
+    expect(page.getUniqueRide('Shelby Present')).toMatch('Shelby Present is offering this ride');
+
+    // Now check that there are currently no passengers.
+    expect(page.getUniqueRide('Shelby Present')).toMatch('There are currently no passengers on this ride.');
+
+    // Now ensure that she has 1 seat left.
+    expect(page.getUniqueRide('Shelby Present')).toMatch('1 SEAT LEFT');
+
+    // If all is well, then we can click the button and join her ride.
+    page.getJoinRideButtonFromUser("Shelby Present").click();
+
+    // Refresh page...
+    page.navigateTo();
+
+    // Now the ride should change in a couple ways.
+    // First, there should now be a message on the ride card that indicates the user is currently in the ride.
+    expect(page.getUniqueRide('Shelby Present')).toMatch('You are already part of this ride.');
+
+    // Second, there should now be a passengers message with the current user's name
+    expect(page.getUniqueRide('Shelby Present')).toMatch('Passengers: Patton Vang');
+
+    // Finally, the card should display that there are no more seats available.
+    expect(page.getUniqueRide('Shelby Present')).toMatch('0 SEATS LEFT');
+  })
+
+  // Now we check for a ride that belongs to the current user
+  it("should find a message when the ride belongs to current user", () => {
+
+    expect(page.getUniqueRide('Patton Vang')).toMatch('Patton Vang is offering this ride');
+    expect(page.getUniqueRide('Patton Vang')).toMatch('This is your ride posting.');
+
+  });
+
+  // Now we check for a ride that is already full and that we have not joined yet
+  it("should find a message that indicates the ride is full and cannot join", () => {
+
+    // First check her name and that she's offering it.
+    expect(page.getUniqueRide('Herminia Ross')).toMatch('Herminia Ross is offering this ride');
+
+    // Make sure it has passengers...
+    expect(page.getUniqueRide('Herminia Ross')).toMatch('Passengers: James Bond');
+
+    // Make sure it has 0 seats available...
+    expect(page.getUniqueRide('Herminia Ross')).toMatch('0 SEATS LEFT');
+
+    // Finally make sure a message indicates the ride is full...
+    expect(page.getUniqueRide('Herminia Ross')).toMatch('This ride is full.');
+
+  })
+});
+
 
 
 describe('Interacts with more options button (editing/deleting ride)', () => {
@@ -528,8 +597,8 @@ describe('Add Ride', () => {
     // JohnDoe (the latest ride with a date provided).
     // This test is similar to the "organize rides soonest to latest" tests
 
-    element.all(by.className("rides")).each(function(element, index) {
-      element.getText().then(function(text) {
+    element.all(by.className("rides")).each(function (element, index) {
+      element.getText().then(function (text) {
 
         if (text.toString().includes("JohnDoe")) {
           doeFound = true;
@@ -542,11 +611,13 @@ describe('Add Ride', () => {
       });
     });
   });
+})
 
 
 
 
-});
+
+
 
 
 
