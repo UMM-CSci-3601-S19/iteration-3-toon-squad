@@ -1,4 +1,3 @@
-/*
 import {RidePage} from './ride-list.po';
 import {browser, protractor, element, by} from 'protractor';
 import {Key} from 'selenium-webdriver';
@@ -530,4 +529,3 @@ describe('Add Ride', () => {
 
 
 
-*/

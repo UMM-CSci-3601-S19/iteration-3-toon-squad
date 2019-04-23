@@ -26,7 +26,7 @@
             </ng-template>
             <br><br>
             <div *ngIf="profile.userId === getLocalUserId()">
-              <button *ngIf=profile.phone (click)="showPhoneForm = true"> Edit Phone </button>
+              <button id="editButton" *ngIf=profile.phone (click)="showPhoneForm = true"> Edit Phone </button>
               <br><br>
               <form id="phoneForm" [formGroup]="userForm" novalidate *ngIf="showPhoneForm">
               <div class="form-group">
@@ -40,15 +40,15 @@
             </div>
           </div>
         <div>
-        <img src="{{profile.pictureUrl}}">
+        <img  id="{{profile.pictureUrl}}" src="{{profile.pictureUrl}}">
         </div>
         </mat-card-content>
       </mat-card>
       <mat-card>
 
-        <mat-card-title>Upcoming Rides</mat-card-title>
+        <mat-card-title id="upcomingRidesTitle">Upcoming Rides</mat-card-title>
         <mat-divider></mat-divider>
-        <mat-card-content> You can see all your current Rides Below
+        <mat-card-content id="upcomingRides"> You can see all your current Rides Below
           <br><br>
           <mat-accordion *ngIf="userRides; else userError">
           <mat-expansion-panel #elem *ngFor="let ride of this.userRides">

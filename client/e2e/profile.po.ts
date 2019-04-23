@@ -27,40 +27,21 @@ export class ProfilePage {
     return element(by.id(idOfElement)).isPresent();
   }
 
-  getProfileTitle() {
-    const title = element(by.id('profile-title')).getText();
-    this.highlightElement(by.id('profile-title'));
 
-    return title;
+  getTextFromField(idOfField: string) {
+    this.highlightElement(by.id(idOfField));
+    return element(by.id(idOfField)).getText();
   }
 
-  getProfileName() {
-    const name = element(by.id('profileFullName')).getText();
-    this.highlightElement(by.id('profileFullName'));
-
-    return name;
+  click(idOfButton: string): promise.Promise<void> {
+    this.highlightElement(by.id(idOfButton));
+    return element(by.id(idOfButton)).click();
   }
 
-  getProfileEmail() {
-    const email = element(by.id('profileEmail')).getText();
-    this.highlightElement(by.id('profileEmail'));
-
-    return email;
+  elementDoesExistWithId(idOfElement: string): promise.Promise<boolean> {
+    return element(by.id(idOfElement)).isPresent();
   }
 
-  getProfilePhone() {
-    const phone = element(by.id('profilePhone')).getText();
-    this.highlightElement(by.id('profilePhone'));
-
-    return phone;
-  }
-
-  getProfilePic() {
-    const pic = element(by.id('profilePhone')).getText();
-    this.highlightElement(by.id('profilePhone'));
-
-    return pic;
-  }
 
   typeAName(name: string) {
     const input = element(by.id('userName'));
@@ -68,47 +49,18 @@ export class ProfilePage {
     input.sendKeys(name);
   }
 
-  selectUpKey() {
-    browser.actions().sendKeys(Key.ARROW_UP).perform();
-  }
+
 
   backspace() {
     browser.actions().sendKeys(Key.BACK_SPACE).perform();
   }
 
-  getCompany(company: string) {
-    const input = element(by.id('userCompany'));
-    input.click();
-    input.sendKeys(company);
-    this.click('submit');
-  }
-
-  getUserByAge() {
-    const input = element(by.id('userName'));
-    input.click();
-    input.sendKeys(Key.TAB);
-  }
-
-  getUniqueUser(email: string) {
-    const user = element(by.id(email)).getText();
-    this.highlightElement(by.id(email));
-
-    return user;
-  }
-
-  getUsers() {
-    return element.all(by.className('users'));
-  }
-
-
+  // This is never used, but it's a handy function anyways so we are gong to keep this around
   elementExistsWithCss(cssOfElement: string): promise.Promise<boolean> {
     return element(by.css(cssOfElement)).isPresent();
   }
 
-  click(idOfButton: string): promise.Promise<void> {
-    this.highlightElement(by.id(idOfButton));
-    return element(by.id(idOfButton)).click();
-  }
+
 
   field(idOfField: string) {
     return element(by.id(idOfField));
@@ -117,11 +69,6 @@ export class ProfilePage {
   button(idOfButton: string) {
     this.highlightElement(by.id(idOfButton));
     return element(by.id(idOfButton));
-  }
-
-  getTextFromField(idOfField: string) {
-    this.highlightElement(by.id(idOfField));
-    return element(by.id(idOfField)).getText();
   }
 
 }
