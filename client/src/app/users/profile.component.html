@@ -9,13 +9,15 @@
 
     <div #elem class="profile" [id] = "profile._id.$oid" *ngIf="profile; else profileError">
       <mat-card>
-        <mat-card-title>{{profile.fullName}}</mat-card-title>
+        <mat-card-title id="profileFullName">{{profile.fullName}}</mat-card-title>
         <mat-divider></mat-divider>
         <mat-card-content class="profileInfo">
           <div>
-            Email: {{profile.email}}
+            <div id="profileEmail">
+              Email: {{profile.email}}
+            </div>
             <br><br>
-            <div *ngIf="profile.phone; else noPhoneMsg">
+            <div id="profilePhone" *ngIf="profile.phone; else noPhoneMsg">
             Phone: {{profile.phone}}
             </div>
             <ng-template #noPhoneMsg>
