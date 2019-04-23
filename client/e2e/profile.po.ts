@@ -3,7 +3,7 @@ import {Key} from 'selenium-webdriver';
 
 export class ProfilePage {
   navigateTo(): promise.Promise<any> {
-    return browser.get('/profile/101526938782951587119');
+    return browser.get('/profile/655477182929676100000');
   }
 
   // http://www.assertselenium.com/protractor/highlight-elements-during-your-protractor-test-run/
@@ -20,11 +20,46 @@ export class ProfilePage {
     return browser.executeScript(setStyle, element(byObject).getWebElement(), 'color: red; background-color: yellow;');
   }
 
-  getUserTitle() {
-    const title = element(by.id('user-list-title')).getText();
-    this.highlightElement(by.id('user-list-title'));
+  elementExistsWithId(idOfElement: string): promise.Promise<boolean> {
+    if (element(by.id(idOfElement)).isPresent()) {
+      this.highlightElement(by.id(idOfElement));
+    }
+    return element(by.id(idOfElement)).isPresent();
+  }
+
+  getProfileTitle() {
+    const title = element(by.id('profile-title')).getText();
+    this.highlightElement(by.id('profile-title'));
 
     return title;
+  }
+
+  getProfileName() {
+    const name = element(by.id('profileFullName')).getText();
+    this.highlightElement(by.id('profileFullName'));
+
+    return name;
+  }
+
+  getProfileEmail() {
+    const email = element(by.id('profileEmail')).getText();
+    this.highlightElement(by.id('profileEmail'));
+
+    return email;
+  }
+
+  getProfilePhone() {
+    const phone = element(by.id('profilePhone')).getText();
+    this.highlightElement(by.id('profilePhone'));
+
+    return phone;
+  }
+
+  getProfilePic() {
+    const pic = element(by.id('profilePhone')).getText();
+    this.highlightElement(by.id('profilePhone'));
+
+    return pic;
   }
 
   typeAName(name: string) {
@@ -65,12 +100,6 @@ export class ProfilePage {
     return element.all(by.className('users'));
   }
 
-  elementExistsWithId(idOfElement: string): promise.Promise<boolean> {
-    if (element(by.id(idOfElement)).isPresent()) {
-      this.highlightElement(by.id(idOfElement));
-    }
-    return element(by.id(idOfElement)).isPresent();
-  }
 
   elementExistsWithCss(cssOfElement: string): promise.Promise<boolean> {
     return element(by.css(cssOfElement)).isPresent();
