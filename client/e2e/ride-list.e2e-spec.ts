@@ -1,3 +1,4 @@
+///<reference path="../node_modules/@types/jasminewd2/index.d.ts"/>
 import {RidePage} from './ride-list.po';
 import {browser, protractor, element, by} from 'protractor';
 import {Key} from 'selenium-webdriver';
@@ -314,6 +315,8 @@ describe('Ride list', () => {
   });
 });
 
+
+
 describe('Interacts with more options button (editing/deleting ride)', () => {
   let page: RidePage;
 
@@ -340,30 +343,40 @@ describe('Can interact correctly with edit ride option', () => {
   beforeEach(() => {
     page = new RidePage();
     browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
-    browser.executeScript("window.localStorage.setItem('userId', '832471086850197300000')");
+    browser.executeScript("window.localStorage.setItem('userId', '832471086850197300000')"); //currentUser is Patton Vang
     page.navigateTo();
   });
 
-
+  // This test essentially just check the that the editARide element exists, which indicates we are on the edit page.
+  // Our current user is Patton Vang.
   it('can click "Edit" and go to the edit ride page', () => {
     page.getSettingsDriving("Patton Vang").click();
     page.click('editDialogOpen');
     expect(page.elementExistsWithClass("editARide"));
   });
 
+  // This test checks that no edit-ride dialog appears if we click a ride that is not ours
+  // Our current user is "Patton Vang", and we will attempt to edit Jimmie Future's ride
+  it('can click "settings" on someone else\'s ride, but no edit dialog appears', () => {
+    page.getSettingsDriving("Jimmie Future").click();
+    expect(element(by.id("editDialogOpen")).isPresent()).toBeFalsy();
+  });
+
+  // Here we choose a ride to edit, and then do so.
   it('can go to the edit ride page and then edit the ride', () => {
     page.getSettingsDriving("Patton Vang").click();
     page.click('editDialogOpen');
 
-    // Check to make sure we have the right values on the page and in the fields
-    expect(page.field("rideUserTitle").toString().includes("Patton Vang is"));
-    expect(page.field("seatsAvailableField").toString().includes("2", 0));
-    expect(page.field("originField").toString().includes("881 Boardwalk , Waumandee, SD 97192"));
-    expect(page.field("destinationField").toString().includes("8974 Cyrus Avenue, Joes, SD 96915"))
-    expect(page.field("departureDateField").toString().includes("8/14/2019"));
-    expect(page.field("departureTime").toString().includes("5:00 AM"));
-    expect(page.field("notesField").toString().includes("Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu."));
+    // Check to make sure we have the all the correct values from the ride we chose to edit
+    expect(element(by.id("rideUserTitle")).getText()).toEqual("Patton Vang is");
+    expect(element(by.id("seatsAvailableField")).getAttribute('value')).toEqual('2');
+    expect(element(by.id("originField")).getAttribute('value')).toEqual('881 Boardwalk , Waumandee, SD 97192');
+    expect(element(by.id("destinationField")).getAttribute('value')).toEqual('8974 Cyrus Avenue, Joes, SD 96915');
+    expect(element(by.id("departureDateField")).getAttribute('value')).toEqual('8/14/2019');
+    expect(element(by.id("departureTimeField")).getAttribute('value')).toEqual('03:55');
+    expect(element(by.id("notesField")).getAttribute('value')).toEqual('Aliqua sint ut dolor sint irure do. Duis labore esse duis ullamco in est irure magna do cillum exercitation eu.');
 
+    // Now we update all the fields
     page.getElementById("seatsAvailableField").clear();
     page.getElementById("seatsAvailableField").sendKeys("5");
 
@@ -382,13 +395,16 @@ describe('Can interact correctly with edit ride option', () => {
     page.getElementById("notesField").clear();
     page.getElementById("notesField").sendKeys("here are notes");
 
-    page.getElementById("roundTripCheckBox").click();
+    page.getElementById("checkboxRoundTrip").click();
 
+    // Confirm updating the ride
     page.click("confirmEditRideButton");
 
     // Now we check the ride list to make sure the ride is updated.
     page.navigateTo();
 
+    // getUniqueRide gets the entire ride card for a given user, along with all internal text inside. We make sure
+    // that each attribute that we just edited is inside that internal text.
     expect(page.getUniqueRide('Patton Vang')).toMatch('Patton Vang');
     expect(page.getUniqueRide('Patton Vang')).toMatch('here');
     expect(page.getUniqueRide('Patton Vang')).toMatch('there');
@@ -410,35 +426,38 @@ describe('Can delete a ride', () => {
     page.navigateTo();
   });
 
+  // Our current user is Patton Vang
+  it('can click "settings" on someone else\'s ride, but no delete dialog appears', () => {
+    page.getSettingsDriving("Jimmie Future").click();
+    expect(element(by.id("deleteDialogOpen")).isPresent()).toBeFalsy();
+  });
 
-  it('can click "Cancel" from the ride deletion prompt (ride OFFERED)', () => {
+
+  it('can click "Cancel" from the ride deletion prompt', () => {
     page.getSettingsDriving("Patton Vang").click();
-    page.click('deleteDialogOpen');
-    page.click('exitWithoutDeletingButton');
+    page.click('deleteDialogOpen'); // opens delete dialog
+    page.click('exitWithoutDeletingButton'); // click cancel
+
+    // Now we check to see if our ride still exists, and the ride list is same length of 7
     expect(page.getUniqueRide('Patton Vang')).toMatch('Patton Vang');
     page.getRides().then((rides) => {
-      // expect(rides.length).toBe(9); TODO: Reimplement this when add ride tests work consistently
       expect(rides.length).toBe(7);
     });
   });
 
-  it('can delete ride from the ride deletion prompt (ride OFFERED)', () => {
+  it('can delete ride from the ride deletion prompt', () => {
     page.getSettingsDriving("Patton Vang").click();
     page.click('deleteDialogOpen');
     page.click('confirmDeleteRideButton');
+
+    // Now we make sure our ride no longer exists, and that ride list length has be decremented to 6
     expect(page.elementDoesNotExistWithId('Patton Vang')).toBeFalsy();
     page.getRides().then((rides) => {
-      // expect(rides.length).toBe(8); TODO: Reimplement this when add ride tests work consistently
       expect(rides.length).toBe(6);
     });
   });
 });
 
-
-
-// TODO: Reimplement when ride refresh is working. Because of the need for the refresh, it breaks most of the time.
-// HOWEVER, even beyond that, the way that the text matching from getUniqueRide works is broken in itself due to factors
-// like debug buttons in the ride's html and how the ride html is structured at the moment.
 
 describe('Add Ride', () => {
   let page: RidePage;
@@ -446,8 +465,13 @@ describe('Add Ride', () => {
   beforeEach(() => {
     page = new RidePage();
     browser.executeScript("window.localStorage.setItem('isSignedIn','true')");
+  });
+
+  // Check to see if add ride button navigates to correct page by checking if a given element exists
+  it("should navigate to add ride page when button is clicked", () => {
     page.navigateTo();
     page.click('add-ride-button');
+    expect(page.elementExistsWithClass("addARide")); // here's the header of add-ride page
   });
 
   it('Should add the information we put in the fields by keystroke to the database', () => {
@@ -518,6 +542,8 @@ describe('Add Ride', () => {
       });
     });
   });
+
+
 
 
 });

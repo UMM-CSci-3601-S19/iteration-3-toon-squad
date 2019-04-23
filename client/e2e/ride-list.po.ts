@@ -91,6 +91,10 @@ export class RidePage {
     return element(by.id(id)).element(by.id("settingsDriving"))
   }
 
+  getJoinRideButtonFromUser(id: string) {
+    return element(by.id(id)).element(by.id("join-ride-button"))
+  }
+
   getElementsByCss(css: string) {
     return element.all(by.css(css));
   }
