@@ -1,4 +1,14 @@
-# CSCI 3601 Lab #4 - Mongo, Spark and Angular
+# ATTENTION!!!
+
+## to anyone who is using this as a code-base, or borrowing code...
+
+### please read the PROBLEMS.md before anything. This document explains potential problems you may run into using 
+### Toon-Squad's iteration 3 code
+
+### Thanks,
+### *~The Management
+
+
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-S19/iteration-3-toon-squad.svg?branch=droplet-state)](https://travis-ci.org/UMM-CSci-3601-S19/iteration-3-toon-squad)
 ## Setup
 
