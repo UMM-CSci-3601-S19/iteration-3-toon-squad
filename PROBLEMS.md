@@ -109,7 +109,7 @@ Every test in RideControllerSpec.java that is commented out is for one particula
 #### Solution:
 We think that this is a matter of us misunderstanding an essential bit from setting up tests more than the method itself. Most likely a side effect of .filter() that calls for a different structure for the tests. To accommodate, we put testing for ride sorting and filtering by time and date into e2e tests.
 
-### 5) Expression has changed after it was checked
+### 5) "Expression has changed after it was checked" error
 
 #### Explanation:
 This has to with edit-ride form validation being done by a service. Ideally, this is the Angular way to handle information. If you open the browser console when opening the edit-ride page, you will see the error. Right now, there is a hacky work around to this error: we simply eliminated the option to switch the ride offered vs ride requested (isDriving boolean) on a ride. Without this workaround in place, opening the edit page for a requested ride will default to having the edit ride button disabled, even if the form inputs are valid.
