@@ -96,3 +96,16 @@ It was suggested that showing ALL rides that the user was associated with would 
 #### Solution:
 Make the profile display those rides. I'm not sure how the profile finds the user's created rides, but I suspect it happens near the
 database. Changing it to check for the joined rides should be analagous to checking for the user's created rides.
+
+### 4) Testing rides on server side has limitations as is
+
+### Explanation:
+Every test in RideControllerSpec.java that is commented out is for one particular reason:
+
+`java.lang.AssertionError: Should be 1 ride expected:<1> but was:<4>`
+
+[Link to the example test](https://github.com/UMM-CSci-3601-S19/iteration-3-toon-squad/blob/droplet-state/server/src/test/java/umm3601/ride/RideControllerSpec.java#L307). No matter what we would do to search for rides by certain criteria, assertEquals("Should be X rides", X, docs.size()); type assertions would always think every single mock ride passed through the filters. For example, getAllRidesOffered() should only get one ride. However, all 4 staged rides would be returned. However, the matchingRides document from RideController would log out a proper amount of rides, in this instance one ride. This matched the behavior of the client. However, removing the .filter(oldRides) on RideController.getRides() would make the tests go fine, but negate the ability to filter out old dates. 
+
+### Solution:
+We think that this is a matter of us misunderstanding an essential bit from setting up tests more than the method itself. Most likely a side effect of .filter() that calls for a different structure for the tests. To accommodate, we put testing for ride sorting and filtering by time and date into e2e tests.
+
