@@ -6,7 +6,7 @@
 ### Toon-Squad's iteration 3 code
 
 ### Thanks,
-### *~The Management
+### *~The Management*
 
 
 [![Build Status](https://travis-ci.org/UMM-CSci-3601-S19/iteration-3-toon-squad.svg?branch=droplet-state)](https://travis-ci.org/UMM-CSci-3601-S19/iteration-3-toon-squad)
