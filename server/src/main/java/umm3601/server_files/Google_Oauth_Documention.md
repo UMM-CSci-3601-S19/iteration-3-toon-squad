@@ -73,10 +73,7 @@ Add a server_files folder under umm3601 if one does not exist. This can be done 
 
 Copy and paste into credentials.json your Google OAUTH API's JSON that you can get in the Google API Console from "Download JSON."
 
-~~A client_secret field will need to be added to the credentials. The client_secret can be retrieved from the same page where you~~
-(We don't know why this was an issue for us before. Redownloading the credentials file had it present the next time. Maybe that was just a freak thing, but most likely a mistake down the line. Keeping it in just in case.)
-~~downloaded the json and set the authorized javascript origins and authorized redirect uri's.~~
-
+A client_secret field *may* need to be added manually to the credentials. It should come authomatically with the JSON download, but sometimes it doesn't. The client_secret can be retrieved from a field on the same page where you downloaded the JSON and set the authorized javascript origins and authorized redirect uri's. However, some people have downloaded the JSON and it did not have the secret, or the page of the download not have the field for the secret either. Refresh the page or close out of the console until it either shows up on in the field on the page or shows up in a new JSON download. This situation doesn't happen often but when it does it can be confusing. 
 
 It should look something like this, just maybe not as formatted:
 
@@ -84,7 +81,7 @@ It should look something like this, just maybe not as formatted:
 ```json
 {"web":
         {"client_id":     "filled_in_by_json_download",
-         "client_secret": "filled_in_by_json_download",
+         "client_secret": "filled_in_by_json_download OR may_need_to_be_manually_added____see_above",
          "project_id":    "filled_in_by_json_download",
          "auth_uri":      "filled_in_by_json_download",
          "token_uri":     "filled_in_by_json_download",
