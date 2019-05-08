@@ -15,7 +15,7 @@ The following documentation is straight to the point what you should add or chan
 * [Megabittron's HTTPS Tutorial](https://github.com/UMM-CSci-3601-S18/iteration-4-megabittron/blob/master/Documentation/HTTPS.md)
 * [UMM-CSci-3601's Droplet Setup Instructions](https://github.com/UMM-CSci-3601/droplet-setup-and-build)
 
-The HTTPS Tutorial is especially important as you need a top level domain, and it should go through Cloudflare to make the droplet's oauth implementation more secure. Also, ensure that your `environment.prod.ts` file uses your top level domain name "instead of your DigitalOcean droplet's IP address. To do this, on the line API_URL, enter `https://yourdomain.com/api/`." Contrary to the `UMM-CSci-3601's Droplet Setup Instructions`, you don't need to include the port, and in our experience, likely shouldn't. You can commit that change to master and never need to change it again manually after you pull in your repo. 
+The HTTPS Tutorial is especially important as you need a top level domain, and it should go through Cloudflare to make the droplet's oauth implementation more secure. Also, ensure that your `environment.prod.ts` file uses your top level domain name "instead of your DigitalOcean droplet's IP address. To do this, on the line API_URL, enter `https://yoursite.yourTopLevelDomain/api/`." Contrary to the `UMM-CSci-3601's Droplet Setup Instructions`, you don't need to include the port, and in our experience, likely shouldn't. You can commit that change to master and never need to change it again manually after you pull in your repo. 
 
 Additionally, contrary to the Droplet Setup instructions, ssh into root@[your_ip] instead of deploy-user@[your_ip].
 
@@ -51,7 +51,7 @@ try {
       //Your top level domain. Must match "redirect_uris" field in credentials.json. Must be https. No port. 
       clientSecrets.getDetails().getClientSecret(),
       authCode,
-      "https://yourdomain.com")
+      "https://yoursite.yourTopLevelDomain")
 ```
 
 ## Adding (or editing) `credentials.json`
@@ -80,9 +80,9 @@ It should look something like this, just maybe not as formatted:
          "auth_uri":      "filled_in_by_json_download",
          "token_uri":     "filled_in_by_json_download",
          "auth_provider_x509_cert_url":"filled_in_by_json_download",
-         "redirect_uris":["https://yousite.yourTopLevelDomain(ensure this matches you Server.java)"],
+         "redirect_uris":["https://yoursite.yourTopLevelDomain(ensure this matches your Server.java)"],
          "javascript_origins":
-            ["https://yousite.yourTopLevelDomain",
+            ["https://yoursite.yourTopLevelDomain",
             "https://your_droplet_ip",
             "http://your_droplet_ip"]
         }
