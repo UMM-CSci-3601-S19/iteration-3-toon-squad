@@ -15,16 +15,28 @@ The following documentation is straight to the point what you should add or chan
 * [Megabittron's HTTPS Tutorial](https://github.com/UMM-CSci-3601-S18/iteration-4-megabittron/blob/master/Documentation/HTTPS.md)
 * [UMM-CSci-3601's Droplet Setup Instructions](https://github.com/UMM-CSci-3601/droplet-setup-and-build)
 
+The HTTPS Tutorial is especially important as you need a top level domain, and it should go through Cloudflare to make the droplet's oauth implementation more secure. Also, ensure that your `environment.prod.ts` file uses your top level domain name "instead of your DigitalOcean droplet's IP address. To do this, on the line API_URL, enter `https://yourdomain.com/api/`." Contrary to the `UMM-CSci-3601's Droplet Setup Instructions`, you don't need to include the port, and in our experience, likely shouldn't. You can commit that change to master and never need to change it again manually after you pull in your repo. 
+
+Additionally, contrary to the Droplet Setup instructions, ssh into root@[your_ip] instead of deploy-user@[your_ip].
+
 ## Modifying `Server.java`
 >cd ~     
->cd iteration-3-toon-squad/server/src/main/java/umm3601/    
+>cd your-repos-name-here/server/src/main/java/umm3601/    
 >nano Server.java
 
 ### `Server.java`
-#### Replace the first part of the 'try' with
+#### Import java's file class
+```java
+  import java.io.File;
+```
+#### Change the serverPort to 80:
+```java
+  private static final int serverPort = 80;
+```
+#### Replace the first part of the 'try' with:
 ```java
 try {
-  File file = new File("./iteration-3-toon-squad/server/src/main/java/umm3601/server_files/credentials.json");
+  File file = new File("./your-repos-name-here/server/src/main/java/umm3601/server_files/credentials.json");
   String path = file.getAbsolutePath();
   System.out.println("The path: "+ path);
   String CLIENT_SECRET_FILE = path;
@@ -32,33 +44,15 @@ try {
   GoogleClientSecrets clientSecrets =
     GoogleClientSecrets.load(
       JacksonFactory.getDefaultInstance(), new FileReader(CLIENT_SECRET_FILE));
-
-
-  GoogleTokenResponse tokenResponse =
-    new GoogleAuthorizationCodeTokenRequest(
-      new NetHttpTransport(),
-      JacksonFactory.getDefaultInstance(),
-      "https://oauth2.googleapis.com/token",
-      clientSecrets.getDetails().getClientId(),
-
+```
+#### Ensure that in your Server.java that you set your top level domain, and in https:
+```java
       // Replace clientSecret with the localhost one if testing
       //Your top level domain. Must match "redirect_uris" field in credentials.json. Must be https. No port. 
       clientSecrets.getDetails().getClientSecret(),
       authCode,
-      "https://moridemorris.site")
-
-    //Not sure if we have a redirectUri
-
-    // Specify the same redirect URI that you use with your web
-    // app. If you don't have a web version of your app, you can
-    // specify an empty string.
-      .execute(); 
-
+      "https://yourdomain.com")
 ```
-**Additionally, import this up top:**
-
-`import java.io.File;`
-
 
 ## Adding (or editing) `credentials.json`
 You shouldn't have credentials.json in a freshly cloned Droplet because it should hopefully be declared as hidden in the .gitignore at the root of your project. 
@@ -66,7 +60,7 @@ You shouldn't have credentials.json in a freshly cloned Droplet because it shoul
 Add a server_files folder under umm3601 if one does not exist. This can be done using the command "mkdir" on command. Then in that folder you can create and edit credentials.json using the nano command.
 
 >cd ~     
->cd iteration-3-toon-squad/server/src/main/java/umm3601/      
+>cd your-repos-name-here/server/src/main/java/umm3601/      
 >mkdir server_files   
 >cd server_files  
 >nano credentials.json
