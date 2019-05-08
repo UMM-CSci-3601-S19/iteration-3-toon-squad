@@ -65,7 +65,7 @@ Add a server_files folder under umm3601 if one does not exist. This can be done 
 >cd server_files  
 >nano credentials.json
 
-Copy and paste into credentials.json your Google OAUTH API's JSON that you can get in the Google API Console from "Download JSON."
+Copy and paste into credentials.json your Google OAUTH API's JSON that you can get in the Google API Console from "Download JSON." **If you are the group member that set up your project's OUATH API, make sure you go to the "IAM & admin" panel in the Developer Console and add all your group members as project owners so that anyone can retrieve this information or make changes as needed. If you are reading this as a deploying member without access, bug your project's owner for this permission; in the meantime if you really need to hit the ground running without the owner, nothing is stopping you from making your own Google API version of your project for the moment. And whoever you are, ensure your next iteration group does all this sharing before any new code is written.**
 
 A client_secret field *may* need to be added manually to the credentials. It should come authomatically with the JSON download, but sometimes it doesn't. The client_secret can be retrieved from a field on the same page where you downloaded the JSON and set the authorized javascript origins and authorized redirect uri's. However, some people have downloaded the JSON and it did not have the secret, or the page of the download not have the field for the secret either. Refresh the page or close out of the console until it either shows up on in the field on the page or shows up in a new JSON download. This situation doesn't happen often but when it does it can be confusing. 
 
