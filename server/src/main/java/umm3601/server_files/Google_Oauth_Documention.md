@@ -20,6 +20,8 @@ The HTTPS Tutorial is especially important as you need a top level domain, and i
 Additionally, contrary to the Droplet Setup instructions, ssh into root@[your_ip] instead of deploy-user@[your_ip].
 
 ## Modifying `Server.java`
+`Server.java` needs to be modified in your Droplet to be different than your master build. Your master build references localhost in places where the below code references your top level domain, and your master build uses serverPort 4567 whereas the Droplet should use port 80. This is so that you can push changes between your group partners that work on localhost whereas the Droplet needs the following implementation. 
+
 >cd ~     
 >cd your-repos-name-here/server/src/main/java/umm3601/    
 >nano Server.java
