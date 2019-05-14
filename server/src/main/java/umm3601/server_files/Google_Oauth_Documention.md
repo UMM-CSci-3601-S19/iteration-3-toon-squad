@@ -3,7 +3,7 @@
 ## The Problem
 Setting up Google OATH to work on localhost is already one big learning process, but using documentation from previous classes ("Assumptions/Prerequisites") makes it viable. That said, that documentation is missing key steps to make Google OAUTH work on a Droplet. This guide builds upon the previous documentation and supplements it. 
 
-That said, there are two major issues with deploying to a Droplet. 
+That said, there are three major issues with deploying to a Droplet. 
 1. The path for `String CLIENT_SECRET_FILE` in Server.java is unreachable as is in the Megabitron documentation.  
 2. Our version of Google OATH implementation is out of date compared to how Google's OAUTH documentation and Google's API Console works.
 3. Megabittron's documentation is set as is for localhost information and not top level domain information.
