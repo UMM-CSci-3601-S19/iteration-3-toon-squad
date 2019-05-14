@@ -8,8 +8,6 @@ That said, there are two major issues with deploying to a Droplet.
 2. Our version of Google OATH implementation is out of date compared to how Google's OAUTH documentation and Google's API Console works.
 3. Megabittron's documentation is set as is for localhost information and not top level domain information.
 
-The following documentation is straight to the point what you should add or change. The end of the documentation had a section as to WHY these changes matter and how they relate to the problem. Additionally, some misc things that may or may not be relevant to OAUTH are clarified at the end. 
-
 ## Assumptions/Prerequisites
 *  [Megabittron's Google OATH tutorial](https://github.com/UMM-CSci-3601-S18/iteration-4-megabittron/blob/master/Documentation/Secure%20Google%20Login/DocumentationForGoogleLogin.md)
 * [Megabittron's HTTPS Tutorial](https://github.com/UMM-CSci-3601-S18/iteration-4-megabittron/blob/master/Documentation/HTTPS.md)
@@ -90,16 +88,4 @@ It should look something like this, just maybe not as formatted:
         }
 }
 ```
-
-## WHY these changes fix the problems
-(I'll add these later when I feel like it) 
-
-## Misc things from other documentation we might as well clear up while you're here
-(I'll add these later when I feel like it) 
-
-
-
-
-
-
 
